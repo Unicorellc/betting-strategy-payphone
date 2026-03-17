@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payphone Betting - Action Items & War Room</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6400;
+            --primary-dark: #e55a00;
+            --primary-light: #ff8533;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --accent: #FFA000;
+            --accent-dark: #d97706;
+            --danger: #ef4444;
+            --danger-light: #fca5a5;
+            --betting: #dc2626;
+            --pipeline: #5A00B4;
+            --conference: #0891b2;
+            --compliance: #059669;
+            --dark: #222222;
+            --dark-light: #2d2d2d;
+            --text: #374151;
+            --text-light: #6b7280;
+            --text-muted: #9ca3af;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e5e7eb;
+            --sidebar-width: 270px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* PASSWORD SCREEN */
+        .password-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 50%, #3d3d3d 100%);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10000;
+        }
+        .password-box {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 3rem; text-align: center;
+            max-width: 420px; width: 90%;
+        }
+        .password-box h2 { color: white; font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .password-box p { color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .password-box input {
+            width: 100%; padding: 0.9rem 1.2rem; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08);
+            color: white; font-size: 1rem; outline: none; margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .password-box input::placeholder { color: rgba(255,255,255,0.3); }
+        .password-box input:focus { border-color: var(--primary); }
+        .password-box button {
+            width: 100%; padding: 0.9rem; border-radius: 12px; border: none;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .password-box button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,100,0,0.4); }
+        .password-error { color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+        .shake { animation: shake 0.3s ease; }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed; left: 0; top: 0; width: var(--sidebar-width); height: 100vh;
+            background: linear-gradient(180deg, var(--dark) 0%, var(--dark-light) 100%);
+            overflow-y: auto; z-index: 1000; padding: 2rem 0;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease;
+        }
+        .sidebar-logo { padding: 0 1.5rem; margin-bottom: 2rem; }
+        .sidebar-logo h1 {
+            color: white; font-size: 1.1rem; font-weight: 700;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .sidebar-logo span { font-size: 1.4rem; }
+        .sidebar-logo p { color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.3rem; }
+        .sidebar-section { margin-bottom: 1.5rem; }
+        .sidebar-section-title {
+            padding: 0 1.5rem; font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.3); margin-bottom: 0.5rem;
+        }
+        .sidebar a {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.55rem 1.5rem; color: rgba(255,255,255,0.5);
+            text-decoration: none; font-size: 0.85rem; font-weight: 500;
+            transition: all 0.2s; border-left: 3px solid transparent;
+        }
+        .sidebar a:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.03); }
+        .sidebar a.active {
+            color: white; background: rgba(255,100,0,0.15);
+            border-left-color: var(--primary);
+        }
+        .sidebar a .icon { font-size: 1rem; width: 20px; text-align: center; }
+        .mobile-toggle {
+            display: none; position: fixed; top: 1rem; left: 1rem; z-index: 1001;
+            background: var(--dark); color: white; border: none; border-radius: 10px;
+            padding: 0.6rem 0.8rem; font-size: 1.2rem; cursor: pointer;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: var(--sidebar-width);
+            display: none;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 50%, #3d3d3d 100%);
+            padding: 2.5rem 2.5rem 2rem;
+            color: white;
+        }
+        .header-badge {
+            display: inline-block; background: rgba(255,255,255,0.1);
+            padding: 0.3rem 0.8rem; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem;
+        }
+        .header h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.3rem; }
+        .header p { color: rgba(255,255,255,0.6); font-size: 0.95rem; }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 1rem; margin-top: 1.5rem;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.06); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 1rem 1.2rem; text-align: center;
+        }
+        .stat-card .value {
+            font-size: 1.8rem; font-weight: 800;
+            font-family: 'JetBrains Mono', monospace; color: var(--primary-light);
+        }
+        .stat-card.danger .value { color: var(--danger-light); }
+        .stat-card .label {
+            font-size: 0.7rem; color: rgba(255,255,255,0.5);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.2rem;
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 2.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        section:nth-child(even) { background: var(--white); }
+        .section-header {
+            display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+        }
+        .section-header .icon {
+            width: 48px; height: 48px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; flex-shrink: 0;
+        }
+        .section-header h2 { font-size: 1.3rem; font-weight: 800; color: var(--dark); }
+        .section-header p { color: var(--text-light); font-size: 0.85rem; }
+
+        /* CARDS */
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .card {
+            background: var(--white); border-radius: 14px;
+            padding: 1.2rem 1.5rem; border: 1px solid var(--border);
+        }
+        .card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--dark); }
+
+        /* TABLES */
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        thead { background: var(--dark); color: white; }
+        th { padding: 0.7rem 1rem; text-align: left; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        tbody tr:hover { background: #f9fafb; }
+
+        /* BADGES */
+        .badge {
+            display: inline-block; padding: 0.15rem 0.55rem; border-radius: 6px;
+            font-size: 0.68rem; font-weight: 700; white-space: nowrap;
+        }
+        .badge-red { background: #fef2f2; color: #991b1b; }
+        .badge-yellow { background: #fffbeb; color: #92400e; }
+        .badge-green { background: #ecfdf5; color: #065f46; }
+        .badge-blue { background: #eff6ff; color: #1e40af; }
+        .badge-purple { background: #f5f3ff; color: #5b21b6; }
+        .badge-gray { background: #f3f4f6; color: #4b5563; }
+
+        /* ALERT BOXES */
+        .alert {
+            display: flex; gap: 0.8rem; padding: 1rem 1.2rem;
+            border-radius: 12px; margin-bottom: 1.5rem; font-size: 0.85rem;
+        }
+        .alert .icon { font-size: 1.2rem; flex-shrink: 0; }
+        .alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        .alert-warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+        .alert-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+        .alert-success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+
+        /* ACTION LIST */
+        .action-list { list-style: none; }
+        .action-list li {
+            display: flex; gap: 0.6rem; padding: 0.5rem 0;
+            border-bottom: 1px solid #f3f4f6; font-size: 0.85rem;
+        }
+        .action-list li:last-child { border-bottom: none; }
+        .priority-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            margin-top: 0.4rem; flex-shrink: 0;
+        }
+        .priority-dot.critical { background: var(--danger); }
+        .priority-dot.high { background: var(--accent); }
+        .priority-dot.medium { background: var(--primary); }
+
+        /* ========================================
+           NEW STYLES FOR ACTION ITEMS PAGE
+           ======================================== */
+
+        /* FILTERS BAR */
+        .filters-bar {
+            display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;
+            margin-bottom: 1.5rem; padding: 1.2rem;
+            background: white; border-radius: 16px; border: 1px solid var(--border);
+        }
+        .filter-group { display: flex; flex-direction: column; gap: 0.3rem; }
+        .filter-group label {
+            font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--text-light);
+        }
+        .filter-group select {
+            padding: 0.5rem 0.8rem; border-radius: 8px; border: 1px solid var(--border);
+            font-size: 0.85rem; font-family: 'Inter', sans-serif; color: var(--text);
+            background: white; cursor: pointer; min-width: 140px;
+        }
+        .filter-group select:focus { border-color: var(--primary); outline: none; }
+        .btn-reset {
+            padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border);
+            background: var(--bg); font-size: 0.85rem; cursor: pointer; color: var(--text-light);
+            transition: all 0.2s; font-family: 'Inter', sans-serif;
+        }
+        .btn-reset:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* CATEGORY PROGRESS CARDS */
+        .category-progress-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .progress-card {
+            background: white; border-radius: 12px; padding: 1rem;
+            border: 1px solid var(--border);
+        }
+        .progress-card-header {
+            display: flex; align-items: center; gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .progress-icon { font-size: 0.9rem; }
+        .progress-title { font-size: 0.72rem; font-weight: 600; color: var(--dark); flex: 1; }
+        .progress-count { font-size: 0.72rem; font-weight: 700; color: var(--text-light); font-family: 'JetBrains Mono', monospace; }
+        .progress-bar-track {
+            height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%; border-radius: 3px; transition: width 0.5s ease;
+        }
+
+        /* PRIORITY/STATUS/OWNER BADGES */
+        .priority-badge {
+            display: inline-block; padding: 0.15rem 0.5rem; border-radius: 6px;
+            font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+        }
+        .priority-badge.critical { background: #fef2f2; color: #991b1b; }
+        .priority-badge.high { background: #fffbeb; color: #92400e; }
+        .priority-badge.medium { background: #eff6ff; color: #1e40af; }
+
+        .status-badge {
+            display: inline-block; padding: 0.15rem 0.5rem; border-radius: 6px;
+            font-size: 0.68rem; font-weight: 600;
+        }
+        .status-badge.not-started { background: #f3f4f6; color: #4b5563; }
+        .status-badge.in-progress { background: #dbeafe; color: #1e40af; }
+        .status-badge.completed { background: #dcfce7; color: #166534; }
+        .status-badge.blocked { background: #fef2f2; color: #991b1b; }
+
+        .owner-tag {
+            display: inline-block; padding: 0.15rem 0.5rem; border-radius: 6px;
+            font-size: 0.68rem; font-weight: 600;
+        }
+        .owner-tag.paula { background: #f3e8ff; color: #6b21a8; }
+        .owner-tag.karen { background: #ecfdf5; color: #059669; }
+        .owner-tag.val { background: #eff6ff; color: #1e40af; }
+
+        .category-tag {
+            display: inline-block; padding: 0.15rem 0.5rem; border-radius: 6px;
+            font-size: 0.65rem; font-weight: 600;
+        }
+        .category-tag.revenue { background: #fef2f2; color: #991b1b; }
+        .category-tag.sales { background: #fefce8; color: #854d0e; }
+        .category-tag.pipeline { background: #f5f3ff; color: #5b21b6; }
+        .category-tag.compliance { background: #ecfdf5; color: #065f46; }
+        .category-tag.operations { background: #f0f9ff; color: #075985; }
+
+        /* CATEGORY HEADER ROWS */
+        .category-header td {
+            background: var(--bg) !important; padding: 0.7rem 1rem;
+            border-bottom: 2px solid var(--border); font-size: 0.85rem;
+        }
+
+        /* CHECKBOX STYLING */
+        .action-checkbox, .material-checkbox {
+            width: 18px; height: 18px; cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        /* COMPLETED ROW */
+        tr.completed-row td { opacity: 0.45; }
+        tr.completed-row td:first-child { opacity: 1; }
+
+        /* CONFERENCE HERO */
+        .conference-hero {
+            border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+            color: white; position: relative; overflow: hidden;
+        }
+        .conference-hero.sbc {
+            background: linear-gradient(135deg, var(--dark) 0%, #3d3d3d 40%, #FF6400 100%);
+        }
+        .conference-hero.gat-pr {
+            background: linear-gradient(135deg, #042f2e 0%, #0d4a47 50%, #0891b2 100%);
+        }
+        .conference-hero.gat-dr {
+            background: linear-gradient(135deg, #451a03 0%, #78350f 50%, #d97706 100%);
+        }
+        .conference-badge {
+            display: inline-block; background: rgba(255,255,255,0.1);
+            padding: 0.3rem 0.8rem; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem;
+        }
+        .conference-hero h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.3rem; }
+        .conference-hero > p { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+        .conference-stats {
+            display: flex; gap: 2rem; margin-top: 1rem; flex-wrap: wrap;
+        }
+        .conference-stats div { font-size: 0.85rem; color: rgba(255,255,255,0.8); }
+        .conference-stats strong { color: white; }
+        .conference-team {
+            margin-top: 0.8rem; font-size: 0.85rem; color: rgba(255,255,255,0.6);
+        }
+
+        /* VERTICAL TIMELINE */
+        .vertical-timeline {
+            position: relative; padding-left: 2.5rem; margin-bottom: 2rem;
+        }
+        .vertical-timeline::before {
+            content: ''; position: absolute; left: 10px; top: 0; bottom: 0;
+            width: 2px; background: var(--border);
+        }
+        .vtl-item { position: relative; margin-bottom: 1.5rem; }
+        .vtl-marker {
+            position: absolute; left: -2.5rem; top: 0.3rem;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: white; border: 3px solid var(--border);
+        }
+        .vtl-item.current .vtl-marker {
+            background: var(--primary); border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255,100,0,0.2);
+        }
+        .vtl-item.past .vtl-marker {
+            background: var(--secondary); border-color: var(--secondary);
+        }
+        .vtl-date {
+            font-size: 0.72rem; font-weight: 700; color: var(--text-light);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem;
+        }
+        .vtl-card {
+            background: white; border-radius: 12px; padding: 1rem 1.2rem;
+            border: 1px solid var(--border);
+        }
+        .vtl-item.current .vtl-card {
+            border-color: var(--primary); box-shadow: 0 4px 15px rgba(255,100,0,0.1);
+        }
+        .vtl-card h4 {
+            font-size: 0.9rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem;
+        }
+        .vtl-card ul {
+            list-style: disc; padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-light);
+        }
+        .vtl-card ul li { margin-bottom: 0.3rem; }
+        .vtl-card .badge { margin-top: 0.5rem; }
+
+        /* OPERATOR TARGET CARDS */
+        .operator-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem; margin-bottom: 2rem;
+        }
+        .operator-card {
+            background: white; border-radius: 12px; padding: 1.2rem;
+            border: 1px solid var(--border); transition: box-shadow 0.2s;
+        }
+        .operator-card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+        .operator-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 0.4rem; }
+        .operator-card .detail { font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.6rem; }
+        .operator-meta {
+            display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+            margin-top: 0.6rem;
+        }
+
+        /* SUBSECTION HEADERS */
+        .sub-header {
+            font-size: 1rem; font-weight: 700; margin: 2rem 0 1rem;
+            color: var(--dark); display: flex; align-items: center; gap: 0.5rem;
+        }
+
+        /* CALLOUT BOX */
+        .callout {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #93c5fd; border-radius: 12px;
+            padding: 1.2rem; margin-bottom: 1.5rem;
+        }
+        .callout h4 { font-size: 0.9rem; font-weight: 700; color: #1e40af; margin-bottom: 0.3rem; }
+        .callout p { font-size: 0.82rem; color: #1e3a5f; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .mobile-toggle { display: block; }
+            .main { margin-left: 0; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .category-progress-grid { grid-template-columns: repeat(3, 1fr); }
+            .filters-bar { gap: 0.5rem; }
+        }
+        @media (max-width: 768px) {
+            .header { padding: 1.5rem; }
+            .header h1 { font-size: 1.3rem; }
+            section { padding: 1.5rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .category-progress-grid { grid-template-columns: 1fr 1fr; }
+            .filters-bar { flex-direction: column; }
+            .filter-group select { min-width: 100%; }
+            .conference-stats { flex-direction: column; gap: 0.5rem; }
+            .operator-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PASSWORD SCREEN -->
+<div class="password-screen" id="passwordScreen">
+    <div class="password-box" id="passwordBox">
+        <h2>&#128274; Action Items</h2>
+        <p>Payphone Betting &mdash; Confidential</p>
+        <input type="password" id="passwordInput" placeholder="Enter password">
+        <button onclick="checkPassword()">Access</button>
+        <p class="password-error" id="passwordError">Incorrect password</p>
+    </div>
+</div>
+
+<!-- MOBILE TOGGLE -->
+<button class="mobile-toggle" onclick="toggleSidebar()">&#9776;</button>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <h1><span>&#9889;</span> Action Items</h1>
+        <p>Payphone Betting &bull; Marzo 2026</p>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Navigation</div>
+        <a href="index.html"><span class="icon">&#128200;</span> Main Dashboard</a>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Action Items</div>
+        <a href="#action-items" class="active"><span class="icon">&#9745;</span> Master Action List</a>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Conference War Room</div>
+        <a href="#sbc"><span class="icon">&#127915;</span> SBC Americas</a>
+        <a href="#gat-pr"><span class="icon">&#127758;</span> GAT San Juan</a>
+        <a href="#gat-dr"><span class="icon">&#127466;&#127465;</span> GAT Santo Domingo</a>
+    </div>
+
+    <div class="sidebar-section" style="margin-top: 2rem; padding: 0 1.5rem;">
+        <div style="background: rgba(255,100,0,0.1); border: 1px solid rgba(255,100,0,0.2); border-radius: 12px; padding: 1rem;">
+            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Progress</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: #ff8533;" id="sidebar-progress">0%</div>
+            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);" id="sidebar-completed-count">0 of 22 completed</div>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main" id="mainContent">
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-content">
+            <span class="header-badge">&#9889; Action Items &amp; Conference War Room</span>
+            <h1>Betting Vertical &mdash; Action Tracker</h1>
+            <p>Todas las acciones priorizadas, owners, deadlines y status del equipo de betting.</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="value" id="stat-total">22</div>
+                    <div class="label">Total Actions</div>
+                </div>
+                <div class="stat-card danger">
+                    <div class="value" id="stat-critical">10</div>
+                    <div class="label">Critical Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" style="color: #10b981;" id="stat-completed">0</div>
+                    <div class="label">Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" style="color: var(--accent);" id="stat-days-sbc">84</div>
+                    <div class="label">Days to SBC</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: MASTER ACTION ITEMS               -->
+    <!-- ============================================ -->
+    <section id="action-items">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #fef2f2, #fecaca); color: var(--danger);">&#9745;</div>
+            <div>
+                <h2>Master Action List</h2>
+                <p>22 action items across 5 categories &mdash; assigned to Paula, Karen &amp; Val</p>
+            </div>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label>Priority</label>
+                <select id="filter-priority">
+                    <option value="all">All</option>
+                    <option value="critical">Critical</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Owner</label>
+                <select id="filter-owner">
+                    <option value="all">All</option>
+                    <option value="paula">Paula</option>
+                    <option value="karen">Karen</option>
+                    <option value="val">Val</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Status</label>
+                <select id="filter-status">
+                    <option value="all">All</option>
+                    <option value="not-started">Not Started</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="blocked">Blocked</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Category</label>
+                <select id="filter-category">
+                    <option value="all">All</option>
+                    <option value="revenue">Revenue</option>
+                    <option value="sales">Sales &amp; Marketing</option>
+                    <option value="pipeline">Pipeline</option>
+                    <option value="compliance">Compliance</option>
+                    <option value="operations">Operations</option>
+                </select>
+            </div>
+            <button class="btn-reset" onclick="resetFilters()">Reset</button>
+        </div>
+
+        <!-- PROGRESS CARDS -->
+        <div class="category-progress-grid">
+            <div class="progress-card">
+                <div class="progress-card-header">
+                    <span class="progress-icon" style="color: var(--danger);">&#128308;</span>
+                    <span class="progress-title">Revenue</span>
+                    <span class="progress-count" id="progress-revenue-count">0/4</span>
+                </div>
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progress-revenue-bar" style="width: 0%; background: var(--danger);"></div>
+                </div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-card-header">
+                    <span class="progress-icon" style="color: var(--accent);">&#128230;</span>
+                    <span class="progress-title">Sales &amp; Marketing</span>
+                    <span class="progress-count" id="progress-sales-count">0/6</span>
+                </div>
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progress-sales-bar" style="width: 0%; background: var(--accent);"></div>
+                </div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-card-header">
+                    <span class="progress-icon" style="color: var(--pipeline);">&#128640;</span>
+                    <span class="progress-title">Pipeline</span>
+                    <span class="progress-count" id="progress-pipeline-count">0/3</span>
+                </div>
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progress-pipeline-bar" style="width: 0%; background: var(--pipeline);"></div>
+                </div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-card-header">
+                    <span class="progress-icon" style="color: var(--compliance);">&#128274;</span>
+                    <span class="progress-title">Compliance</span>
+                    <span class="progress-count" id="progress-compliance-count">0/4</span>
+                </div>
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progress-compliance-bar" style="width: 0%; background: var(--compliance);"></div>
+                </div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-card-header">
+                    <span class="progress-icon" style="color: var(--conference);">&#9881;</span>
+                    <span class="progress-title">Operations</span>
+                    <span class="progress-count" id="progress-operations-count">0/5</span>
+                </div>
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progress-operations-bar" style="width: 0%; background: var(--conference);"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTION ITEMS TABLE -->
+        <div class="table-wrapper">
+            <table id="action-table">
+                <thead>
+                    <tr>
+                        <th style="width:40px;">&#10003;</th>
+                        <th>Priority</th>
+                        <th>Action Item</th>
+                        <th>Owner</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody id="action-tbody">
+                    <!-- Rendered by JS -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: SBC SUMMIT AMERICAS WAR ROOM      -->
+    <!-- ============================================ -->
+    <section id="sbc">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #fff2e6, #ffcc99); color: #FF6400;">&#127915;</div>
+            <div>
+                <h2>SBC Summit Americas &mdash; War Room</h2>
+                <p>Priority #1 conference &mdash; Full preparation timeline</p>
+            </div>
+        </div>
+
+        <!-- HERO -->
+        <div class="conference-hero sbc">
+            <div class="conference-badge">&#127915; Priority #1 Conference</div>
+            <h2>SBC Summit Americas</h2>
+            <p>June 9-11, 2026 &bull; Fort Lauderdale, FL</p>
+            <div class="conference-stats">
+                <div><strong>10,000+</strong> attendees</div>
+                <div><strong>400+</strong> exhibitors</div>
+                <div><strong>$3,150</strong> budget</div>
+                <div><strong id="sbc-countdown">84</strong> days away</div>
+            </div>
+            <div class="conference-team">Team: Paula + Val</div>
+        </div>
+
+        <!-- WEEK-BY-WEEK TIMELINE -->
+        <h3 class="sub-header">&#128197; Week-by-Week Countdown</h3>
+
+        <div class="vertical-timeline">
+            <div class="vtl-item" data-week-start="2026-03-17">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Week of Mar 17 &mdash; T-84 days</div>
+                <div class="vtl-card">
+                    <h4>Research &amp; Target List</h4>
+                    <ul>
+                        <li>Finalize target operator list for SBC meetings</li>
+                        <li>Begin pitch deck research (competitive analysis, market data)</li>
+                        <li>Identify booth location options &amp; pricing</li>
+                        <li>Book early bird conference passes (2x)</li>
+                    </ul>
+                    <div><span class="badge badge-blue">Owner: Val + Paula</span></div>
+                </div>
+            </div>
+
+            <div class="vtl-item" data-week-start="2026-03-24">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Week of Mar 24 &mdash; T-77 days</div>
+                <div class="vtl-card">
+                    <h4>Messaging &amp; Structure</h4>
+                    <ul>
+                        <li>Draft pitch deck structure and key messaging framework</li>
+                        <li>Define value proposition for LATAM operators</li>
+                        <li>Start outreach to target operators for meeting scheduling</li>
+                    </ul>
+                    <div><span class="badge badge-purple">Owner: Val + Paula</span></div>
+                </div>
+            </div>
+
+            <div class="vtl-item" data-week-start="2026-04-07">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Week of Apr 7 &mdash; T-63 days</div>
+                <div class="vtl-card">
+                    <h4>First Drafts</h4>
+                    <ul>
+                        <li>Complete first pitch deck draft (v1)</li>
+                        <li>Start landing page wireframe &amp; copy</li>
+                        <li>Collect case study data (Ecuabet, Betano growth metrics)</li>
+                    </ul>
+                    <div><span class="badge badge-purple">Owner: Val</span></div>
+                </div>
+            </div>
+
+            <div class="vtl-item" data-week-start="2026-04-21">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Week of Apr 21 &mdash; T-49 days</div>
+                <div class="vtl-card">
+                    <h4>Design &amp; Refinement</h4>
+                    <ul>
+                        <li>Pitch deck v2 (with feedback from Paula)</li>
+                        <li>One-pager / leave-behind first draft</li>
+                        <li>Booth design RFP sent to vendors</li>
+                        <li>Confirm meeting schedule with target operators</li>
+                    </ul>
+                    <div><span class="badge badge-purple">Owner: Val + Paula</span></div>
+                </div>
+            </div>
+
+            <div class="vtl-item" data-week-start="2026-05-05">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Week of May 5 &mdash; T-35 days</div>
+                <div class="vtl-card">
+                    <h4>Go-Live Week</h4>
+                    <ul>
+                        <li><strong>Landing page goes LIVE</strong> (deadline: May 5)</li>
+                        <li>One-pager finalized and sent to print (deadline: May 15)</li>
+                        <li>Demo sandbox development starts</li>
+                        <li>Book flights and hotel</li>
+                    </ul>
+                    <div><span class="badge badge-red">Critical Deadline</span></div>
+                </div>
+            </div>
+
+            <div class="vtl-item" data-week-start="2026-05-19">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Week of May 19 &mdash; T-21 days</div>
+                <div class="vtl-card">
+                    <h4>Production &amp; Orders</h4>
+                    <ul>
+                        <li><strong>Booth design finalized</strong> (deadline: May 20)</li>
+                        <li><strong>Swag ordered</strong> &mdash; shirts, stickers (deadline: May 20)</li>
+                        <li>Demo sandbox in beta testing</li>
+                        <li>Final pitch deck review</li>
+                    </ul>
+                    <div><span class="badge badge-red">Critical Deadline</span></div>
+                </div>
+            </div>
+
+            <div class="vtl-item" data-week-start="2026-06-02">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Week of Jun 2 &mdash; T-7 days</div>
+                <div class="vtl-card">
+                    <h4>Final Prep Week</h4>
+                    <ul>
+                        <li>All materials printed and packed</li>
+                        <li>Demo sandbox final &mdash; ready for live demos</li>
+                        <li>Travel logistics confirmed (flights, hotel, transfers)</li>
+                        <li>Team briefing: talking points, meeting schedule, roles</li>
+                        <li>Prepare printed one-pagers, business cards, swag bags</li>
+                    </ul>
+                    <div><span class="badge badge-yellow">Final Check</span></div>
+                </div>
+            </div>
+
+            <div class="vtl-item" data-week-start="2026-06-09">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Jun 9-11 &mdash; EVENT</div>
+                <div class="vtl-card" style="border-color: var(--secondary); background: #f0fdf4;">
+                    <h4>&#127942; SBC Summit Americas</h4>
+                    <ul>
+                        <li><strong>Day 1 (Jun 9):</strong> Booth setup, networking sessions, scheduled meetings</li>
+                        <li><strong>Day 2 (Jun 10):</strong> Main conference day &mdash; presentations, 1:1 meetings, demos</li>
+                        <li><strong>Day 3 (Jun 11):</strong> Final meetings, collect business cards, closing events</li>
+                        <li>Document everything: photos, notes, contact info, next steps</li>
+                    </ul>
+                    <div><span class="badge badge-green">Event Days</span></div>
+                </div>
+            </div>
+
+            <div class="vtl-item" data-week-start="2026-06-12">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Jun 12-20 &mdash; Follow-Up</div>
+                <div class="vtl-card">
+                    <h4>Post-Conference Execution</h4>
+                    <ul>
+                        <li><strong>Day 1 (Jun 12):</strong> Send personalized follow-up emails with deck attached</li>
+                        <li><strong>Days 2-3:</strong> Enter all leads into Freshsales CRM with meeting notes</li>
+                        <li><strong>Week 1:</strong> Send proposals to qualified leads (pricing, integration timeline)</li>
+                        <li><strong>Week 2:</strong> Schedule follow-up calls with top 5 prospects</li>
+                        <li><strong>Week 3:</strong> Internal debrief &mdash; ROI analysis, lessons learned, pipeline impact</li>
+                    </ul>
+                    <div><span class="badge badge-blue">Owner: Val + Paula</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MATERIALS CHECKLIST -->
+        <h3 class="sub-header">&#128230; Materials Checklist</h3>
+        <div class="table-wrapper" style="margin-bottom: 2rem;">
+            <table>
+                <thead>
+                    <tr><th style="width:40px;">&#10003;</th><th>Material</th><th>Status</th><th>Owner</th><th>Deadline</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" class="material-checkbox"></td>
+                        <td><strong>Pitch Deck (Betting)</strong></td>
+                        <td><span class="badge badge-red">Not Started</span></td>
+                        <td><span class="owner-tag val">Val</span> <span class="owner-tag paula">Paula</span></td>
+                        <td>Apr 30</td>
+                        <td>Needs competitive analysis, case studies, pricing tiers</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="material-checkbox"></td>
+                        <td><strong>One-Pager / Leave-behind</strong></td>
+                        <td><span class="badge badge-red">Not Started</span></td>
+                        <td><span class="owner-tag val">Val</span> <span class="owner-tag paula">Paula</span></td>
+                        <td>May 15</td>
+                        <td>Print-ready, bilingual (EN/ES)</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="material-checkbox"></td>
+                        <td><strong>Landing Page (betting)</strong></td>
+                        <td><span class="badge badge-red">Not Started</span></td>
+                        <td><span class="owner-tag val">Val</span></td>
+                        <td>May 5</td>
+                        <td>Dedicated URL, lead capture form, case studies</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="material-checkbox"></td>
+                        <td><strong>Demo Sandbox</strong></td>
+                        <td><span class="badge badge-red">Not Started</span></td>
+                        <td><span class="owner-tag val">Val</span></td>
+                        <td>May 30</td>
+                        <td>Interactive payment flow demo for booth</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="material-checkbox"></td>
+                        <td><strong>Booth Design</strong></td>
+                        <td><span class="badge badge-red">Not Started</span></td>
+                        <td><span class="owner-tag paula">Paula</span></td>
+                        <td>May 20</td>
+                        <td>Banner, tablecloth, display. RFP to vendor by Apr 21.</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="material-checkbox"></td>
+                        <td><strong>Swag (shirts, stickers)</strong></td>
+                        <td><span class="badge badge-red">Not Started</span></td>
+                        <td><span class="owner-tag karen">Karen</span></td>
+                        <td>May 20</td>
+                        <td>Payphone branded. Qty: 200 stickers, 50 shirts</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TARGET OPERATOR MEETINGS -->
+        <h3 class="sub-header">&#127919; Target Operator Meetings</h3>
+        <div class="operator-grid">
+            <div class="operator-card">
+                <h4>Bet365</h4>
+                <p class="detail">Largest global operator. Expanding in LATAM. No local payments partner confirmed.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-purple">Tier 1 Target</span>
+                    <span class="badge badge-yellow">Meeting not scheduled</span>
+                </div>
+            </div>
+            <div class="operator-card">
+                <h4>Betano (via Pagadoor)</h4>
+                <p class="detail">Already active client ($566K/mo). SBC = relationship deepening + direct contact.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-green">Existing Client</span>
+                    <span class="badge badge-yellow">Meeting not scheduled</span>
+                </div>
+            </div>
+            <div class="operator-card">
+                <h4>Caliente</h4>
+                <p class="detail">Mexico's largest operator. Expanding to Central America. Strong LATAM presence.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-purple">Tier 1 Target</span>
+                    <span class="badge badge-yellow">Meeting not scheduled</span>
+                </div>
+            </div>
+            <div class="operator-card">
+                <h4>Betcris</h4>
+                <p class="detail">Active client in EC ($110K/mo). DOM integration in progress. Key strategic partner.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-green">Existing Client</span>
+                    <span class="badge badge-blue">DOM go-live pending</span>
+                </div>
+            </div>
+            <div class="operator-card">
+                <h4>Codere</h4>
+                <p class="detail">Major Spanish operator with LATAM footprint. Proposal sent, no response.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-purple">Tier 1 Pipeline</span>
+                    <span class="badge badge-red">Stalled proposal</span>
+                </div>
+            </div>
+            <div class="operator-card">
+                <h4>1xBet</h4>
+                <p class="detail">Global operator with strong LATAM presence. Proposal sent, no response.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-purple">Tier 1 Pipeline</span>
+                    <span class="badge badge-red">Stalled proposal</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUDGET BREAKDOWN -->
+        <h3 class="sub-header">&#128176; Budget Breakdown ($3,150)</h3>
+        <div class="table-wrapper" style="margin-bottom: 2rem;">
+            <table>
+                <thead><tr><th>Item</th><th>Estimate</th><th>Status</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td>Conference Pass (2x)</td><td>$1,200</td><td><span class="badge badge-yellow">TBD</span></td><td>Check early bird pricing</td></tr>
+                    <tr><td>Flights (2x from EC)</td><td>$800</td><td><span class="badge badge-yellow">Not booked</span></td><td>Book by Apr 15 for best rates</td></tr>
+                    <tr><td>Hotel (3 nights x 2 rooms)</td><td>$750</td><td><span class="badge badge-yellow">Not booked</span></td><td>Near convention center</td></tr>
+                    <tr><td>Booth Materials</td><td>$200</td><td><span class="badge badge-red">Not started</span></td><td>Banners, tablecloth, business cards</td></tr>
+                    <tr><td>Meals &amp; Transport</td><td>$200</td><td><span class="badge badge-gray">Estimate</span></td><td>3 days local expenses</td></tr>
+                    <tr><td><strong>Total</strong></td><td><strong>$3,150</strong></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- POST-CONFERENCE PLAN -->
+        <h3 class="sub-header">&#128203; Post-Conference Follow-Up Plan</h3>
+        <div class="card" style="border-left: 4px solid var(--primary); margin-bottom: 1rem;">
+            <ul class="action-list">
+                <li><div class="priority-dot critical"></div><div><strong>Day 1 (Jun 12):</strong> Send personalized follow-up emails to all meeting contacts with pitch deck attached</div></li>
+                <li><div class="priority-dot critical"></div><div><strong>Days 2-3:</strong> Enter all leads into Freshsales CRM with detailed meeting notes and next steps</div></li>
+                <li><div class="priority-dot high"></div><div><strong>Week 1:</strong> Send proposals to qualified leads with pricing, integration timeline, and case studies</div></li>
+                <li><div class="priority-dot high"></div><div><strong>Week 2:</strong> Schedule follow-up calls with top 5 prospects. Begin technical due diligence.</div></li>
+                <li><div class="priority-dot medium"></div><div><strong>Week 3:</strong> Internal debrief &mdash; ROI analysis, lessons learned, pipeline impact report to leadership</div></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: GAT EXPO SAN JUAN WAR ROOM        -->
+    <!-- ============================================ -->
+    <section id="gat-pr">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #ecfdf5, #a7f3d0); color: #059669;">&#127758;</div>
+            <div>
+                <h2>GAT Expo San Juan &mdash; War Room</h2>
+                <p>Caribbean &amp; Central America focus</p>
+            </div>
+        </div>
+
+        <!-- HERO -->
+        <div class="conference-hero gat-pr">
+            <div class="conference-badge">&#127758; Caribbean Gateway</div>
+            <h2>GAT Expo San Juan</h2>
+            <p>September 8-9, 2026 &bull; Puerto Rico</p>
+            <div class="conference-stats">
+                <div><strong>200-400</strong> attendees</div>
+                <div><strong>14+</strong> countries</div>
+                <div><strong>$2,000</strong> budget</div>
+                <div><strong id="gat-pr-countdown">175</strong> days away</div>
+            </div>
+            <div class="conference-team">Team: Paula</div>
+        </div>
+
+        <!-- TIMELINE -->
+        <h3 class="sub-header">&#128197; Preparation Timeline</h3>
+        <div class="vertical-timeline">
+            <div class="vtl-item" data-week-start="2026-07-27">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Late July &mdash; T-6 weeks</div>
+                <div class="vtl-card">
+                    <h4>Pre-planning</h4>
+                    <ul>
+                        <li>Apply SBC learnings &mdash; update pitch deck for Caribbean market</li>
+                        <li>Research Puerto Rico gaming regulations &amp; key operators</li>
+                        <li>Begin outreach to Caribbean operators for meeting scheduling</li>
+                    </ul>
+                    <div><span class="badge badge-purple">Owner: Paula</span></div>
+                </div>
+            </div>
+            <div class="vtl-item" data-week-start="2026-08-10">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Early August &mdash; T-4 weeks</div>
+                <div class="vtl-card">
+                    <h4>Preparation</h4>
+                    <ul>
+                        <li>Adapt one-pager for Caribbean market (Spanish/English)</li>
+                        <li>Confirm meeting schedule with Casinos PR, Asojuegos CO contacts</li>
+                        <li>Book flights &amp; hotel</li>
+                    </ul>
+                    <div><span class="badge badge-purple">Owner: Paula + Karen</span></div>
+                </div>
+            </div>
+            <div class="vtl-item" data-week-start="2026-08-31">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Week of Sep 1 &mdash; T-1 week</div>
+                <div class="vtl-card">
+                    <h4>Final Prep</h4>
+                    <ul>
+                        <li>Print materials, pack swag</li>
+                        <li>Final briefing with Val on key targets &amp; messaging</li>
+                        <li>Prepare SBC follow-up updates for any shared contacts</li>
+                    </ul>
+                    <div><span class="badge badge-yellow">Final Check</span></div>
+                </div>
+            </div>
+            <div class="vtl-item" data-week-start="2026-09-08">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Sep 8-9 &mdash; EVENT</div>
+                <div class="vtl-card" style="border-color: var(--secondary); background: #f0fdf4;">
+                    <h4>&#127942; GAT Expo San Juan</h4>
+                    <ul>
+                        <li><strong>Day 1:</strong> Opening sessions, scheduled 1:1 meetings, networking</li>
+                        <li><strong>Day 2:</strong> Final meetings, panel discussions, closing networking event</li>
+                        <li>Focus: Casinos PR, Asojuegos CO, Caribbean operators</li>
+                    </ul>
+                    <div><span class="badge badge-green">Event Days</span></div>
+                </div>
+            </div>
+            <div class="vtl-item" data-week-start="2026-09-10">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Sep 10-20 &mdash; Follow-Up</div>
+                <div class="vtl-card">
+                    <h4>Post-Event Execution</h4>
+                    <ul>
+                        <li>Same-day follow-up emails to all contacts</li>
+                        <li>Update Freshsales CRM with new leads</li>
+                        <li>Send proposals to qualified Caribbean operators</li>
+                        <li>Debrief report to Val</li>
+                    </ul>
+                    <div><span class="badge badge-blue">Owner: Paula</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TARGET MEETINGS -->
+        <h3 class="sub-header">&#127919; Target Meetings</h3>
+        <div class="operator-grid">
+            <div class="operator-card">
+                <h4>Casinos PR</h4>
+                <p class="detail">Puerto Rico casino operators. Local market entry opportunity.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-purple">New Market</span>
+                    <span class="badge badge-yellow">Outreach pending</span>
+                </div>
+            </div>
+            <div class="operator-card">
+                <h4>Asojuegos CO</h4>
+                <p class="detail">Colombian gaming association. Gateway to Colombia P1 market.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-purple">Strategic</span>
+                    <span class="badge badge-yellow">Outreach pending</span>
+                </div>
+            </div>
+            <div class="operator-card">
+                <h4>Caribbean Operators</h4>
+                <p class="detail">Dominican Republic, Jamaica, Trinidad &amp; Tobago operators. Untapped region.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-blue">Exploration</span>
+                    <span class="badge badge-yellow">Outreach pending</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUDGET -->
+        <h3 class="sub-header">&#128176; Budget ($2,000)</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Item</th><th>Estimate</th><th>Status</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td>Conference Pass (1x)</td><td>$400</td><td><span class="badge badge-yellow">TBD</span></td><td></td></tr>
+                    <tr><td>Flight (1x from EC)</td><td>$650</td><td><span class="badge badge-yellow">Not booked</span></td><td>Book by Jul 15</td></tr>
+                    <tr><td>Hotel (2 nights)</td><td>$500</td><td><span class="badge badge-yellow">Not booked</span></td><td>Near venue</td></tr>
+                    <tr><td>Materials &amp; Print</td><td>$150</td><td><span class="badge badge-gray">Estimate</span></td><td>Reuse SBC materials where possible</td></tr>
+                    <tr><td>Meals &amp; Transport</td><td>$300</td><td><span class="badge badge-gray">Estimate</span></td><td></td></tr>
+                    <tr><td><strong>Total</strong></td><td><strong>$2,000</strong></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: GAT EXPO SANTO DOMINGO WAR ROOM   -->
+    <!-- ============================================ -->
+    <section id="gat-dr">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #fffbeb, #fde68a); color: #b45309;">&#127466;&#127465;</div>
+            <div>
+                <h2>GAT Expo Santo Domingo &mdash; War Room</h2>
+                <p>Dominican Republic &mdash; Colombia P1 access opportunity</p>
+            </div>
+        </div>
+
+        <!-- HERO -->
+        <div class="conference-hero gat-dr">
+            <div class="conference-badge">&#127466;&#127465; Key Strategic Event</div>
+            <h2>GAT Expo Santo Domingo</h2>
+            <p>November 17-18, 2026 &bull; Dominican Republic</p>
+            <div class="conference-stats">
+                <div><strong>600+</strong> delegates</div>
+                <div><strong>20</strong> countries</div>
+                <div><strong>$2,200</strong> budget</div>
+                <div><strong id="gat-dr-countdown">245</strong> days away</div>
+            </div>
+            <div class="conference-team">Team: Paula</div>
+        </div>
+
+        <!-- CALLOUT: BETCRIS DOM -->
+        <div class="callout">
+            <h4>&#128161; Strategic Opportunity: Betcris DOM Case Study</h4>
+            <p>Betcris DOM integration is currently in progress (since Feb 2026). If live by November, this becomes a <strong>live case study</strong> for Dominican Republic operators at GAT Santo Domingo &mdash; proving Payphone's cross-border betting payments capability. Prioritize this integration timeline.</p>
+        </div>
+
+        <!-- HEADLINE TARGET -->
+        <div class="alert alert-info" style="margin-bottom: 1.5rem;">
+            <span class="icon">&#127919;</span>
+            <div><strong>Headline Meeting: Coljuegos President.</strong> The President of Colombia's gaming regulator (Coljuegos) attends GAT Santo Domingo. This is Payphone's #1 path to Colombia P1 market access. Prepare a Colombia-specific pitch.</div>
+        </div>
+
+        <!-- TIMELINE -->
+        <h3 class="sub-header">&#128197; Preparation Timeline</h3>
+        <div class="vertical-timeline">
+            <div class="vtl-item" data-week-start="2026-10-06">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Early October &mdash; T-6 weeks</div>
+                <div class="vtl-card">
+                    <h4>Pre-planning</h4>
+                    <ul>
+                        <li>Apply learnings from SBC + GAT San Juan</li>
+                        <li>Prepare Colombia-specific pitch deck section</li>
+                        <li>Research Coljuegos regulatory requirements for payment providers</li>
+                        <li>Confirm Betcris DOM go-live status for case study</li>
+                    </ul>
+                    <div><span class="badge badge-purple">Owner: Paula + Val</span></div>
+                </div>
+            </div>
+            <div class="vtl-item" data-week-start="2026-10-20">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Late October &mdash; T-4 weeks</div>
+                <div class="vtl-card">
+                    <h4>Preparation</h4>
+                    <ul>
+                        <li>Finalize Colombia-focused materials</li>
+                        <li>Schedule meeting with Coljuegos delegation</li>
+                        <li>Outreach to Dominican Republic operators</li>
+                        <li>Book flights &amp; hotel</li>
+                    </ul>
+                    <div><span class="badge badge-purple">Owner: Paula + Karen</span></div>
+                </div>
+            </div>
+            <div class="vtl-item" data-week-start="2026-11-09">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Week of Nov 9 &mdash; T-1 week</div>
+                <div class="vtl-card">
+                    <h4>Final Prep</h4>
+                    <ul>
+                        <li>Print materials, prepare Betcris DOM case study one-pager</li>
+                        <li>Final briefing on Coljuegos talking points</li>
+                        <li>Confirm all meeting schedules</li>
+                    </ul>
+                    <div><span class="badge badge-yellow">Final Check</span></div>
+                </div>
+            </div>
+            <div class="vtl-item" data-week-start="2026-11-17">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Nov 17-18 &mdash; EVENT</div>
+                <div class="vtl-card" style="border-color: var(--secondary); background: #f0fdf4;">
+                    <h4>&#127942; GAT Expo Santo Domingo</h4>
+                    <ul>
+                        <li><strong>Day 1:</strong> Opening sessions, Coljuegos meeting, networking</li>
+                        <li><strong>Day 2:</strong> 1:1 meetings with DR/Caribbean operators, closing events</li>
+                        <li>Present Betcris DOM case study (if live)</li>
+                    </ul>
+                    <div><span class="badge badge-green">Event Days</span></div>
+                </div>
+            </div>
+            <div class="vtl-item" data-week-start="2026-11-19">
+                <div class="vtl-marker"></div>
+                <div class="vtl-date">Nov 19-30 &mdash; Follow-Up</div>
+                <div class="vtl-card">
+                    <h4>Post-Event Execution</h4>
+                    <ul>
+                        <li>Follow-up email to Coljuegos with formal interest letter</li>
+                        <li>Same-day follow-up to all meeting contacts</li>
+                        <li>Update CRM, send proposals</li>
+                        <li>Year-end conference ROI report (all 3 events)</li>
+                    </ul>
+                    <div><span class="badge badge-blue">Owner: Paula + Val</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TARGET MEETINGS -->
+        <h3 class="sub-header">&#127919; Target Meetings</h3>
+        <div class="operator-grid">
+            <div class="operator-card" style="border-left: 4px solid var(--accent);">
+                <h4>&#11088; Coljuegos President</h4>
+                <p class="detail">Colombia's gaming regulator. <strong>#1 priority meeting.</strong> Gateway to Colombia P1 market &mdash; the largest untapped LATAM betting market for Payphone.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-red">Critical Target</span>
+                    <span class="badge badge-yellow">Outreach pending</span>
+                </div>
+            </div>
+            <div class="operator-card">
+                <h4>DR Operators</h4>
+                <p class="detail">Dominican Republic betting operators. Betcris DOM case study as proof point.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-purple">New Market</span>
+                    <span class="badge badge-yellow">Outreach pending</span>
+                </div>
+            </div>
+            <div class="operator-card">
+                <h4>LATAM Regulators</h4>
+                <p class="detail">Regulatory bodies from 20+ attending countries. Compliance positioning.</p>
+                <div class="operator-meta">
+                    <span class="badge badge-blue">Strategic</span>
+                    <span class="badge badge-yellow">Outreach pending</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUDGET -->
+        <h3 class="sub-header">&#128176; Budget ($2,200)</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Item</th><th>Estimate</th><th>Status</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td>Conference Pass (1x)</td><td>$400</td><td><span class="badge badge-yellow">TBD</span></td><td></td></tr>
+                    <tr><td>Flight (1x from EC)</td><td>$700</td><td><span class="badge badge-yellow">Not booked</span></td><td>Book by Sep 30</td></tr>
+                    <tr><td>Hotel (2 nights)</td><td>$550</td><td><span class="badge badge-yellow">Not booked</span></td><td>Near venue</td></tr>
+                    <tr><td>Materials &amp; Print</td><td>$200</td><td><span class="badge badge-gray">Estimate</span></td><td>Colombia-specific materials + case study</td></tr>
+                    <tr><td>Meals &amp; Transport</td><td>$350</td><td><span class="badge badge-gray">Estimate</span></td><td></td></tr>
+                    <tr><td><strong>Total</strong></td><td><strong>$2,200</strong></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="padding: 2rem 2.5rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border);">
+        Payphone Betting Action Items &bull; Confidential &bull; Last updated: March 17, 2026
+    </footer>
+</div>
+
+<script>
+// ========================================
+// DATA MODEL
+// ========================================
+const ACTION_ITEMS = [
+    // REVENUE DIVERSIFICATION (Critical)
+    { id: 1, priority: 'critical', category: 'revenue', action: 'Accelerate Betcris DOM, OroBet, Forbet integrations', owner: ['paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
+    { id: 2, priority: 'critical', category: 'revenue', action: 'Investigate IGaming 99% collapse ($20K \u2192 $186)', owner: ['paula'], deadline: '2026-03-28', status: 'not-started', completed: false },
+    { id: 3, priority: 'critical', category: 'revenue', action: 'Activate dormant international contracts (20+ with $0 revenue)', owner: ['paula', 'val'], deadline: '2026-05-15', status: 'not-started', completed: false },
+    { id: 4, priority: 'critical', category: 'revenue', action: 'Reduce Ecuabet concentration below 50% (target Q3 2026)', owner: ['val'], deadline: '2026-09-30', status: 'not-started', completed: false },
+
+    // SALES & MARKETING (Critical)
+    { id: 5, priority: 'critical', category: 'sales', action: 'Create Betting Pitch Deck', owner: ['val', 'paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
+    { id: 6, priority: 'critical', category: 'sales', action: 'Create One-Pager / Leave-behind', owner: ['val', 'paula'], deadline: '2026-05-15', status: 'not-started', completed: false },
+    { id: 7, priority: 'critical', category: 'sales', action: 'Build Betting Landing Page', owner: ['val'], deadline: '2026-05-05', status: 'not-started', completed: false },
+    { id: 8, priority: 'critical', category: 'sales', action: 'Create Demo Sandbox', owner: ['val'], deadline: '2026-05-30', status: 'not-started', completed: false },
+    { id: 9, priority: 'critical', category: 'sales', action: 'Design SBC Booth', owner: ['paula'], deadline: '2026-05-20', status: 'not-started', completed: false },
+    { id: 10, priority: 'critical', category: 'sales', action: 'Order Swag (shirts, stickers)', owner: ['karen'], deadline: '2026-05-20', status: 'not-started', completed: false },
+
+    // PIPELINE ACCELERATION (High)
+    { id: 11, priority: 'high', category: 'pipeline', action: 'Follow up Tier 1 proposals: Stake, Luckia, Codere, 1xBet', owner: ['paula'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 12, priority: 'high', category: 'pipeline', action: 'Resolve blocked documentation: Aciertala, SportGana, Trebalia, RCB Global', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 13, priority: 'high', category: 'pipeline', action: 'Push stalled integrations to go-live', owner: ['paula'], deadline: '2026-05-30', status: 'not-started', completed: false },
+
+    // COMPLIANCE & DOCUMENTATION (High)
+    { id: 14, priority: 'high', category: 'compliance', action: 'Get Latribet NDA signed ($36K/mo billing without NDA)', owner: ['karen'], deadline: '2026-04-01', status: 'not-started', completed: false },
+    { id: 15, priority: 'high', category: 'compliance', action: 'Request gaming licenses: Sportbet, Astrobet, MasService, Databet', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 16, priority: 'high', category: 'compliance', action: 'Complete KYC/compliance for all Tier 1 active clients', owner: ['karen'], deadline: '2026-05-15', status: 'not-started', completed: false },
+    { id: 17, priority: 'high', category: 'compliance', action: 'Audit Pagadoor documentation (7 brands dependency)', owner: ['karen'], deadline: '2026-04-30', status: 'not-started', completed: false },
+
+    // OPERATIONS & SYSTEMS (Medium)
+    { id: 18, priority: 'medium', category: 'operations', action: 'Migrate from Excel to Freshsales CRM', owner: ['val', 'karen'], deadline: '2026-06-01', status: 'not-started', completed: false },
+    { id: 19, priority: 'medium', category: 'operations', action: 'Consolidate duplicate Excel files', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 20, priority: 'medium', category: 'operations', action: 'Clarify Pagadoor relationship (7 brands dependency)', owner: ['paula', 'val'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 21, priority: 'medium', category: 'operations', action: 'Investigate international contract revenue gaps', owner: ['paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
+    { id: 22, priority: 'medium', category: 'operations', action: 'Define team capacity plan (2 people managing 60+ clients)', owner: ['val'], deadline: '2026-04-30', status: 'not-started', completed: false }
+];
+
+const CATEGORIES = [
+    { key: 'revenue', label: 'Revenue Diversification', icon: '\u{1F534}', badgeClass: 'badge-red', badgeText: 'Critical' },
+    { key: 'sales', label: 'Sales & Marketing Materials', icon: '\u{1F4E6}', badgeClass: 'badge-red', badgeText: 'Critical' },
+    { key: 'pipeline', label: 'Pipeline Acceleration', icon: '\u{1F680}', badgeClass: 'badge-yellow', badgeText: 'High' },
+    { key: 'compliance', label: 'Compliance & Documentation', icon: '\u{1F512}', badgeClass: 'badge-yellow', badgeText: 'High' },
+    { key: 'operations', label: 'Operations & Systems', icon: '\u2699\uFE0F', badgeClass: 'badge-blue', badgeText: 'Medium' }
+];
+
+// ========================================
+// PASSWORD
+// ========================================
+function checkPassword() {
+    const input = document.getElementById('passwordInput');
+    if (input.value === 'payphone2026') {
+        sessionStorage.setItem('betting-auth', 'true');
+        document.getElementById('passwordScreen').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        initPage();
+    } else {
+        document.getElementById('passwordError').style.display = 'block';
+        document.getElementById('passwordBox').classList.add('shake');
+        setTimeout(() => document.getElementById('passwordBox').classList.remove('shake'), 300);
+    }
+}
+document.getElementById('passwordInput').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
+if (sessionStorage.getItem('betting-auth') === 'true') {
+    document.getElementById('passwordScreen').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    window.addEventListener('load', initPage);
+}
+
+// ========================================
+// SIDEBAR NAV
+// ========================================
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+}
+
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.sidebar a[href^="#"]');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 200) current = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+});
+navLinks.forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('sidebar').classList.remove('open');
+    });
+});
+
+// ========================================
+// STATE PERSISTENCE
+// ========================================
+function loadSavedState() {
+    const saved = localStorage.getItem('betting-action-items-state');
+    if (saved) {
+        try {
+            const state = JSON.parse(saved);
+            ACTION_ITEMS.forEach(item => {
+                if (state[item.id]) {
+                    item.status = state[item.id].status || item.status;
+                    item.completed = state[item.id].completed || false;
+                }
+            });
+        } catch (e) { /* ignore corrupt state */ }
+    }
+}
+
+function saveState() {
+    const state = {};
+    ACTION_ITEMS.forEach(item => {
+        state[item.id] = { status: item.status, completed: item.completed };
+    });
+    localStorage.setItem('betting-action-items-state', JSON.stringify(state));
+}
+
+// ========================================
+// RENDER ACTION TABLE
+// ========================================
+function formatDeadline(dateStr) {
+    const d = new Date(dateStr + 'T00:00:00');
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return months[d.getMonth()] + ' ' + d.getDate();
+}
+
+function formatOwners(owners) {
+    return owners.map(o => {
+        const name = o.charAt(0).toUpperCase() + o.slice(1);
+        return '<span class="owner-tag ' + o + '">' + name + '</span>';
+    }).join(' ');
+}
+
+function matchesFilters(item, priority, owner, status) {
+    if (priority !== 'all' && item.priority !== priority) return false;
+    if (owner !== 'all' && !item.owner.includes(owner)) return false;
+    if (status !== 'all') {
+        if (status === 'completed' && !item.completed) return false;
+        if (status !== 'completed' && item.status !== status) return false;
+        if (status === 'completed' && item.completed) return true;
+    }
+    return true;
+}
+
+function renderActionTable() {
+    const tbody = document.getElementById('action-tbody');
+    tbody.innerHTML = '';
+
+    const pf = document.getElementById('filter-priority').value;
+    const of_ = document.getElementById('filter-owner').value;
+    const sf = document.getElementById('filter-status').value;
+    const cf = document.getElementById('filter-category').value;
+
+    CATEGORIES.forEach(cat => {
+        if (cf !== 'all' && cf !== cat.key) return;
+
+        const items = ACTION_ITEMS.filter(i => i.category === cat.key);
+        const visible = items.filter(i => matchesFilters(i, pf, of_, sf));
+        if (visible.length === 0) return;
+
+        // Category header
+        const hr = document.createElement('tr');
+        hr.className = 'category-header';
+        hr.innerHTML = '<td colspan="7"><strong>' + cat.icon + ' ' + cat.label + '</strong> <span class="badge ' + cat.badgeClass + '">' + cat.badgeText + '</span></td>';
+        tbody.appendChild(hr);
+
+        // Items
+        visible.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.className = 'action-row' + (item.completed ? ' completed-row' : '');
+            const statusClass = item.completed ? 'completed' : item.status;
+            const statusLabel = item.completed ? 'Completed' : item.status.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            tr.innerHTML =
+                '<td><input type="checkbox" class="action-checkbox" data-id="' + item.id + '"' + (item.completed ? ' checked' : '') + '></td>' +
+                '<td><span class="priority-badge ' + item.priority + '">' + item.priority.charAt(0).toUpperCase() + item.priority.slice(1) + '</span></td>' +
+                '<td>' + item.action + '</td>' +
+                '<td>' + formatOwners(item.owner) + '</td>' +
+                '<td>' + formatDeadline(item.deadline) + '</td>' +
+                '<td><span class="status-badge ' + statusClass + '">' + statusLabel + '</span></td>' +
+                '<td><span class="category-tag ' + item.category + '">' + cat.key.charAt(0).toUpperCase() + cat.key.slice(1) + '</span></td>';
+            tbody.appendChild(tr);
+        });
+    });
+
+    updateProgressBars();
+    updateStatCards();
+    updateSidebarCounts();
+}
+
+// ========================================
+// CHECKBOX HANDLER
+// ========================================
+document.getElementById('action-tbody').addEventListener('change', function(e) {
+    if (e.target.classList.contains('action-checkbox')) {
+        const id = parseInt(e.target.dataset.id);
+        const item = ACTION_ITEMS.find(i => i.id === id);
+        if (item) {
+            item.completed = e.target.checked;
+            item.status = e.target.checked ? 'completed' : 'not-started';
+            saveState();
+            renderActionTable();
+        }
+    }
+});
+
+// ========================================
+// FILTERS
+// ========================================
+['filter-priority', 'filter-owner', 'filter-status', 'filter-category'].forEach(id => {
+    document.getElementById(id).addEventListener('change', renderActionTable);
+});
+
+function resetFilters() {
+    ['filter-priority', 'filter-owner', 'filter-status', 'filter-category'].forEach(id => {
+        document.getElementById(id).value = 'all';
+    });
+    renderActionTable();
+}
+
+// ========================================
+// PROGRESS BARS & STATS
+// ========================================
+function updateProgressBars() {
+    ['revenue', 'sales', 'pipeline', 'compliance', 'operations'].forEach(cat => {
+        const items = ACTION_ITEMS.filter(i => i.category === cat);
+        const done = items.filter(i => i.completed).length;
+        const pct = items.length > 0 ? Math.round((done / items.length) * 100) : 0;
+        const bar = document.getElementById('progress-' + cat + '-bar');
+        const count = document.getElementById('progress-' + cat + '-count');
+        if (bar) bar.style.width = pct + '%';
+        if (count) count.textContent = done + '/' + items.length;
+    });
+}
+
+function updateStatCards() {
+    const total = ACTION_ITEMS.length;
+    const critical = ACTION_ITEMS.filter(i => i.priority === 'critical').length;
+    const completed = ACTION_ITEMS.filter(i => i.completed).length;
+
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-critical').textContent = critical;
+    document.getElementById('stat-completed').textContent = completed;
+}
+
+function updateSidebarCounts() {
+    const total = ACTION_ITEMS.length;
+    const completed = ACTION_ITEMS.filter(i => i.completed).length;
+    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    document.getElementById('sidebar-progress').textContent = pct + '%';
+    document.getElementById('sidebar-completed-count').textContent = completed + ' of ' + total + ' completed';
+}
+
+// ========================================
+// COUNTDOWNS
+// ========================================
+function initCountdowns() {
+    const now = new Date();
+    const events = [
+        { id: 'sbc-countdown', date: new Date('2026-06-09') },
+        { id: 'gat-pr-countdown', date: new Date('2026-09-08') },
+        { id: 'gat-dr-countdown', date: new Date('2026-11-17') }
+    ];
+    events.forEach(e => {
+        const diff = Math.ceil((e.date - now) / (1000 * 60 * 60 * 24));
+        const el = document.getElementById(e.id);
+        if (el) el.textContent = diff > 0 ? diff : 'NOW';
+    });
+
+    // Header stat
+    const sbcDiff = Math.ceil((new Date('2026-06-09') - now) / (1000 * 60 * 60 * 24));
+    document.getElementById('stat-days-sbc').textContent = sbcDiff > 0 ? sbcDiff : 'NOW';
+}
+
+// ========================================
+// TIMELINE CURRENT WEEK HIGHLIGHT
+// ========================================
+function highlightCurrentWeek() {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    document.querySelectorAll('.vtl-item[data-week-start]').forEach(item => {
+        const start = new Date(item.dataset.weekStart + 'T00:00:00');
+        const end = new Date(start);
+        end.setDate(end.getDate() + 6);
+        if (now >= start && now <= end) {
+            item.classList.add('current');
+        } else if (now > end) {
+            item.classList.add('past');
+        }
+    });
+}
+
+// ========================================
+// INIT
+// ========================================
+function initPage() {
+    loadSavedState();
+    renderActionTable();
+    initCountdowns();
+    highlightCurrentWeek();
+}
+</script>
+</body>
+</html>
