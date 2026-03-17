@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payphone Betting Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --accent: #f59e0b;
+            --accent-dark: #d97706;
+            --danger: #ef4444;
+            --danger-light: #fca5a5;
+            --betting: #dc2626;
+            --pipeline: #8b5cf6;
+            --conference: #0891b2;
+            --compliance: #059669;
+            --dark: #0f0a2e;
+            --dark-light: #1e1b4b;
+            --text: #374151;
+            --text-light: #6b7280;
+            --text-muted: #9ca3af;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e5e7eb;
+            --sidebar-width: 270px;
+            --tier1: #10b981;
+            --tier2: #f59e0b;
+            --tier3: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* PASSWORD SCREEN */
+        .password-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 50%, #312e81 100%);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10000;
+        }
+        .password-box {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 3rem; text-align: center;
+            max-width: 420px; width: 90%;
+        }
+        .password-box h2 { color: white; font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .password-box p { color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .password-box input {
+            width: 100%; padding: 0.9rem 1.2rem; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08);
+            color: white; font-size: 1rem; outline: none; margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .password-box input::placeholder { color: rgba(255,255,255,0.3); }
+        .password-box input:focus { border-color: var(--primary); }
+        .password-box button {
+            width: 100%; padding: 0.9rem; border-radius: 12px; border: none;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .password-box button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+        .password-error { color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+        .shake { animation: shake 0.3s ease; }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed; left: 0; top: 0; width: var(--sidebar-width); height: 100vh;
+            background: linear-gradient(180deg, var(--dark) 0%, var(--dark-light) 100%);
+            overflow-y: auto; z-index: 1000; padding: 2rem 0;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease;
+        }
+        .sidebar-logo {
+            padding: 0 1.5rem; margin-bottom: 2rem;
+        }
+        .sidebar-logo h1 {
+            color: white; font-size: 1.1rem; font-weight: 700;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .sidebar-logo span { font-size: 1.4rem; }
+        .sidebar-logo p { color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.3rem; }
+        .sidebar-section { margin-bottom: 1.5rem; }
+        .sidebar-section-title {
+            padding: 0 1.5rem; font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.3); margin-bottom: 0.5rem;
+        }
+        .sidebar a {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.55rem 1.5rem; color: rgba(255,255,255,0.6);
+            text-decoration: none; font-size: 0.85rem; font-weight: 500;
+            transition: all 0.2s; border-left: 3px solid transparent;
+        }
+        .sidebar a:hover { color: white; background: rgba(255,255,255,0.05); }
+        .sidebar a.active {
+            color: white; background: rgba(99,102,241,0.15);
+            border-left-color: var(--primary);
+        }
+        .sidebar a .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+        /* MOBILE TOGGLE */
+        .mobile-toggle {
+            display: none; position: fixed; top: 1rem; left: 1rem;
+            z-index: 1001; background: var(--dark); color: white;
+            border: none; border-radius: 10px; padding: 0.6rem 0.8rem;
+            font-size: 1.2rem; cursor: pointer;
+        }
+
+        /* MAIN */
+        .main { margin-left: var(--sidebar-width); min-height: 100vh; }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--dark) 0%, #312e81 50%, var(--primary-dark) 100%);
+            padding: 3rem 2.5rem 2.5rem; color: white; position: relative; overflow: hidden;
+        }
+        .header::before {
+            content: ''; position: absolute; top: -50%; right: -10%;
+            width: 400px; height: 400px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(99,102,241,0.2), transparent 70%);
+        }
+        .header::after {
+            content: ''; position: absolute; bottom: -30%; left: 20%;
+            width: 300px; height: 300px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(16,185,129,0.15), transparent 70%);
+        }
+        .header-content { position: relative; z-index: 1; }
+        .header-badge {
+            display: inline-block; background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15);
+            padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem;
+            font-weight: 600; margin-bottom: 1rem; color: rgba(255,255,255,0.8);
+        }
+        .header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .header p { font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 600px; margin-bottom: 2rem; }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.08); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+            padding: 1.2rem; text-align: center;
+        }
+        .stat-card .value { font-size: 1.8rem; font-weight: 800; }
+        .stat-card .label { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card.danger { border-color: rgba(239,68,68,0.4); }
+        .stat-card.danger .value { color: var(--danger-light); }
+
+        /* SECTIONS */
+        section { padding: 2.5rem; }
+        section:nth-child(even) { background: white; }
+        .section-header {
+            display: flex; align-items: center; gap: 0.7rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-header .icon {
+            width: 40px; height: 40px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+        .section-header h2 { font-size: 1.4rem; font-weight: 700; color: var(--dark); }
+        .section-header p { font-size: 0.85rem; color: var(--text-light); }
+
+        /* CARDS */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; }
+        .card {
+            background: white; border-radius: 16px; padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s; position: relative;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
+        .card p { font-size: 0.85rem; color: var(--text-light); }
+
+        /* KPI CARDS */
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+        .kpi-card {
+            background: white; border-radius: 16px; padding: 1.5rem;
+            border: 1px solid var(--border); position: relative; overflow: hidden;
+        }
+        .kpi-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+        }
+        .kpi-card.green::before { background: var(--secondary); }
+        .kpi-card.red::before { background: var(--danger); }
+        .kpi-card.blue::before { background: var(--primary); }
+        .kpi-card.amber::before { background: var(--accent); }
+        .kpi-label { font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .kpi-value { font-size: 1.8rem; font-weight: 800; color: var(--dark); margin: 0.3rem 0; }
+        .kpi-delta { font-size: 0.8rem; font-weight: 600; }
+        .kpi-delta.up { color: var(--secondary); }
+        .kpi-delta.down { color: var(--danger); }
+
+        /* CHARTS */
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+        .chart-container {
+            background: white; border-radius: 16px; padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        .chart-container h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem; }
+        .chart-container canvas { max-height: 300px; }
+
+        /* ALERT BOX */
+        .alert {
+            border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem;
+            display: flex; align-items: flex-start; gap: 0.8rem;
+            font-size: 0.9rem;
+        }
+        .alert .icon { font-size: 1.2rem; flex-shrink: 0; }
+        .alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        .alert-warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+        .alert-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+        .alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+        .alert strong { font-weight: 700; }
+
+        /* TABLES */
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        thead { background: var(--dark); color: white; }
+        th { padding: 0.8rem 1rem; text-align: left; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); }
+        tr:hover { background: #f9fafb; }
+        tr:last-child td { border-bottom: none; }
+
+        /* STATUS BADGES */
+        .badge {
+            display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;
+        }
+        .badge-green { background: #dcfce7; color: #166534; }
+        .badge-red { background: #fef2f2; color: #991b1b; }
+        .badge-yellow { background: #fefce8; color: #854d0e; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-purple { background: #f3e8ff; color: #6b21a8; }
+        .badge-gray { background: #f3f4f6; color: #4b5563; }
+
+        /* DOC STATUS */
+        .doc-ok { color: var(--secondary); font-weight: 700; }
+        .doc-pending { color: var(--accent); font-weight: 700; }
+        .doc-missing { color: var(--danger); font-weight: 700; }
+        .doc-na { color: var(--text-muted); }
+
+        /* TABS */
+        .tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+        .tab {
+            padding: 0.7rem 1.5rem; font-size: 0.85rem; font-weight: 600;
+            color: var(--text-light); cursor: pointer; border-bottom: 2px solid transparent;
+            margin-bottom: -2px; transition: all 0.2s;
+        }
+        .tab:hover { color: var(--primary); }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* FUNNEL */
+        .funnel { display: flex; gap: 0; margin-bottom: 2rem; align-items: stretch; }
+        .funnel-stage {
+            flex: 1; text-align: center; padding: 1.2rem 0.5rem;
+            position: relative; color: white;
+        }
+        .funnel-stage:first-child { border-radius: 12px 0 0 12px; }
+        .funnel-stage:last-child { border-radius: 0 12px 12px 0; }
+        .funnel-stage .count { font-size: 2rem; font-weight: 800; }
+        .funnel-stage .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9; }
+
+        /* TIMELINE */
+        .timeline { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
+        .timeline-item {
+            flex: 1; background: white; border-radius: 16px; padding: 1.5rem;
+            border: 1px solid var(--border); position: relative;
+        }
+        .timeline-item::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            border-radius: 16px 16px 0 0;
+        }
+        .timeline-item.sbc::before { background: linear-gradient(90deg, var(--primary), var(--primary-light)); }
+        .timeline-item.gat-pr::before { background: linear-gradient(90deg, var(--conference), #06b6d4); }
+        .timeline-item.gat-dr::before { background: linear-gradient(90deg, var(--accent), #fbbf24); }
+        .timeline-date { font-size: 0.75rem; color: var(--text-light); font-weight: 600; text-transform: uppercase; }
+        .timeline-title { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin: 0.3rem 0; }
+        .timeline-location { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.8rem; }
+        .timeline-stats { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .timeline-stat { font-size: 0.75rem; color: var(--text-light); }
+        .timeline-stat strong { color: var(--dark); }
+        .countdown { font-size: 0.75rem; font-weight: 700; margin-top: 0.8rem; padding: 0.3rem 0.7rem; border-radius: 20px; display: inline-block; }
+
+        /* GEOGRAPHY */
+        .geo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+        .geo-card {
+            background: white; border-radius: 12px; padding: 1.2rem;
+            border: 1px solid var(--border); text-align: center;
+        }
+        .geo-card .flag { font-size: 2rem; margin-bottom: 0.5rem; }
+        .geo-card .country { font-size: 0.9rem; font-weight: 700; color: var(--dark); }
+        .geo-card .detail { font-size: 0.75rem; color: var(--text-light); margin-top: 0.3rem; }
+        .geo-card .revenue { font-size: 1.1rem; font-weight: 800; margin-top: 0.5rem; }
+        .geo-card.p1 { border-left: 4px solid var(--secondary); }
+        .geo-card.p2 { border-left: 4px solid var(--accent); }
+        .geo-card.p3 { border-left: 4px solid var(--primary); }
+        .geo-card.active-rev { border-left: 4px solid var(--danger); }
+
+        /* ACTION ITEMS */
+        .action-list { list-style: none; }
+        .action-list li {
+            padding: 0.8rem 1rem; border-bottom: 1px solid var(--border);
+            display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.9rem;
+        }
+        .action-list li:last-child { border-bottom: none; }
+        .priority-dot {
+            width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 0.4rem;
+        }
+        .priority-dot.critical { background: var(--danger); }
+        .priority-dot.high { background: var(--accent); }
+        .priority-dot.medium { background: var(--primary); }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .mobile-toggle { display: block; }
+            .main { margin-left: 0; }
+            .stats-grid, .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .chart-row { grid-template-columns: 1fr; }
+            .timeline { flex-direction: column; }
+            .funnel { flex-wrap: wrap; }
+            .funnel-stage { min-width: 45%; }
+        }
+        @media (max-width: 768px) {
+            .header { padding: 2rem 1.5rem; }
+            .header h1 { font-size: 1.5rem; }
+            section { padding: 1.5rem; }
+            .stats-grid, .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .geo-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PASSWORD SCREEN -->
+<div class="password-screen" id="passwordScreen">
+    <div class="password-box" id="passwordBox">
+        <span style="font-size:2.5rem;">&#127920;</span>
+        <h2>Betting Dashboard</h2>
+        <p>Payphone Confidential &mdash; Enter password to continue</p>
+        <input type="password" id="passwordInput" placeholder="Enter password..." autofocus>
+        <button onclick="checkPassword()">Access Dashboard</button>
+        <div class="password-error" id="passwordError">Incorrect password. Try again.</div>
+    </div>
+</div>
+
+<!-- MOBILE TOGGLE -->
+<button class="mobile-toggle" onclick="toggleSidebar()">&#9776;</button>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <h1><span>&#127920;</span> Betting Dashboard</h1>
+        <p>Payphone &bull; Marzo 2026</p>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Overview</div>
+        <a href="#revenue" class="active"><span class="icon">&#128200;</span> Revenue</a>
+        <a href="#clients"><span class="icon">&#128101;</span> Client Portfolio</a>
+        <a href="#pipeline"><span class="icon">&#128640;</span> Pipeline</a>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Strategy</div>
+        <a href="#geography"><span class="icon">&#127758;</span> Geographic Coverage</a>
+        <a href="#conferences"><span class="icon">&#127915;</span> Conference War Room</a>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Operations</div>
+        <a href="#compliance"><span class="icon">&#128274;</span> Compliance Status</a>
+        <a href="#actions"><span class="icon">&#9889;</span> Alerts &amp; Actions</a>
+    </div>
+
+    <div class="sidebar-section" style="margin-top: 2rem; padding: 0 1.5rem;">
+        <div style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 1rem;">
+            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Concentration Risk</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: #fca5a5;">76%</div>
+            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);">Ecuabet share of revenue</div>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main" id="mainContent" style="display:none;">
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-content">
+            <span class="header-badge">&#128202; Data as of March 2026</span>
+            <h1>Betting Vertical Dashboard</h1>
+            <p>Estado completo de la vertical de apuestas &mdash; clientes, revenue, pipeline, conferencias y compliance en un solo lugar.</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="value">$4.14M</div>
+                    <div class="label">Revenue Feb 2026</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" style="color: var(--secondary);">60+</div>
+                    <div class="label">Contratos Firmados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" style="color: var(--pipeline);">29</div>
+                    <div class="label">Pipeline Activo</div>
+                </div>
+                <div class="stat-card danger">
+                    <div class="value">2</div>
+                    <div class="label">Team Size (Paula + Karen)</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: REVENUE -->
+    <section id="revenue">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: var(--secondary);">&#128200;</div>
+            <div>
+                <h2>Revenue Overview</h2>
+                <p>Facturaci&oacute;n mensual de la vertical de betting</p>
+            </div>
+        </div>
+
+        <div class="alert alert-danger">
+            <span class="icon">&#9888;&#65039;</span>
+            <div><strong>Riesgo de concentraci&oacute;n:</strong> Ecuabet representa el 76% de toda la facturaci&oacute;n. Si este cliente se va, la vertical pierde $3.2M/mes de un d&iacute;a para otro. Diversificaci&oacute;n es urgente.</div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card green">
+                <div class="kpi-label">Total Feb 2026</div>
+                <div class="kpi-value">$4.14M</div>
+                <div class="kpi-delta down">&#9660; -8.6% vs Enero</div>
+            </div>
+            <div class="kpi-card blue">
+                <div class="kpi-label">Top Grower</div>
+                <div class="kpi-value">Betano</div>
+                <div class="kpi-delta up">&#9650; +21.3% MoM</div>
+            </div>
+            <div class="kpi-card red">
+                <div class="kpi-label">Biggest Drop</div>
+                <div class="kpi-value">IGaming</div>
+                <div class="kpi-delta down">&#9660; -99.1% (churn?)</div>
+            </div>
+            <div class="kpi-card amber">
+                <div class="kpi-label">Pa&iacute;ses con Revenue</div>
+                <div class="kpi-value">1</div>
+                <div class="kpi-delta down">de 10+ con contrato</div>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container">
+                <h3>Revenue Concentration</h3>
+                <canvas id="concentrationChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Revenue por Cliente &mdash; Ene vs Feb 2026</h3>
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container">
+                <h3>Tier Distribution (Feb 2026)</h3>
+                <canvas id="tierChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Month-over-Month Change</h3>
+                <canvas id="momChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: CLIENT PORTFOLIO -->
+    <section id="clients">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: var(--primary);">&#128101;</div>
+            <div>
+                <h2>Client Portfolio</h2>
+                <p>60+ contratos firmados en 10+ pa&iacute;ses</p>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('nacionales')">Nacionales (Ecuador)</div>
+            <div class="tab" onclick="switchTab('internacional')">Internacional</div>
+            <div class="tab" onclick="switchTab('intermediarios')">Intermediarios</div>
+        </div>
+
+        <!-- NACIONALES -->
+        <div class="tab-content active" id="tab-nacionales">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Fact. Feb</th>
+                            <th>Var MoM</th>
+                            <th>NDA</th>
+                            <th>Contrato</th>
+                            <th>Licencia</th>
+                            <th>Procesador</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Ecuabet</strong> (Sportek)</td>
+                            <td><strong>$3,166,886</strong></td>
+                            <td><span class="kpi-delta down">-13.1%</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-ok">Comoros</span></td>
+                            <td>PayphoneGlobal</td>
+                            <td><span class="badge badge-green">Activo</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Betano</strong> (v&iacute;a Pagadoor)</td>
+                            <td><strong>$565,980</strong></td>
+                            <td><span class="kpi-delta up">+21.3%</span></td>
+                            <td><span class="doc-na">v&iacute;a int.</span></td>
+                            <td><span class="doc-na">v&iacute;a int.</span></td>
+                            <td><span class="doc-ok">SI</span></td>
+                            <td>Ecuapayphone</td>
+                            <td><span class="badge badge-green">Activo</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sportbet</strong></td>
+                            <td>$217,973</td>
+                            <td><span class="kpi-delta down">-3.0%</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-missing">No</span></td>
+                            <td>PayphoneGlobal</td>
+                            <td><span class="badge badge-green">Activo</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Betcris EC</strong></td>
+                            <td>$110,479</td>
+                            <td><span class="kpi-delta up">+14.9%</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-na">&mdash;</span></td>
+                            <td>Ecuapayphone</td>
+                            <td><span class="badge badge-green">Activo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Latribet</td>
+                            <td>$36,267</td>
+                            <td><span class="kpi-delta up">+7.8%</span></td>
+                            <td><span class="doc-pending">Pend.</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-ok">Cura&ccedil;ao</span></td>
+                            <td>Ecuapayphone</td>
+                            <td><span class="badge badge-yellow">NDA pend.</span></td>
+                        </tr>
+                        <tr>
+                            <td>MasService (Mas1x2)</td>
+                            <td>$17,607</td>
+                            <td><span class="kpi-delta up">+42.9%</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-missing">No</span></td>
+                            <td>Ecuapayphone</td>
+                            <td><span class="badge badge-green">Activo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Astrobet</td>
+                            <td>$16,534</td>
+                            <td><span class="kpi-delta down">-31.8%</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-missing">No</span></td>
+                            <td>PayphoneGlobal</td>
+                            <td><span class="badge badge-red">Declining</span></td>
+                        </tr>
+                        <tr>
+                            <td>Databet (Softdata)</td>
+                            <td>$8,868</td>
+                            <td><span class="kpi-delta down">-20.3%</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-missing">No</span></td>
+                            <td>Ecuapayphone</td>
+                            <td><span class="badge badge-red">Declining</span></td>
+                        </tr>
+                        <tr>
+                            <td>IGaming (Olimp. Esp.)</td>
+                            <td>$186</td>
+                            <td><span class="kpi-delta down">-99.1%</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-ok">&#10003;</span></td>
+                            <td><span class="doc-na">&mdash;</span></td>
+                            <td>Ecuapayphone</td>
+                            <td><span class="badge badge-red">Churn</span></td>
+                        </tr>
+                        <tr>
+                            <td>Trebalia (RedServi)</td>
+                            <td>$242</td>
+                            <td><span class="kpi-delta down">-67.3%</span></td>
+                            <td><span class="doc-missing">&mdash;</span></td>
+                            <td><span class="doc-missing">&mdash;</span></td>
+                            <td><span class="doc-missing">&mdash;</span></td>
+                            <td>Ecuapayphone</td>
+                            <td><span class="badge badge-red">Blocked</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- INTERNACIONAL -->
+        <div class="tab-content" id="tab-internacional">
+            <div class="alert alert-warning">
+                <span class="icon">&#128161;</span>
+                <div><strong>Gap cr&iacute;tico:</strong> 20+ clientes internacionales con contrato pero $0 de facturaci&oacute;n visible en el MasterFile 2026. Verificar si facturan por otra v&iacute;a o est&aacute;n inactivos.</div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Pa&iacute;s</th>
+                            <th>NDA</th>
+                            <th>Contrato</th>
+                            <th>Licencia</th>
+                            <th>Procesador</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>DoradoBet</strong> (7 pa&iacute;ses)</td><td>NI, EC, CR, SV, GT, HN, INT</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td>ECU/USA</td><td><span class="badge badge-green">Multi-pa&iacute;s</span></td></tr>
+                        <tr><td><strong>Hondubet</strong></td><td>Honduras/Panam&aacute;</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td><strong>Betppro SV</strong></td><td>El Salvador</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Loter&iacute;a SV</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td><strong>Starplay</strong></td><td>Panam&aacute;</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">JCJ Panam&aacute;</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td><strong>Mi Casino</strong></td><td>Cura&ccedil;ao</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">CGA Cura&ccedil;ao</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td><strong>Bet502</strong></td><td>Guatemala</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Min. Gobernaci&oacute;n</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td><strong>Ganaplay SV/GT</strong></td><td>El Salvador, Guatemala</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Loter&iacute;a SV</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td><strong>Win On Fire</strong></td><td>Costa Rica</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-pending">Pendiente</span></td><td>USA</td><td><span class="badge badge-yellow">Lic. pend.</span></td></tr>
+                        <tr><td><strong>Latin</strong></td><td>Panam&aacute;</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">JCJ Panam&aacute;</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td><strong>Sivarbet</strong></td><td>El Salvador</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td><strong>Lotto.GT</strong></td><td>Guatemala</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Registro Mercantil</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td><strong>1Win</strong></td><td>Ecuador (INT)</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Cura&ccedil;ao</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td>Olimpobet</td><td>Per&uacute;</td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-ok">Cura&ccedil;ao</span></td><td>&mdash;</td><td><span class="badge badge-gray">Docs incompletos</span></td></tr>
+                        <tr><td>Betppro HN</td><td>Honduras</td><td><span class="doc-na">N/A</span></td><td><span class="doc-na">N/A</span></td><td><span class="doc-ok">CGA Cura&ccedil;ao</span></td><td>USA</td><td><span class="badge badge-yellow">Sin contrato</span></td></tr>
+                        <tr><td>Betcris HN</td><td>Honduras</td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">&mdash;</span></td><td>USA</td><td><span class="badge badge-yellow">NDA pend.</span></td></tr>
+                        <tr><td>Betcris GT</td><td>Guatemala</td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">&mdash;</span></td><td>USA</td><td><span class="badge badge-yellow">NDA pend.</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- INTERMEDIARIOS -->
+        <div class="tab-content" id="tab-intermediarios">
+            <div class="alert alert-info">
+                <span class="icon">&#128279;</span>
+                <div><strong>Pagadoor es cr&iacute;tico:</strong> Procesa para Betano ($566K/mes), Coolbet, EstelarBet, MilloBet, Jugabet y Monetix. Si Pagadoor se va, perdemos acceso a 7 marcas Tier 1.</div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Intermediario</th>
+                            <th>Marcas que Procesa</th>
+                            <th>Procesador</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Pagadoor (ProntoPaga)</strong></td><td>Betano, Coolbet, EstelarBet, MilloBet, Forbet, Jugabet, Monetix</td><td>ECU</td><td><span class="badge badge-green">Activo &mdash; cr&iacute;tico</span></td></tr>
+                        <tr><td>Monnet</td><td>Forbet</td><td>ECU</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td>Zippy (Chile)</td><td>Pelmenzilla, Betnrollnet, Suvyd</td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td>ALPS Ecuador</td><td>&mdash;</td><td>ECU</td><td><span class="badge badge-yellow">NDA firmado</span></td></tr>
+                        <tr><td>ALPS Per&uacute;</td><td>Orobet, Masterbets365</td><td>USA</td><td><span class="badge badge-yellow">Contrato pend.</span></td></tr>
+                        <tr><td>ALPS SPA (Chile)</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Contrato pend.</span></td></tr>
+                        <tr><td>SmartfastPay</td><td>&mdash;</td><td>ECU</td><td><span class="badge badge-yellow">NDA firmado</span></td></tr>
+                        <tr><td>Ficha Dorada</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-green">Activo</span></td></tr>
+                        <tr><td>WorldSec (BetterBro)</td><td>&mdash;</td><td>Pendiente</td><td><span class="badge badge-yellow">Contrato firmado</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: PIPELINE -->
+    <section id="pipeline">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: var(--pipeline);">&#128640;</div>
+            <div>
+                <h2>Pipeline Tracker</h2>
+                <p>29+ operadores en distintas fases de conversi&oacute;n</p>
+            </div>
+        </div>
+
+        <div class="funnel">
+            <div class="funnel-stage" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
+                <div class="count">9</div>
+                <div class="label">Propuesta</div>
+            </div>
+            <div class="funnel-stage" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                <div class="count">3</div>
+                <div class="label">NDA/Contrato</div>
+            </div>
+            <div class="funnel-stage" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6);">
+                <div class="count">3</div>
+                <div class="label">KYC/Onboard</div>
+            </div>
+            <div class="funnel-stage" style="background: linear-gradient(135deg, #6d28d9, #7c3aed);">
+                <div class="count">5</div>
+                <div class="label">Integraci&oacute;n</div>
+            </div>
+            <div class="funnel-stage" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                <div class="count">2</div>
+                <div class="label">Activo</div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning">
+            <span class="icon">&#128161;</span>
+            <div><strong>9 operadores estancados en "propuesta enviada"</strong> sin avance visible. Incluye targets Tier 1: Stake, Luckia, Codere, 1xBet. Requieren seguimiento agresivo antes de SBC Americas (junio).</div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operador</th>
+                        <th>Marca</th>
+                        <th>Pa&iacute;s</th>
+                        <th>Proyecci&oacute;n</th>
+                        <th>Responsable</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #f0fdf4;"><td><strong>ECUADORSOFTWARE</strong></td><td>Masterbets365</td><td>Ecuador</td><td>$250-500K</td><td>Marce</td><td><span class="badge badge-green">Activo</span></td></tr>
+                    <tr style="background: #f0fdf4;"><td><strong>Tomerly Assets</strong></td><td>Azar Latino</td><td>GT, HN</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-green">Activo GT</span></td></tr>
+                    <tr style="background: #eff6ff;"><td><strong>Betcris Banca</strong></td><td>Betcris DOM</td><td><strong>Rep. Dominicana</strong></td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
+                    <tr style="background: #eff6ff;"><td>Wave Win</td><td>4Luck</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
+                    <tr style="background: #eff6ff;"><td>FORBET</td><td>Forbet</td><td>Ecuador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
+                    <tr style="background: #eff6ff;"><td>Ecuapro</td><td>Juega en Linea</td><td>Ecuador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
+                    <tr style="background: #eff6ff;"><td>VirtualScores</td><td>GranLatino</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-blue">Pruebas</span></td></tr>
+                    <tr style="background: #fefce8;"><td>Oro Global</td><td>OroBet</td><td>Ecuador</td><td>$250K</td><td>&mdash;</td><td><span class="badge badge-yellow">Onboarding</span></td></tr>
+                    <tr style="background: #fefce8;"><td>Honduservice</td><td>Honduwin</td><td>Honduras</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-yellow">KYC</span></td></tr>
+                    <tr style="background: #fefce8;"><td>Advisors Comm.</td><td>ApuestasWin</td><td>Paraguay</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">KYC</span></td></tr>
+                    <tr><td><strong>Stake</strong></td><td>Stake</td><td>CR, PA, RD</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Oferta enviada</span></td></tr>
+                    <tr><td><strong>Luckia</strong></td><td>Luckia</td><td>CR, PA, RD</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Oferta enviada</span></td></tr>
+                    <tr><td><strong>Codere</strong></td><td>Codere</td><td>Panam&aacute;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Oferta enviada</span></td></tr>
+                    <tr><td><strong>1xBet</strong></td><td>1xBet</td><td>Guatemala</td><td>&mdash;</td><td>Pao</td><td><span class="badge badge-purple">Propuesta 16MAR</span></td></tr>
+                    <tr><td>Betcha</td><td>Betcha</td><td>Panam&aacute;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Oferta enviada</span></td></tr>
+                    <tr><td>SBET SAS</td><td>Gana777</td><td>El Salvador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Contrato a firmar</span></td></tr>
+                    <tr><td>GeniusBet</td><td>GeniusBet</td><td>El Salvador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Propuesta enviada</span></td></tr>
+                    <tr><td>Sorti</td><td>Sorti</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Propuesta enviada</span></td></tr>
+                    <tr><td>BetGaliano</td><td>BetGaliano</td><td>Ecuador</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-purple">Propuesta enviada</span></td></tr>
+                    <tr><td>Softcede</td><td>Softcede</td><td>Ecuador</td><td>&mdash;</td><td>Pao</td><td><span class="badge badge-gray">No env&iacute;a docs</span></td></tr>
+                    <tr><td>Melbet</td><td>Melbet</td><td>EC + CA</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Revisi&oacute;n contrato</span></td></tr>
+                    <tr><td>Centribet</td><td>Centribet</td><td>HN, GT, PA</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">NDA firmado</span></td></tr>
+                    <tr><td>VERTEX</td><td>LotBet</td><td>Guatemala</td><td>&mdash;</td><td>Marce</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
+                    <tr><td>ATOMO GAMING</td><td>Atomo</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-gray">Pendiente</span></td></tr>
+                    <tr style="background: #fef2f2;"><td>Twintech SAS</td><td>Aciertala</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-red">Bloqueado docs</span></td></tr>
+                    <tr style="background: #fef2f2;"><td>Deportes Virtuales</td><td>SportGana</td><td>El Salvador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-red">KYC negado</span></td></tr>
+                    <tr style="background: #fef2f2;"><td>Red Servi</td><td>Trebalia</td><td>Ecuador</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-red">Bloqueado docs</span></td></tr>
+                    <tr style="background: #fef2f2;"><td>RCB Global</td><td>RCB</td><td>USA</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-red">No env&iacute;a docs</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SECTION 4: GEOGRAPHY -->
+    <section id="geography">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #ccfbf1, #99f6e4); color: var(--conference);">&#127758;</div>
+            <div>
+                <h2>Geographic Coverage</h2>
+                <p>Contratos en 10+ pa&iacute;ses, revenue de 1 &mdash; el gap m&aacute;s grande</p>
+            </div>
+        </div>
+
+        <div class="alert alert-danger">
+            <span class="icon">&#127758;</span>
+            <div><strong>Contratos en 10+ pa&iacute;ses pero revenue solo de Ecuador.</strong> Los clientes internacionales tienen contratos firmados y cuentas bancarias configuradas, pero no aparecen en la facturaci&oacute;n 2026. Hay infraestructura lista que no se est&aacute; monetizando.</div>
+        </div>
+
+        <div class="geo-grid">
+            <div class="geo-card active-rev">
+                <div class="flag">&#127466;&#127464;</div>
+                <div class="country">Ecuador</div>
+                <div class="detail">15 clientes | ~40 cuentas</div>
+                <div class="revenue" style="color: var(--secondary);">$4.14M/mes</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-green">P1 &mdash; Activo</span></div>
+            </div>
+            <div class="geo-card p1">
+                <div class="flag">&#127464;&#127476;</div>
+                <div class="country">Colombia</div>
+                <div class="detail">3 contratos | Bancolombia, BBVA</div>
+                <div class="revenue" style="color: var(--danger);">$0</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">P1 &mdash; Rails listos</span></div>
+            </div>
+            <div class="geo-card p3">
+                <div class="flag">&#127468;&#127481;</div>
+                <div class="country">Guatemala</div>
+                <div class="detail">5 contratos | Banco Industrial, BAC</div>
+                <div class="revenue" style="color: var(--danger);">$0 visible</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
+            </div>
+            <div class="geo-card p3">
+                <div class="flag">&#127469;&#127475;</div>
+                <div class="country">Honduras</div>
+                <div class="detail">5 contratos | BAC, Banrural</div>
+                <div class="revenue" style="color: var(--danger);">$0 visible</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
+            </div>
+            <div class="geo-card p3">
+                <div class="flag">&#127480;&#127483;</div>
+                <div class="country">El Salvador</div>
+                <div class="detail">4 contratos | Agr&iacute;cola, BAC</div>
+                <div class="revenue" style="color: var(--danger);">$0 visible</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
+            </div>
+            <div class="geo-card p3">
+                <div class="flag">&#127477;&#127462;</div>
+                <div class="country">Panam&aacute;</div>
+                <div class="detail">3 contratos | Banco Aliado</div>
+                <div class="revenue" style="color: var(--danger);">$0 visible</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
+            </div>
+            <div class="geo-card p3">
+                <div class="flag">&#127464;&#127479;</div>
+                <div class="country">Costa Rica</div>
+                <div class="detail">2 contratos | BNCR, Lafise</div>
+                <div class="revenue" style="color: var(--danger);">$0 visible</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
+            </div>
+            <div class="geo-card p3">
+                <div class="flag">&#127465;&#127476;</div>
+                <div class="country">Rep. Dominicana</div>
+                <div class="detail">1 en integraci&oacute;n (Betcris)</div>
+                <div class="revenue" style="color: var(--accent);">$100K proy.</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-blue">P3 &mdash; Integrando</span></div>
+            </div>
+            <div class="geo-card p2">
+                <div class="flag">&#127477;&#127466;</div>
+                <div class="country">Per&uacute;</div>
+                <div class="detail">1 contrato | Interbank</div>
+                <div class="revenue" style="color: var(--danger);">$0</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-gray">P2 &mdash; Docs pend.</span></div>
+            </div>
+            <div class="geo-card p2">
+                <div class="flag">&#127464;&#127473;</div>
+                <div class="country">Chile</div>
+                <div class="detail">1 contrato (Zippy) | Banco Bice</div>
+                <div class="revenue" style="color: var(--danger);">$0</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-gray">P2 &mdash; En proceso</span></td>
+            </div>
+            <div class="geo-card p3">
+                <div class="flag">&#127475;&#127470;</div>
+                <div class="country">Nicaragua</div>
+                <div class="detail">1 contrato (DoradoBet)</div>
+                <div class="revenue" style="color: var(--danger);">$0 visible</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contrato firmado</span></div>
+            </div>
+            <div class="geo-card">
+                <div class="flag">&#127482;&#127480;</div>
+                <div class="country">USA</div>
+                <div class="detail">2 clientes (1Win, 4Luck)</div>
+                <div class="revenue" style="color: var(--accent);">Pipeline</div>
+                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-blue">1Win activo</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: CONFERENCES -->
+    <section id="conferences">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #cffafe, #a5f3fc); color: var(--conference);">&#127915;</div>
+            <div>
+                <h2>Conference War Room</h2>
+                <p>3 conferencias de betting en 2026 &mdash; $9,300 inversi&oacute;n total</p>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item sbc">
+                <div class="timeline-date">9-11 Junio 2026</div>
+                <div class="timeline-title">SBC Summit Americas</div>
+                <div class="timeline-location">Fort Lauderdale, FL &mdash; Paula + Val</div>
+                <div class="timeline-stats">
+                    <div class="timeline-stat"><strong>10,000+</strong> asistentes</div>
+                    <div class="timeline-stat"><strong>400+</strong> exhibidores</div>
+                    <div class="timeline-stat"><strong>$3,150</strong> budget</div>
+                </div>
+                <div class="timeline-stats" style="margin-top: 0.5rem;">
+                    <div class="timeline-stat"><strong>Targets:</strong> Bet365, Betano, Caliente, Betcris, Codere, 1xBet</div>
+                </div>
+                <div class="countdown" id="countdown-sbc" style="background: #ede9fe; color: #6d28d9;"></div>
+            </div>
+            <div class="timeline-item gat-pr">
+                <div class="timeline-date">8-9 Septiembre 2026</div>
+                <div class="timeline-title">GAT Expo San Juan</div>
+                <div class="timeline-location">Puerto Rico &mdash; Paula</div>
+                <div class="timeline-stats">
+                    <div class="timeline-stat"><strong>200-400</strong> asistentes</div>
+                    <div class="timeline-stat"><strong>14+</strong> pa&iacute;ses</div>
+                    <div class="timeline-stat"><strong>$2,000</strong> budget</div>
+                </div>
+                <div class="timeline-stats" style="margin-top: 0.5rem;">
+                    <div class="timeline-stat"><strong>Targets:</strong> Casinos PR, Asojuegos CO, operadores Caribe</div>
+                </div>
+                <div class="countdown" id="countdown-gat-pr" style="background: #ecfdf5; color: #059669;"></div>
+            </div>
+            <div class="timeline-item gat-dr">
+                <div class="timeline-date">17-18 Noviembre 2026</div>
+                <div class="timeline-title">GAT Expo Santo Domingo</div>
+                <div class="timeline-location">Rep. Dominicana &mdash; Paula</div>
+                <div class="timeline-stats">
+                    <div class="timeline-stat"><strong>600+</strong> delegados</div>
+                    <div class="timeline-stat"><strong>20</strong> pa&iacute;ses</div>
+                    <div class="timeline-stat"><strong>$2,200</strong> budget</div>
+                </div>
+                <div class="timeline-stats" style="margin-top: 0.5rem;">
+                    <div class="timeline-stat"><strong>Key:</strong> Coljuegos President (Colombia P1 access)</div>
+                </div>
+                <div class="countdown" id="countdown-gat-dr" style="background: #fffbeb; color: #b45309;"></div>
+            </div>
+        </div>
+
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--dark);">Materials Creation Timeline</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Material</th><th>Status</th><th>Deadline</th><th>Responsable</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Pitch Deck (Betting)</td><td><span class="badge badge-red">No existe</span></td><td>30 Abril</td><td>Paula + Dise&ntilde;o</td></tr>
+                    <tr><td>One-Pager / Leave-behind</td><td><span class="badge badge-red">No existe</span></td><td>15 Mayo</td><td>Paula + Dise&ntilde;o</td></tr>
+                    <tr><td>Landing Page (betting)</td><td><span class="badge badge-red">No existe</span></td><td>5 Mayo</td><td>Marketing + Tech</td></tr>
+                    <tr><td>Demo Sandbox</td><td><span class="badge badge-red">No existe</span></td><td>30 Mayo</td><td>Tech + Paula</td></tr>
+                    <tr><td>Booth Design (SBC)</td><td><span class="badge badge-red">No existe</span></td><td>20 Mayo</td><td>Paula + Proveedor</td></tr>
+                    <tr><td>Swag (camisetas, stickers)</td><td><span class="badge badge-red">No existe</span></td><td>20 Mayo</td><td>Marketing</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SECTION 6: COMPLIANCE -->
+    <section id="compliance">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: var(--compliance);">&#128274;</div>
+            <div>
+                <h2>Compliance Status</h2>
+                <p>Documentaci&oacute;n regulatoria de clientes activos</p>
+            </div>
+        </div>
+
+        <div class="alert alert-warning">
+            <span class="icon">&#9888;&#65039;</span>
+            <div><strong>4 clientes activos sin licencia de gaming registrada:</strong> Sportbet ($218K/mes), Astrobet ($16K), MasService ($18K), Databet ($9K). Esto representa un riesgo regulatorio para Payphone.</div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Cliente</th><th>Fact. Feb</th><th>NDA</th><th>Contrato</th><th>Licencia Gaming</th><th>KYC</th><th>Cert. Bancario</th><th>Riesgo</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Ecuabet</strong></td><td>$3.17M</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-green">Bajo</span></td></tr>
+                    <tr><td><strong>Betano</strong></td><td>$566K</td><td><span class="doc-na">v&iacute;a Pagadoor</span></td><td><span class="doc-na">v&iacute;a Pagadoor</span></td><td><span class="doc-ok">SI</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">N/A</span></td><td><span class="badge badge-yellow">Medio</span></td></tr>
+                    <tr><td><strong>Sportbet</strong></td><td>$218K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-missing">&#10007; No tiene</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">N/A</span></td><td><span class="badge badge-red">Alto</span></td></tr>
+                    <tr><td><strong>Betcris EC</strong></td><td>$110K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">&mdash;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-green">Bajo</span></td></tr>
+                    <tr><td>Latribet</td><td>$36K</td><td><span class="doc-pending">&#9888; Pendiente</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Cura&ccedil;ao</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-yellow">Medio</span></td></tr>
+                    <tr><td>MasService</td><td>$18K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-missing">&#10007; No tiene</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-red">Alto</span></td></tr>
+                    <tr><td>Astrobet</td><td>$17K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-missing">&#10007; No tiene</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-red">Alto</span></td></tr>
+                    <tr><td>Databet</td><td>$9K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-missing">&#10007; No tiene</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-red">Alto</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SECTION 7: ACTIONS -->
+    <section id="actions">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #fef2f2, #fecaca); color: var(--danger);">&#9889;</div>
+            <div>
+                <h2>Alerts &amp; Action Items</h2>
+                <p>Prioridades cr&iacute;ticas para las pr&oacute;ximas semanas</p>
+            </div>
+        </div>
+
+        <div class="card-grid" style="margin-bottom: 2rem;">
+            <div class="card" style="border-left: 4px solid var(--danger);">
+                <h3>&#128308; Cr&iacute;tico</h3>
+                <ul class="action-list">
+                    <li><div class="priority-dot critical"></div><div><strong>Diversificar revenue:</strong> Ecuabet = 76%. Acelerar integraci&oacute;n de Betcris DOM, OroBet, Forbet.</div></li>
+                    <li><div class="priority-dot critical"></div><div><strong>Crear materiales de venta:</strong> Pitch deck, one-pager, landing page. Deadline: 15 mayo.</div></li>
+                    <li><div class="priority-dot critical"></div><div><strong>Investigar IGaming:</strong> Ca&iacute;da del 99% ($20K &rarr; $186). &iquest;Churn o problema t&eacute;cnico?</div></li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--accent);">
+                <h3>&#128992; Alto</h3>
+                <ul class="action-list">
+                    <li><div class="priority-dot high"></div><div><strong>Seguimiento pipeline Tier 1:</strong> Stake, Luckia, Codere, 1xBet &mdash; propuestas enviadas sin respuesta.</div></li>
+                    <li><div class="priority-dot high"></div><div><strong>Resolver docs bloqueados:</strong> Aciertala, SportGana, Trebalia, RCB Global.</div></li>
+                    <li><div class="priority-dot high"></div><div><strong>NDA Latribet:</strong> Cliente activo ($36K/mes) sin NDA firmado.</div></li>
+                    <li><div class="priority-dot high"></div><div><strong>Licencias gaming:</strong> Sportbet, Astrobet, MasService, Databet operan sin licencia registrada.</div></li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--primary);">
+                <h3>&#128309; Estrat&eacute;gico</h3>
+                <ul class="action-list">
+                    <li><div class="priority-dot medium"></div><div><strong>Clarificar revenue internacional:</strong> 20+ contratos firmados pero $0 en facturaci&oacute;n 2026.</div></li>
+                    <li><div class="priority-dot medium"></div><div><strong>CRM migration:</strong> Mover tracking de Excel a Freshsales. No escala.</div></li>
+                    <li><div class="priority-dot medium"></div><div><strong>Relaci&oacute;n Pagadoor:</strong> Procesan para 7 marcas Tier 1. &iquest;Riesgo o oportunidad?</div></li>
+                    <li><div class="priority-dot medium"></div><div><strong>Limpiar archivos:</strong> 2 Excel id&eacute;nticos + 5 CSVs sueltos. Riesgo de desincronizaci&oacute;n.</div></li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--dark);">Preguntas para 1-on-1 con Paula</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>Pregunta</th><th>Por qu&eacute;</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>&iquest;Por qu&eacute; los clientes internacionales no aparecen en facturaci&oacute;n 2026?</td><td>20+ contratos, $0 revenue visible</td></tr>
+                    <tr><td>2</td><td>&iquest;Qu&eacute; pas&oacute; con IGaming/Olimpiadas Especiales?</td><td>Ca&iacute;da del 99% sin explicaci&oacute;n visible</td></tr>
+                    <tr><td>3</td><td>&iquest;Cu&aacute;l es el estado REAL de Stake, Luckia, Codere, 1xBet?</td><td>Propuestas enviadas hace semanas sin update</td></tr>
+                    <tr><td>4</td><td>&iquest;Cu&aacute;l es la relaci&oacute;n exacta con Pagadoor?</td><td>Procesa Betano + 6 marcas m&aacute;s. Dependencia.</td></tr>
+                    <tr><td>5</td><td>&iquest;Sportbet, Astrobet, MasService, Databet tienen licencia?</td><td>No hay licencia registrada. Riesgo regulatorio.</td></tr>
+                    <tr><td>6</td><td>&iquest;Timeline real para Betcris DOM go-live?</td><td>En integraci&oacute;n desde febrero. Clave para GAT DR.</td></tr>
+                    <tr><td>7</td><td>&iquest;Qu&eacute; le falta al equipo para ir m&aacute;s r&aacute;pido?</td><td>2 personas gestionando 60+ clientes + 29 pipeline</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer style="padding: 2rem 2.5rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border);">
+        Payphone Betting Dashboard &bull; Confidential &bull; Last updated: March 17, 2026
+    </footer>
+</div>
+
+<script>
+// PASSWORD
+function checkPassword() {
+    const input = document.getElementById('passwordInput');
+    if (input.value === 'payphone2026') {
+        sessionStorage.setItem('betting-auth', 'true');
+        document.getElementById('passwordScreen').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        initCharts();
+        initCountdowns();
+    } else {
+        document.getElementById('passwordError').style.display = 'block';
+        document.getElementById('passwordBox').classList.add('shake');
+        setTimeout(() => document.getElementById('passwordBox').classList.remove('shake'), 300);
+    }
+}
+document.getElementById('passwordInput').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
+if (sessionStorage.getItem('betting-auth') === 'true') {
+    document.getElementById('passwordScreen').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    window.addEventListener('load', () => { initCharts(); initCountdowns(); });
+}
+
+// SIDEBAR
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+}
+// Active link
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.sidebar a[href^="#"]');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 200) current = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+});
+// Smooth scroll
+navLinks.forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('sidebar').classList.remove('open');
+    });
+});
+
+// TABS
+function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+}
+
+// CHARTS
+function initCharts() {
+    // Concentration Doughnut
+    new Chart(document.getElementById('concentrationChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Ecuabet', 'Betano', 'Sportbet', 'Betcris', 'Otros'],
+            datasets: [{
+                data: [3166886, 565980, 217973, 110479, 79704],
+                backgroundColor: ['#ef4444', '#6366f1', '#10b981', '#f59e0b', '#9ca3af'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom', labels: { padding: 15, usePointStyle: true } },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => {
+                            const val = ctx.parsed;
+                            const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+                            const pct = ((val / total) * 100).toFixed(1);
+                            return ` $${(val/1000000).toFixed(2)}M (${pct}%)`;
+                        }
+                    }
+                }
+            },
+            cutout: '65%'
+        }
+    });
+
+    // Revenue Bar
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Ecuabet', 'Betano', 'Sportbet', 'Betcris', 'Latribet', 'MasService', 'Astrobet', 'Databet'],
+            datasets: [
+                { label: 'Enero', data: [3642841, 466711, 224750, 96134, 33639, 12320, 24239, 11127], backgroundColor: 'rgba(99,102,241,0.7)' },
+                { label: 'Febrero', data: [3166886, 565980, 217973, 110479, 36267, 17607, 16534, 8868], backgroundColor: 'rgba(16,185,129,0.7)' }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
+            scales: {
+                y: { ticks: { callback: v => '$' + (v/1000) + 'K' }, grid: { color: '#f3f4f6' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Tier Doughnut
+    new Chart(document.getElementById('tierChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Tier 1 (>$100K)', 'Tier 2 ($10-100K)', 'Tier 3 (<$10K)'],
+            datasets: [{
+                data: [4061318, 53874, 25830],
+                backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom', labels: { padding: 15, usePointStyle: true } },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => {
+                            const val = ctx.parsed;
+                            const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+                            return ` $${(val/1000).toFixed(0)}K (${((val/total)*100).toFixed(1)}%)`;
+                        }
+                    }
+                }
+            },
+            cutout: '65%'
+        }
+    });
+
+    // MoM Change
+    new Chart(document.getElementById('momChart'), {
+        type: 'bar',
+        data: {
+            labels: ['MasService', 'Betano', 'Betcris', 'Latribet', 'Sportbet', 'Ecuabet', 'Databet', 'Astrobet', 'IGaming'],
+            datasets: [{
+                label: 'MoM %',
+                data: [42.9, 21.3, 14.9, 7.8, -3.0, -13.1, -20.3, -31.8, -99.1],
+                backgroundColor: ctx => ctx.parsed.y >= 0 ? '#10b981' : '#ef4444'
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { callback: v => v + '%' }, grid: { color: '#f3f4f6' } },
+                y: { grid: { display: false } }
+            }
+        }
+    });
+}
+
+// COUNTDOWNS
+function initCountdowns() {
+    const events = [
+        { id: 'countdown-sbc', date: new Date('2026-06-09'), name: 'SBC Americas' },
+        { id: 'countdown-gat-pr', date: new Date('2026-09-08'), name: 'GAT San Juan' },
+        { id: 'countdown-gat-dr', date: new Date('2026-11-17'), name: 'GAT Santo Domingo' }
+    ];
+    events.forEach(e => {
+        const diff = Math.ceil((e.date - new Date()) / (1000 * 60 * 60 * 24));
+        const el = document.getElementById(e.id);
+        if (diff > 0) {
+            el.textContent = diff + ' dias para ' + e.name;
+        } else if (diff >= -3) {
+            el.textContent = 'EN CURSO';
+            el.style.background = '#dcfce7'; el.style.color = '#166534';
+        } else {
+            el.textContent = 'Completado';
+            el.style.background = '#f3f4f6'; el.style.color = '#6b7280';
+        }
+    });
+}
+</script>
+</body>
+</html>
