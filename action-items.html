@@ -499,7 +499,7 @@
         <div style="background: rgba(255,100,0,0.1); border: 1px solid rgba(255,100,0,0.2); border-radius: 12px; padding: 1rem;">
             <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Progress</div>
             <div style="font-size: 1.5rem; font-weight: 800; color: #ff8533;" id="sidebar-progress">0%</div>
-            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);" id="sidebar-completed-count">0 of 22 completed</div>
+            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);" id="sidebar-completed-count">0 of 23 completed</div>
         </div>
     </div>
 </nav>
@@ -515,11 +515,11 @@
             <p>Todas las acciones priorizadas, owners, deadlines y status del equipo de betting.</p>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="value" id="stat-total">22</div>
+                    <div class="value" id="stat-total">23</div>
                     <div class="label">Total Actions</div>
                 </div>
                 <div class="stat-card danger">
-                    <div class="value" id="stat-critical">10</div>
+                    <div class="value" id="stat-critical">11</div>
                     <div class="label">Critical Items</div>
                 </div>
                 <div class="stat-card">
@@ -542,7 +542,7 @@
             <div class="icon" style="background: linear-gradient(135deg, #fef2f2, #fecaca); color: var(--danger);">&#9745;</div>
             <div>
                 <h2>Master Action List</h2>
-                <p>22 action items across 5 categories &mdash; assigned to Paula, Karen &amp; Val</p>
+                <p>23 action items across 5 categories &mdash; assigned to Paula, Karen &amp; Val</p>
             </div>
         </div>
 
@@ -596,7 +596,7 @@
                 <div class="progress-card-header">
                     <span class="progress-icon" style="color: var(--danger);">&#128308;</span>
                     <span class="progress-title">Revenue</span>
-                    <span class="progress-count" id="progress-revenue-count">0/4</span>
+                    <span class="progress-count" id="progress-revenue-count">0/5</span>
                 </div>
                 <div class="progress-bar-track">
                     <div class="progress-bar-fill" id="progress-revenue-bar" style="width: 0%; background: var(--danger);"></div>
@@ -616,7 +616,7 @@
                 <div class="progress-card-header">
                     <span class="progress-icon" style="color: var(--pipeline);">&#128640;</span>
                     <span class="progress-title">Pipeline</span>
-                    <span class="progress-count" id="progress-pipeline-count">0/3</span>
+                    <span class="progress-count" id="progress-pipeline-count">0/4</span>
                 </div>
                 <div class="progress-bar-track">
                     <div class="progress-bar-fill" id="progress-pipeline-bar" style="width: 0%; background: var(--pipeline);"></div>
@@ -636,7 +636,7 @@
                 <div class="progress-card-header">
                     <span class="progress-icon" style="color: var(--conference);">&#9881;</span>
                     <span class="progress-title">Operations</span>
-                    <span class="progress-count" id="progress-operations-count">0/5</span>
+                    <span class="progress-count" id="progress-operations-count">0/4</span>
                 </div>
                 <div class="progress-bar-track">
                     <div class="progress-bar-fill" id="progress-operations-bar" style="width: 0%; background: var(--conference);"></div>
@@ -1275,7 +1275,7 @@
 
     <!-- FOOTER -->
     <footer style="padding: 2rem 2.5rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border);">
-        Payphone Betting Action Items &bull; Confidential &bull; Last updated: March 17, 2026
+        Payphone Betting Action Items &bull; Confidential &bull; Last updated: March 18, 2026
     </footer>
 </div>
 
@@ -1284,37 +1284,38 @@
 // DATA MODEL
 // ========================================
 const ACTION_ITEMS = [
-    // REVENUE DIVERSIFICATION (Critical)
-    { id: 1, priority: 'critical', category: 'revenue', action: 'Accelerate Betcris DOM, OroBet, Forbet integrations', owner: ['paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
-    { id: 2, priority: 'critical', category: 'revenue', action: 'Investigate IGaming 99% collapse ($20K \u2192 $186)', owner: ['paula'], deadline: '2026-03-28', status: 'not-started', completed: false },
-    { id: 3, priority: 'critical', category: 'revenue', action: 'Activate dormant international contracts (20+ with $0 revenue)', owner: ['paula', 'val'], deadline: '2026-05-15', status: 'not-started', completed: false },
-    { id: 4, priority: 'critical', category: 'revenue', action: 'Reduce Ecuabet concentration below 50% (target Q3 2026)', owner: ['val'], deadline: '2026-09-30', status: 'not-started', completed: false },
+    // REVENUE RECOVERY & DIVERSIFICATION (Critical)
+    { id: 1, priority: 'critical', category: 'revenue', action: 'RECOVER Doradobet \u2014 $2.2M/mo lost across 5 countries (NI, HN, CR, SV, GT). Contact VS Network Solutions parent company.', owner: ['paula', 'val'], deadline: '2026-03-22', status: 'not-started', completed: false },
+    { id: 2, priority: 'critical', category: 'revenue', action: 'Identify Row 36 mystery client ($392K \u2192 $23). RUC 8019022409207. Possibly Red de Servicios / Hondubet related.', owner: ['paula'], deadline: '2026-03-22', status: 'not-started', completed: false },
+    { id: 3, priority: 'critical', category: 'revenue', action: 'Accelerate Betcris DOM ($100K), OroBet ($250K), Masterbets365 ($250-500K), Forbet ($100K) integrations', owner: ['paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
+    { id: 4, priority: 'critical', category: 'revenue', action: 'Investigate intermediarios Feb $0 \u2014 Pagadoor ($153K Jan), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K)', owner: ['paula'], deadline: '2026-03-25', status: 'not-started', completed: false },
+    { id: 5, priority: 'critical', category: 'revenue', action: 'Review international pricing \u2014 0.5% net margin on $3.3M/mo is unsustainable (5.5% tariff minus 5% cost)', owner: ['val'], deadline: '2026-04-15', status: 'not-started', completed: false },
 
     // SALES & MARKETING (Critical)
-    { id: 5, priority: 'critical', category: 'sales', action: 'Create Betting Pitch Deck', owner: ['val', 'paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
-    { id: 6, priority: 'critical', category: 'sales', action: 'Create One-Pager / Leave-behind', owner: ['val', 'paula'], deadline: '2026-05-15', status: 'not-started', completed: false },
-    { id: 7, priority: 'critical', category: 'sales', action: 'Build Betting Landing Page', owner: ['val'], deadline: '2026-05-05', status: 'not-started', completed: false },
-    { id: 8, priority: 'critical', category: 'sales', action: 'Create Demo Sandbox', owner: ['val'], deadline: '2026-05-30', status: 'not-started', completed: false },
-    { id: 9, priority: 'critical', category: 'sales', action: 'Design SBC Booth', owner: ['paula'], deadline: '2026-05-20', status: 'not-started', completed: false },
-    { id: 10, priority: 'critical', category: 'sales', action: 'Order Swag (shirts, stickers)', owner: ['karen'], deadline: '2026-05-20', status: 'not-started', completed: false },
+    { id: 6, priority: 'critical', category: 'sales', action: 'Create Betting Pitch Deck', owner: ['val', 'paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
+    { id: 7, priority: 'critical', category: 'sales', action: 'Create One-Pager / Leave-behind', owner: ['val', 'paula'], deadline: '2026-05-15', status: 'not-started', completed: false },
+    { id: 8, priority: 'critical', category: 'sales', action: 'Build Betting Landing Page', owner: ['val'], deadline: '2026-05-05', status: 'not-started', completed: false },
+    { id: 9, priority: 'critical', category: 'sales', action: 'Create Demo Sandbox', owner: ['val'], deadline: '2026-05-30', status: 'not-started', completed: false },
+    { id: 10, priority: 'critical', category: 'sales', action: 'Design SBC Booth', owner: ['paula'], deadline: '2026-05-20', status: 'not-started', completed: false },
+    { id: 11, priority: 'critical', category: 'sales', action: 'Order Swag (shirts, stickers)', owner: ['karen'], deadline: '2026-05-20', status: 'not-started', completed: false },
 
     // PIPELINE ACCELERATION (High)
-    { id: 11, priority: 'high', category: 'pipeline', action: 'Follow up Tier 1 proposals: Stake, Luckia, Codere, 1xBet', owner: ['paula'], deadline: '2026-04-15', status: 'not-started', completed: false },
-    { id: 12, priority: 'high', category: 'pipeline', action: 'Resolve blocked documentation: Aciertala, SportGana, Trebalia, RCB Global', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
-    { id: 13, priority: 'high', category: 'pipeline', action: 'Push stalled integrations to go-live', owner: ['paula'], deadline: '2026-05-30', status: 'not-started', completed: false },
+    { id: 12, priority: 'high', category: 'pipeline', action: 'Follow up Tier 1 proposals: Stake, Luckia, Codere, 1xBet (sent Mar 16), Betcha', owner: ['paula'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 13, priority: 'high', category: 'pipeline', action: 'Resolve blocked docs: Aciertala (KYC pending), SportGana (KYC denied), Trebalia (docs), RCB Global', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 14, priority: 'high', category: 'pipeline', action: 'Push stalled integrations: 4LuckBet, Gana777, LotBet, Juega en Linea, GranLatino', owner: ['paula'], deadline: '2026-05-30', status: 'not-started', completed: false },
+    { id: 15, priority: 'high', category: 'pipeline', action: 'Close new prospects: Ambos Marcan (KYC done), Lucky Technology (proposal Mar 17), Honduwin (NDA sent)', owner: ['paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
 
     // COMPLIANCE & DOCUMENTATION (High)
-    { id: 14, priority: 'high', category: 'compliance', action: 'Get Latribet NDA signed ($36K/mo billing without NDA)', owner: ['karen'], deadline: '2026-04-01', status: 'not-started', completed: false },
-    { id: 15, priority: 'high', category: 'compliance', action: 'Request gaming licenses: Sportbet, Astrobet, MasService, Databet', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
-    { id: 16, priority: 'high', category: 'compliance', action: 'Complete KYC/compliance for all Tier 1 active clients', owner: ['karen'], deadline: '2026-05-15', status: 'not-started', completed: false },
-    { id: 17, priority: 'high', category: 'compliance', action: 'Audit Pagadoor documentation (7 brands dependency)', owner: ['karen'], deadline: '2026-04-30', status: 'not-started', completed: false },
+    { id: 16, priority: 'high', category: 'compliance', action: 'Get Latribet NDA signed ($36K/mo billing without NDA)', owner: ['karen'], deadline: '2026-04-01', status: 'not-started', completed: false },
+    { id: 17, priority: 'high', category: 'compliance', action: 'Request gaming licenses: Sportbet, Astrobet, MasService, Databet', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 18, priority: 'high', category: 'compliance', action: 'Clean up bank accounts marked "Borrar" (Sportbet CR, Starplay SV, Ganaplay old, DoradoBet GT, 1Win)', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 19, priority: 'high', category: 'compliance', action: 'Audit Pagadoor documentation \u2014 processes Betano, Coolbet, Forbet, EstelarBet, MilloBet, Jugabet, Monetix', owner: ['karen'], deadline: '2026-04-30', status: 'not-started', completed: false },
 
     // OPERATIONS & SYSTEMS (Medium)
-    { id: 18, priority: 'medium', category: 'operations', action: 'Migrate from Excel to Freshsales CRM', owner: ['val', 'karen'], deadline: '2026-06-01', status: 'not-started', completed: false },
-    { id: 19, priority: 'medium', category: 'operations', action: 'Consolidate duplicate Excel files', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
-    { id: 20, priority: 'medium', category: 'operations', action: 'Clarify Pagadoor relationship (7 brands dependency)', owner: ['paula', 'val'], deadline: '2026-04-15', status: 'not-started', completed: false },
-    { id: 21, priority: 'medium', category: 'operations', action: 'Investigate international contract revenue gaps', owner: ['paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
-    { id: 22, priority: 'medium', category: 'operations', action: 'Define team capacity plan (2 people managing 60+ clients)', owner: ['val'], deadline: '2026-04-30', status: 'not-started', completed: false }
+    { id: 20, priority: 'medium', category: 'operations', action: 'Migrate from Excel to Freshsales CRM \u2014 2 duplicate Excel files + 7 CSVs = data risk', owner: ['val', 'karen'], deadline: '2026-06-01', status: 'not-started', completed: false },
+    { id: 21, priority: 'medium', category: 'operations', action: 'Define team capacity plan (Paula + Karen managing 60+ clients + 32 pipeline)', owner: ['val'], deadline: '2026-04-30', status: 'not-started', completed: false },
+    { id: 22, priority: 'medium', category: 'operations', action: 'Explore iGaming platform partnerships (SOFTSWISS, BetConstruct, Digitain) for integration acceleration', owner: ['val'], deadline: '2026-05-30', status: 'not-started', completed: false },
+    { id: 23, priority: 'medium', category: 'operations', action: 'Evaluate industry media/PR spend \u2014 SBC Noticias, Focus Gaming, Revista Casino, Digital Gaming for brand visibility', owner: ['val'], deadline: '2026-05-15', status: 'not-started', completed: false }
 ];
 
 const CATEGORIES = [
