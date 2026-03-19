@@ -256,7 +256,7 @@
 
         /* CATEGORY PROGRESS CARDS */
         .category-progress-grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
             margin-bottom: 1.5rem;
         }
         .progress-card {
@@ -300,7 +300,7 @@
             font-size: 0.68rem; font-weight: 600;
         }
         .owner-tag.paula { background: #f3e8ff; color: #6b21a8; }
-        .owner-tag.karen { background: #ecfdf5; color: #059669; }
+        .owner-tag.marcela { background: #fef3c7; color: #92400e; }
         .owner-tag.val { background: #eff6ff; color: #1e40af; }
 
         .category-tag {
@@ -310,7 +310,6 @@
         .category-tag.revenue { background: #fef2f2; color: #991b1b; }
         .category-tag.sales { background: #fefce8; color: #854d0e; }
         .category-tag.pipeline { background: #f5f3ff; color: #5b21b6; }
-        .category-tag.compliance { background: #ecfdf5; color: #065f46; }
         .category-tag.operations { background: #f0f9ff; color: #075985; }
 
         /* CATEGORY HEADER ROWS */
@@ -499,7 +498,7 @@
         <div style="background: rgba(255,100,0,0.1); border: 1px solid rgba(255,100,0,0.2); border-radius: 12px; padding: 1rem;">
             <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Progress</div>
             <div style="font-size: 1.5rem; font-weight: 800; color: #ff8533;" id="sidebar-progress">0%</div>
-            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);" id="sidebar-completed-count">0 of 23 completed</div>
+            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);" id="sidebar-completed-count">0 of 20 completed</div>
         </div>
     </div>
 </nav>
@@ -515,7 +514,7 @@
             <p>Todas las acciones priorizadas, owners, deadlines y status del equipo de betting.</p>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="value" id="stat-total">23</div>
+                    <div class="value" id="stat-total">20</div>
                     <div class="label">Total Actions</div>
                 </div>
                 <div class="stat-card danger">
@@ -542,7 +541,7 @@
             <div class="icon" style="background: linear-gradient(135deg, #fef2f2, #fecaca); color: var(--danger);">&#9745;</div>
             <div>
                 <h2>Master Action List</h2>
-                <p>23 action items across 5 categories &mdash; assigned to Paula, Karen &amp; Val</p>
+                <p>20 action items across 4 categories &mdash; assigned to Paula, Marcela &amp; Val</p>
             </div>
         </div>
 
@@ -562,7 +561,7 @@
                 <select id="filter-owner">
                     <option value="all">All</option>
                     <option value="paula">Paula</option>
-                    <option value="karen">Karen</option>
+                    <option value="marcela">Marcela</option>
                     <option value="val">Val</option>
                 </select>
             </div>
@@ -583,7 +582,6 @@
                     <option value="revenue">Revenue</option>
                     <option value="sales">Sales &amp; Marketing</option>
                     <option value="pipeline">Pipeline</option>
-                    <option value="compliance">Compliance</option>
                     <option value="operations">Operations</option>
                 </select>
             </div>
@@ -624,19 +622,9 @@
             </div>
             <div class="progress-card">
                 <div class="progress-card-header">
-                    <span class="progress-icon" style="color: var(--compliance);">&#128274;</span>
-                    <span class="progress-title">Compliance</span>
-                    <span class="progress-count" id="progress-compliance-count">0/4</span>
-                </div>
-                <div class="progress-bar-track">
-                    <div class="progress-bar-fill" id="progress-compliance-bar" style="width: 0%; background: var(--compliance);"></div>
-                </div>
-            </div>
-            <div class="progress-card">
-                <div class="progress-card-header">
                     <span class="progress-icon" style="color: var(--conference);">&#9881;</span>
                     <span class="progress-title">Operations</span>
-                    <span class="progress-count" id="progress-operations-count">0/4</span>
+                    <span class="progress-count" id="progress-operations-count">0/5</span>
                 </div>
                 <div class="progress-bar-track">
                     <div class="progress-bar-fill" id="progress-operations-bar" style="width: 0%; background: var(--conference);"></div>
@@ -883,7 +871,7 @@
                         <td><input type="checkbox" class="material-checkbox"></td>
                         <td><strong>Swag (shirts, stickers)</strong></td>
                         <td><span class="badge badge-red">Not Started</span></td>
-                        <td><span class="owner-tag karen">Karen</span></td>
+                        <td><span class="owner-tag marcela">Marcela</span></td>
                         <td>May 20</td>
                         <td>Payphone branded. Qty: 200 stickers, 50 shirts</td>
                     </tr>
@@ -1025,7 +1013,7 @@
                         <li>Confirm meeting schedule with Casinos PR, Asojuegos CO contacts</li>
                         <li>Book flights &amp; hotel</li>
                     </ul>
-                    <div><span class="badge badge-purple">Owner: Paula + Karen</span></div>
+                    <div><span class="badge badge-purple">Owner: Paula + Marcela</span></div>
                 </div>
             </div>
             <div class="vtl-item" data-week-start="2026-08-31">
@@ -1182,7 +1170,7 @@
                         <li>Outreach to Dominican Republic operators</li>
                         <li>Book flights &amp; hotel</li>
                     </ul>
-                    <div><span class="badge badge-purple">Owner: Paula + Karen</span></div>
+                    <div><span class="badge badge-purple">Owner: Paula + Marcela</span></div>
                 </div>
             </div>
             <div class="vtl-item" data-week-start="2026-11-09">
@@ -1275,7 +1263,7 @@
 
     <!-- FOOTER -->
     <footer style="padding: 2rem 2.5rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border);">
-        Payphone Betting Action Items &bull; Confidential &bull; Last updated: March 18, 2026
+        Payphone Betting Action Items &bull; Confidential &bull; Last updated: March 19, 2026
     </footer>
 </div>
 
@@ -1297,32 +1285,26 @@ const ACTION_ITEMS = [
     { id: 8, priority: 'critical', category: 'sales', action: 'Build Betting Landing Page', owner: ['val'], deadline: '2026-05-05', status: 'not-started', completed: false },
     { id: 9, priority: 'critical', category: 'sales', action: 'Create Demo Sandbox', owner: ['val'], deadline: '2026-05-30', status: 'not-started', completed: false },
     { id: 10, priority: 'critical', category: 'sales', action: 'Design SBC Booth', owner: ['paula'], deadline: '2026-05-20', status: 'not-started', completed: false },
-    { id: 11, priority: 'critical', category: 'sales', action: 'Order Swag (shirts, stickers)', owner: ['karen'], deadline: '2026-05-20', status: 'not-started', completed: false },
+    { id: 11, priority: 'critical', category: 'sales', action: 'Order Swag (shirts, stickers)', owner: ['marcela'], deadline: '2026-05-20', status: 'not-started', completed: false },
 
     // PIPELINE ACCELERATION (High)
     { id: 12, priority: 'high', category: 'pipeline', action: 'Follow up Tier 1 proposals: Stake, Luckia, Codere, 1xBet (sent Mar 16), Betcha', owner: ['paula'], deadline: '2026-04-15', status: 'not-started', completed: false },
-    { id: 13, priority: 'high', category: 'pipeline', action: 'Resolve blocked docs: Aciertala (KYC pending), SportGana (KYC denied), Trebalia (docs), RCB Global', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
+    { id: 13, priority: 'high', category: 'pipeline', action: 'Resolve blocked docs: Aciertala (KYC pending), SportGana (KYC denied), Trebalia (docs), RCB Global', owner: ['marcela'], deadline: '2026-04-15', status: 'not-started', completed: false },
     { id: 14, priority: 'high', category: 'pipeline', action: 'Push stalled integrations: 4LuckBet, Gana777, LotBet, Juega en Linea, GranLatino', owner: ['paula'], deadline: '2026-05-30', status: 'not-started', completed: false },
     { id: 15, priority: 'high', category: 'pipeline', action: 'Close new prospects: Ambos Marcan (KYC done), Lucky Technology (proposal Mar 17), Honduwin (NDA sent)', owner: ['paula'], deadline: '2026-04-30', status: 'not-started', completed: false },
 
-    // COMPLIANCE & DOCUMENTATION (High)
-    { id: 16, priority: 'high', category: 'compliance', action: 'Get Latribet NDA signed ($36K/mo billing without NDA)', owner: ['karen'], deadline: '2026-04-01', status: 'not-started', completed: false },
-    { id: 17, priority: 'high', category: 'compliance', action: 'Request gaming licenses: Sportbet, Astrobet, MasService, Databet', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
-    { id: 18, priority: 'high', category: 'compliance', action: 'Clean up bank accounts marked "Borrar" (Sportbet CR, Starplay SV, Ganaplay old, DoradoBet GT, 1Win)', owner: ['karen'], deadline: '2026-04-15', status: 'not-started', completed: false },
-    { id: 19, priority: 'high', category: 'compliance', action: 'Audit Pagadoor documentation \u2014 processes Betano, Coolbet, Forbet, EstelarBet, MilloBet, Jugabet, Monetix', owner: ['karen'], deadline: '2026-04-30', status: 'not-started', completed: false },
-
     // OPERATIONS & SYSTEMS (Medium)
-    { id: 20, priority: 'medium', category: 'operations', action: 'Migrate from Excel to Freshsales CRM \u2014 2 duplicate Excel files + 7 CSVs = data risk', owner: ['val', 'karen'], deadline: '2026-06-01', status: 'not-started', completed: false },
-    { id: 21, priority: 'medium', category: 'operations', action: 'Define team capacity plan (Paula + Karen managing 60+ clients + 32 pipeline)', owner: ['val'], deadline: '2026-04-30', status: 'not-started', completed: false },
+    { id: 20, priority: 'medium', category: 'operations', action: 'Migrate from Excel to Freshsales CRM \u2014 2 duplicate Excel files + 7 CSVs = data risk', owner: ['val', 'marcela'], deadline: '2026-06-01', status: 'not-started', completed: false },
+    { id: 21, priority: 'medium', category: 'operations', action: 'Define team capacity plan (Paula + Marcela managing 60+ clients + 32 pipeline)', owner: ['val'], deadline: '2026-04-30', status: 'not-started', completed: false },
     { id: 22, priority: 'medium', category: 'operations', action: 'Explore iGaming platform partnerships (SOFTSWISS, BetConstruct, Digitain) for integration acceleration', owner: ['val'], deadline: '2026-05-30', status: 'not-started', completed: false },
-    { id: 23, priority: 'medium', category: 'operations', action: 'Evaluate industry media/PR spend \u2014 SBC Noticias, Focus Gaming, Revista Casino, Digital Gaming for brand visibility', owner: ['val'], deadline: '2026-05-15', status: 'not-started', completed: false }
+    { id: 23, priority: 'medium', category: 'operations', action: 'Evaluate industry media/PR spend \u2014 SBC Noticias, Focus Gaming, Revista Casino, Digital Gaming for brand visibility', owner: ['val'], deadline: '2026-05-15', status: 'not-started', completed: false },
+    { id: 24, priority: 'high', category: 'operations', action: 'Define ownership for international non-betting accounts \u2014 currently in limbo, 10% rate above market, no process, no contracts', owner: ['val', 'paula'], deadline: '2026-04-30', status: 'not-started', completed: false }
 ];
 
 const CATEGORIES = [
     { key: 'revenue', label: 'Revenue Diversification', icon: '\u{1F534}', badgeClass: 'badge-red', badgeText: 'Critical' },
     { key: 'sales', label: 'Sales & Marketing Materials', icon: '\u{1F4E6}', badgeClass: 'badge-red', badgeText: 'Critical' },
     { key: 'pipeline', label: 'Pipeline Acceleration', icon: '\u{1F680}', badgeClass: 'badge-yellow', badgeText: 'High' },
-    { key: 'compliance', label: 'Compliance & Documentation', icon: '\u{1F512}', badgeClass: 'badge-yellow', badgeText: 'High' },
     { key: 'operations', label: 'Operations & Systems', icon: '\u2699\uFE0F', badgeClass: 'badge-blue', badgeText: 'Medium' }
 ];
 
@@ -1509,7 +1491,7 @@ function resetFilters() {
 // PROGRESS BARS & STATS
 // ========================================
 function updateProgressBars() {
-    ['revenue', 'sales', 'pipeline', 'compliance', 'operations'].forEach(cat => {
+    ['revenue', 'sales', 'pipeline', 'operations'].forEach(cat => {
         const items = ACTION_ITEMS.filter(i => i.category === cat);
         const done = items.filter(i => i.completed).length;
         const pct = items.length > 0 ? Math.round((done / items.length) * 100) : 0;

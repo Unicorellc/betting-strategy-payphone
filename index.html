@@ -377,6 +377,7 @@
 
     <div class="sidebar-section">
         <div class="sidebar-section-title">Overview</div>
+        <a href="#march-tracker"><span class="icon">&#128197;</span> March Tracker</a>
         <a href="#revenue" class="active"><span class="icon">&#128200;</span> Revenue</a>
         <a href="#clients"><span class="icon">&#128101;</span> Client Portfolio</a>
         <a href="#pipeline"><span class="icon">&#128640;</span> Pipeline</a>
@@ -390,7 +391,7 @@
 
     <div class="sidebar-section">
         <div class="sidebar-section-title">Operations</div>
-        <a href="#compliance"><span class="icon">&#128274;</span> Compliance Status</a>
+        <a href="#contracts"><span class="icon">&#128196;</span> Contratos &amp; Entidades</a>
         <a href="#actions"><span class="icon">&#9889;</span> Alerts &amp; Actions</a>
     </div>
 
@@ -403,7 +404,7 @@
         <div style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 1rem;">
             <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Concentration Risk</div>
             <div style="font-size: 1.5rem; font-weight: 800; color: #fca5a5;">40%</div>
-            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);">Ecuabet share (full portfolio)</div>
+            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);">Ecuabet share (Ecuador ops)</div>
         </div>
     </div>
 </nav>
@@ -416,7 +417,7 @@
         <div class="header-content">
             <span class="header-badge">&#128202; Data as of March 2026</span>
             <h1>Betting Vertical Dashboard</h1>
-            <p>Estado completo de la vertical de apuestas &mdash; clientes, revenue, pipeline, conferencias y compliance en un solo lugar.</p>
+            <p>Estado completo de la vertical de apuestas &mdash; clientes, revenue, pipeline, conferencias y contratos en un solo lugar.</p>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="value">$7.85M</div>
@@ -438,6 +439,39 @@
         </div>
     </header>
 
+    <!-- MARCH MTD WEEKLY TRACKER -->
+    <section id="march-tracker">
+        <div class="section-header">
+            <div class="icon" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af;">&#128197;</div>
+            <div>
+                <h2>March 2026 Weekly Revenue Tracker</h2>
+                <p>Target mensual: $28.75M ($345M/a&ntilde;o) &mdash; Actualizado semanalmente por Paula &amp; Marcela</p>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Periodo</th>
+                        <th>Nacional</th>
+                        <th>Internacional</th>
+                        <th>Total</th>
+                        <th>% Target</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Semana 1</strong> (Mar 1-7)</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color: var(--text-muted);">Pendiente</td></tr>
+                    <tr><td><strong>Semana 2</strong> (Mar 8-14)</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color: var(--text-muted);">Pendiente</td></tr>
+                    <tr style="background: #eff6ff;"><td><strong>Semana 3</strong> (Mar 15-21) &#9664;</td><td>&mdash;</td><td>&mdash;</td><td><strong>$9.6M</strong></td><td>33.4%</td><td>MTD al 16 de marzo</td></tr>
+                    <tr><td><strong>Semana 4</strong> (Mar 22-31)</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color: var(--text-muted);">Pendiente</td></tr>
+                    <tr style="background: #f0fdf4; font-weight: 600;"><td><strong>Total Marzo</strong></td><td>&mdash;</td><td>&mdash;</td><td><strong>$9.6M</strong></td><td><strong>33.4%</strong></td><td>En progreso</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
     <!-- SECTION 1: REVENUE -->
     <section id="revenue">
         <div class="section-header">
@@ -448,9 +482,9 @@
             </div>
         </div>
 
-        <div class="alert alert-danger">
-            <span class="icon">&#9888;&#65039;</span>
-            <div><strong>CRISIS: Doradobet churn &mdash; -$2.2M/mes.</strong> Doradobet dej&oacute; de procesar en 5 pa&iacute;ses de enero a febrero (Nicaragua $1.1M, Honduras/Paniplay $322K, Costa Rica $177K, El Salvador $115K, Guatemala $104K). Todo pasa por VS Network Solutions N.V. (Curazao). Investigar de inmediato.</div>
+        <div class="alert alert-warning">
+            <span class="icon">&#128202;</span>
+            <div><strong>Merchants to watch (vs semana anterior):</strong> Esta secci&oacute;n mostrar&aacute; comercios con ca&iacute;da semanal una vez se disponga de data semanal. Estructura: Cliente | Semana anterior | Esta semana | Cambio | Acci&oacute;n. <em>Placeholder &mdash; data pendiente.</em></div>
         </div>
 
         <div class="alert alert-warning">
@@ -474,28 +508,28 @@
                 <div class="kpi-value">$3.30M</div>
                 <div class="kpi-delta down">&#9660; -39% MoM</div>
             </div>
-            <div class="kpi-card red">
-                <div class="kpi-label">Doradobet Lost</div>
-                <div class="kpi-value">-$2.2M</div>
-                <div class="kpi-delta down">5 pa&iacute;ses &rarr; $0</div>
+            <div class="kpi-card amber">
+                <div class="kpi-label">March MTD</div>
+                <div class="kpi-value">$9.6M</div>
+                <div class="kpi-delta up">&#9650; 33% del target</div>
             </div>
         </div>
 
         <div class="chart-row">
             <div class="chart-container">
-                <h3>Revenue Concentration</h3>
-                <canvas id="concentrationChart"></canvas>
+                <h3>Concentraci&oacute;n Ecuador (Nacional)</h3>
+                <canvas id="concentrationEcuadorChart"></canvas>
             </div>
+            <div class="chart-container">
+                <h3>Concentraci&oacute;n Internacional</h3>
+                <canvas id="concentrationInternationalChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-row">
             <div class="chart-container">
                 <h3>Revenue por Cliente &mdash; Ene vs Feb 2026</h3>
                 <canvas id="revenueChart"></canvas>
-            </div>
-        </div>
-
-        <div class="chart-row">
-            <div class="chart-container">
-                <h3>Tier Distribution (Feb 2026)</h3>
-                <canvas id="tierChart"></canvas>
             </div>
             <div class="chart-container">
                 <h3>Month-over-Month Change</h3>
@@ -617,26 +651,6 @@
                             <td>Ecuapayphone</td>
                             <td><span class="badge badge-red">Declining</span></td>
                         </tr>
-                        <tr>
-                            <td>IGaming (Olimp. Esp.)</td>
-                            <td>$186</td>
-                            <td><span class="kpi-delta down">-99.1%</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-na">&mdash;</span></td>
-                            <td>Ecuapayphone</td>
-                            <td><span class="badge badge-red">Churn</span></td>
-                        </tr>
-                        <tr>
-                            <td>Trebalia (RedServi)</td>
-                            <td>$242</td>
-                            <td><span class="kpi-delta down">-67.3%</span></td>
-                            <td><span class="doc-missing">&mdash;</span></td>
-                            <td><span class="doc-missing">&mdash;</span></td>
-                            <td><span class="doc-missing">&mdash;</span></td>
-                            <td>Ecuapayphone</td>
-                            <td><span class="badge badge-red">Blocked</span></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -644,9 +658,9 @@
 
         <!-- INTERNACIONAL -->
         <div class="tab-content" id="tab-internacional">
-            <div class="alert alert-warning">
+            <div class="alert alert-info">
                 <span class="icon">&#128161;</span>
-                <div><strong>Gap cr&iacute;tico:</strong> 20+ clientes internacionales con contrato pero $0 de facturaci&oacute;n visible en el MasterFile 2026. Verificar si facturan por otra v&iacute;a o est&aacute;n inactivos.</div>
+                <div><strong>Solo clientes internacionales activos.</strong> Contratos dormidos y operadores sin facturaci&oacute;n han sido removidos de esta vista. Ver Pipeline para integraciones pendientes.</div>
             </div>
             <div class="table-wrapper">
                 <table>
@@ -662,7 +676,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>DoradoBet</strong> (7 pa&iacute;ses)</td><td>NI, EC, CR, SV, GT, HN, INT</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td>ECU/USA</td><td><span class="badge badge-green">Multi-pa&iacute;s</span></td></tr>
                         <tr><td><strong>Hondubet</strong></td><td>Honduras/Panam&aacute;</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
                         <tr><td><strong>Betppro SV</strong></td><td>El Salvador</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Loter&iacute;a SV</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
                         <tr><td><strong>Starplay</strong></td><td>Panam&aacute;</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">JCJ Panam&aacute;</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
@@ -674,8 +687,6 @@
                         <tr><td><strong>Sivarbet</strong></td><td>El Salvador</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
                         <tr><td><strong>Lotto.GT</strong></td><td>Guatemala</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Registro Mercantil</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
                         <tr><td><strong>1Win</strong></td><td>Ecuador (INT)</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Cura&ccedil;ao</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td>Olimpobet</td><td>Per&uacute;</td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-ok">Cura&ccedil;ao</span></td><td>&mdash;</td><td><span class="badge badge-gray">Docs incompletos</span></td></tr>
-                        <tr><td>Betppro HN</td><td>Honduras</td><td><span class="doc-na">N/A</span></td><td><span class="doc-na">N/A</span></td><td><span class="doc-ok">CGA Cura&ccedil;ao</span></td><td>USA</td><td><span class="badge badge-yellow">Sin contrato</span></td></tr>
                         <tr><td>Betcris HN</td><td>Honduras</td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">&mdash;</span></td><td>USA</td><td><span class="badge badge-yellow">NDA pend.</span></td></tr>
                         <tr><td>Betcris GT</td><td>Guatemala</td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">&mdash;</span></td><td>USA</td><td><span class="badge badge-yellow">NDA pend.</span></td></tr>
                     </tbody>
@@ -721,36 +732,32 @@
             <div class="icon" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: var(--pipeline);">&#128640;</div>
             <div>
                 <h2>Pipeline Tracker</h2>
-                <p>29+ operadores en distintas fases de conversi&oacute;n</p>
+                <p>28 operadores en 4 fases &mdash; Prospecci&oacute;n, Activaci&oacute;n, Nuevo, Facturaci&oacute;n</p>
             </div>
         </div>
 
         <div class="funnel">
             <div class="funnel-stage" style="background: linear-gradient(135deg, #FF6400, #ff8533);">
-                <div class="count">9</div>
-                <div class="label">Propuesta</div>
+                <div class="count">12</div>
+                <div class="label">Prospecci&oacute;n</div>
             </div>
             <div class="funnel-stage" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
-                <div class="count">3</div>
-                <div class="label">NDA/Contrato</div>
-            </div>
-            <div class="funnel-stage" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6);">
-                <div class="count">3</div>
-                <div class="label">KYC/Onboard</div>
+                <div class="count">8</div>
+                <div class="label">Activaci&oacute;n</div>
             </div>
             <div class="funnel-stage" style="background: linear-gradient(135deg, #5A00B4, #7b2ff2);">
-                <div class="count">5</div>
-                <div class="label">Integraci&oacute;n</div>
+                <div class="count">6</div>
+                <div class="label">Nuevo</div>
             </div>
             <div class="funnel-stage" style="background: linear-gradient(135deg, #10b981, #34d399);">
                 <div class="count">2</div>
-                <div class="label">Activo</div>
+                <div class="label">Facturaci&oacute;n</div>
             </div>
         </div>
 
-        <div class="alert alert-warning">
-            <span class="icon">&#128161;</span>
-            <div><strong>9 operadores estancados en "propuesta enviada"</strong> sin avance visible. Incluye targets Tier 1: Stake, Luckia, Codere, 1xBet. Requieren seguimiento agresivo antes de SBC Americas (junio).</div>
+        <div class="alert alert-info">
+            <span class="icon">&#128197;</span>
+            <div><strong>Pipeline se actualiza semanalmente.</strong> Etapas: Prospecci&oacute;n (contacto/propuesta) &rarr; Activaci&oacute;n (docs/KYC/onboarding) &rarr; Nuevo (integraci&oacute;n/pruebas) &rarr; Facturaci&oacute;n (en vivo). &Uacute;ltima actualizaci&oacute;n: 19 marzo 2026.</div>
         </div>
 
         <div class="table-wrapper">
@@ -766,34 +773,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="background: #f0fdf4;"><td><strong>ECUADORSOFTWARE</strong></td><td>Masterbets365</td><td>Ecuador</td><td>$250-500K</td><td>Marce</td><td><span class="badge badge-green">Activo</span></td></tr>
-                    <tr style="background: #f0fdf4;"><td><strong>Tomerly Assets</strong></td><td>Azar Latino</td><td>GT, HN</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-green">Activo GT</span></td></tr>
-                    <tr style="background: #eff6ff;"><td><strong>Betcris Banca</strong></td><td>Betcris DOM</td><td><strong>Rep. Dominicana</strong></td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
-                    <tr style="background: #eff6ff;"><td>Wave Win</td><td>4Luck</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
-                    <tr style="background: #eff6ff;"><td>FORBET</td><td>Forbet</td><td>Ecuador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
-                    <tr style="background: #eff6ff;"><td>Ecuapro</td><td>Juega en Linea</td><td>Ecuador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
-                    <tr style="background: #eff6ff;"><td>VirtualScores</td><td>GranLatino</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-blue">Pruebas</span></td></tr>
-                    <tr style="background: #fefce8;"><td>Oro Global</td><td>OroBet</td><td>Ecuador</td><td>$250K</td><td>&mdash;</td><td><span class="badge badge-yellow">Onboarding</span></td></tr>
-                    <tr style="background: #fefce8;"><td>Honduservice</td><td>Honduwin</td><td>Honduras</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-yellow">KYC</span></td></tr>
-                    <tr style="background: #fefce8;"><td>Advisors Comm.</td><td>ApuestasWin</td><td>Paraguay</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">KYC</span></td></tr>
-                    <tr><td><strong>Stake</strong></td><td>Stake</td><td>CR, PA, RD</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Oferta enviada</span></td></tr>
-                    <tr><td><strong>Luckia</strong></td><td>Luckia</td><td>CR, PA, RD</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Oferta enviada</span></td></tr>
-                    <tr><td><strong>Codere</strong></td><td>Codere</td><td>Panam&aacute;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Oferta enviada</span></td></tr>
-                    <tr><td><strong>1xBet</strong></td><td>1xBet</td><td>Guatemala</td><td>&mdash;</td><td>Pao</td><td><span class="badge badge-purple">Propuesta 16MAR</span></td></tr>
-                    <tr><td>Betcha</td><td>Betcha</td><td>Panam&aacute;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Oferta enviada</span></td></tr>
-                    <tr><td>SBET SAS</td><td>Gana777</td><td>El Salvador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Contrato a firmar</span></td></tr>
-                    <tr><td>GeniusBet</td><td>GeniusBet</td><td>El Salvador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Propuesta enviada</span></td></tr>
-                    <tr><td>Sorti</td><td>Sorti</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Propuesta enviada</span></td></tr>
-                    <tr><td>BetGaliano</td><td>BetGaliano</td><td>Ecuador</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-purple">Propuesta enviada</span></td></tr>
-                    <tr><td>Softcede</td><td>Softcede</td><td>Ecuador</td><td>&mdash;</td><td>Pao</td><td><span class="badge badge-gray">No env&iacute;a docs</span></td></tr>
-                    <tr><td>Melbet</td><td>Melbet</td><td>EC + CA</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Revisi&oacute;n contrato</span></td></tr>
-                    <tr><td>Centribet</td><td>Centribet</td><td>HN, GT, PA</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">NDA firmado</span></td></tr>
-                    <tr><td>VERTEX</td><td>LotBet</td><td>Guatemala</td><td>&mdash;</td><td>Marce</td><td><span class="badge badge-blue">Integraci&oacute;n</span></td></tr>
-                    <tr><td>ATOMO GAMING</td><td>Atomo</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-gray">Pendiente</span></td></tr>
-                    <tr style="background: #fef2f2;"><td>Twintech SAS</td><td>Aciertala</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-red">Bloqueado docs</span></td></tr>
-                    <tr style="background: #fef2f2;"><td>Deportes Virtuales</td><td>SportGana</td><td>El Salvador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-red">KYC negado</span></td></tr>
-                    <tr style="background: #fef2f2;"><td>Red Servi</td><td>Trebalia</td><td>Ecuador</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-red">Bloqueado docs</span></td></tr>
-                    <tr style="background: #fef2f2;"><td>RCB Global</td><td>RCB</td><td>USA</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-red">No env&iacute;a docs</span></td></tr>
+                    <!-- FACTURACION (live billing) -->
+                    <tr style="background: #f0fdf4;"><td><strong>ECUADORSOFTWARE</strong></td><td>Masterbets365</td><td>Ecuador</td><td>$250-500K</td><td>Marce</td><td><span class="badge badge-green">Facturaci&oacute;n</span></td></tr>
+                    <tr style="background: #f0fdf4;"><td><strong>Tomerly Assets</strong></td><td>Azar Latino</td><td>GT, HN</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-green">Facturaci&oacute;n</span></td></tr>
+                    <!-- NUEVO (integration/testing) -->
+                    <tr style="background: #eff6ff;"><td><strong>Betcris Banca</strong></td><td>Betcris DOM</td><td><strong>Rep. Dominicana</strong></td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
+                    <tr style="background: #eff6ff;"><td>Wave Win</td><td>4Luck</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
+                    <tr style="background: #eff6ff;"><td>FORBET</td><td>Forbet</td><td>Ecuador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
+                    <tr style="background: #eff6ff;"><td>Ecuapro</td><td>Juega en Linea</td><td>Ecuador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
+                    <tr style="background: #eff6ff;"><td>VirtualScores</td><td>GranLatino</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
+                    <tr style="background: #eff6ff;"><td>VERTEX</td><td>LotBet</td><td>Guatemala</td><td>&mdash;</td><td>Marce</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
+                    <!-- ACTIVACION (docs/KYC/onboarding) -->
+                    <tr style="background: #fefce8;"><td>Oro Global</td><td>OroBet</td><td>Ecuador</td><td>$250K</td><td>&mdash;</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
+                    <tr style="background: #fefce8;"><td>Honduservice</td><td>Honduwin</td><td>Honduras</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
+                    <tr style="background: #fefce8;"><td>Advisors Comm.</td><td>ApuestasWin</td><td>Paraguay</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
+                    <tr style="background: #fefce8;"><td>Melbet</td><td>Melbet</td><td>EC + CA</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
+                    <tr style="background: #fefce8;"><td>Centribet</td><td>Centribet</td><td>HN, GT, PA</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
+                    <tr style="background: #fef2f2;"><td>Twintech SAS</td><td>Aciertala</td><td>Ecuador</td><td>&mdash;</td><td>Marcela</td><td><span class="badge badge-red">Activaci&oacute;n (bloqueado)</span></td></tr>
+                    <tr style="background: #fef2f2;"><td>Deportes Virtuales</td><td>SportGana</td><td>El Salvador</td><td>$100K</td><td>Marcela</td><td><span class="badge badge-red">Activaci&oacute;n (KYC negado)</span></td></tr>
+                    <tr style="background: #fef2f2;"><td>Red Servi</td><td>Trebalia</td><td>Ecuador</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-red">Activaci&oacute;n (bloqueado)</span></td></tr>
+                    <!-- PROSPECCION (first contact/proposal) -->
+                    <tr><td><strong>Stake</strong></td><td>Stake</td><td>CR, PA, RD</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td><strong>Luckia</strong></td><td>Luckia</td><td>CR, PA, RD</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td><strong>Codere</strong></td><td>Codere</td><td>Panam&aacute;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td><strong>1xBet</strong></td><td>1xBet</td><td>Guatemala</td><td>&mdash;</td><td>Pao</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td>Betcha</td><td>Betcha</td><td>Panam&aacute;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td>SBET SAS</td><td>Gana777</td><td>El Salvador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td>GeniusBet</td><td>GeniusBet</td><td>El Salvador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td>Sorti</td><td>Sorti</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td>BetGaliano</td><td>BetGaliano</td><td>Ecuador</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td>Softcede</td><td>Softcede</td><td>Ecuador</td><td>&mdash;</td><td>Pao</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td>ATOMO GAMING</td><td>Atomo</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
+                    <tr><td>RCB Global</td><td>RCB</td><td>USA</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
                 </tbody>
             </table>
         </div>
@@ -809,9 +820,9 @@
             </div>
         </div>
 
-        <div class="alert alert-danger">
+        <div class="alert alert-info">
             <span class="icon">&#127758;</span>
-            <div><strong>Contratos en 10+ pa&iacute;ses pero revenue solo de Ecuador.</strong> Los clientes internacionales tienen contratos firmados y cuentas bancarias configuradas, pero no aparecen en la facturaci&oacute;n 2026. Hay infraestructura lista que no se est&aacute; monetizando.</div>
+            <div><strong>Presencia activa en 10+ pa&iacute;ses.</strong> Ecuador ($4.55M), Honduras ($1.3M), El Salvador, Guatemala, Panam&aacute;, Costa Rica, Cura&ccedil;ao y Rep. Dominicana con contratos activos. Objetivo: expandir facturaci&oacute;n en mercados con infraestructura lista.</div>
         </div>
 
         <div class="geo-grid">
@@ -969,43 +980,66 @@
                     <tr><td>Landing Page (betting)</td><td><span class="badge badge-red">No existe</span></td><td>5 Mayo</td><td>Marketing + Tech</td></tr>
                     <tr><td>Demo Sandbox</td><td><span class="badge badge-red">No existe</span></td><td>30 Mayo</td><td>Tech + Paula</td></tr>
                     <tr><td>Booth Design (SBC)</td><td><span class="badge badge-red">No existe</span></td><td>20 Mayo</td><td>Paula + Proveedor</td></tr>
-                    <tr><td>Swag (camisetas, stickers)</td><td><span class="badge badge-red">No existe</span></td><td>20 Mayo</td><td>Marketing</td></tr>
+                    <tr><td>Swag (camisetas, stickers)</td><td><span class="badge badge-red">No existe</span></td><td>20 Mayo</td><td>Marcela</td></tr>
                 </tbody>
             </table>
         </div>
     </section>
 
-    <!-- SECTION 6: COMPLIANCE -->
-    <section id="compliance">
+    <!-- SECTION 6: CONTRACTS & ENTITIES -->
+    <section id="contracts">
         <div class="section-header">
-            <div class="icon" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: var(--compliance);">&#128274;</div>
+            <div class="icon" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: var(--pipeline);">&#128196;</div>
             <div>
-                <h2>Compliance Status</h2>
-                <p>Documentaci&oacute;n regulatoria de clientes activos</p>
+                <h2>Contratos &amp; Entidades</h2>
+                <p>Asignaci&oacute;n de clientes por entidad legal &mdash; Ecuapayphone vs Payphone Global</p>
             </div>
         </div>
 
-        <div class="alert alert-warning">
-            <span class="icon">&#9888;&#65039;</span>
-            <div><strong>4 clientes activos sin licencia de gaming registrada:</strong> Sportbet ($218K/mes), Astrobet ($16K), MasService ($18K), Databet ($9K). Esto representa un riesgo regulatorio para Payphone.</div>
+        <div class="alert alert-info">
+            <span class="icon">&#128196;</span>
+            <div><strong>Dos entidades legales procesan pagos de betting:</strong> <em>Ecuapayphone</em> (Ecuador-domiciled, clientes locales) y <em>Payphone Global</em> (procesamiento internacional). Cada cliente est&aacute; asignado a una entidad seg&uacute;n su contrato vigente. <strong>Limpiar y definir claramente es prioridad.</strong></div>
         </div>
 
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Cliente</th><th>Fact. Feb</th><th>NDA</th><th>Contrato</th><th>Licencia Gaming</th><th>KYC</th><th>Cert. Bancario</th><th>Riesgo</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>Ecuabet</strong></td><td>$3.17M</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-green">Bajo</span></td></tr>
-                    <tr><td><strong>Betano</strong></td><td>$566K</td><td><span class="doc-na">v&iacute;a Pagadoor</span></td><td><span class="doc-na">v&iacute;a Pagadoor</span></td><td><span class="doc-ok">SI</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">N/A</span></td><td><span class="badge badge-yellow">Medio</span></td></tr>
-                    <tr><td><strong>Sportbet</strong></td><td>$218K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-missing">&#10007; No tiene</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">N/A</span></td><td><span class="badge badge-red">Alto</span></td></tr>
-                    <tr><td><strong>Betcris EC</strong></td><td>$110K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">&mdash;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-green">Bajo</span></td></tr>
-                    <tr><td>Latribet</td><td>$36K</td><td><span class="doc-pending">&#9888; Pendiente</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Cura&ccedil;ao</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-yellow">Medio</span></td></tr>
-                    <tr><td>MasService</td><td>$18K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-missing">&#10007; No tiene</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-red">Alto</span></td></tr>
-                    <tr><td>Astrobet</td><td>$17K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-missing">&#10007; No tiene</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-red">Alto</span></td></tr>
-                    <tr><td>Databet</td><td>$9K</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-missing">&#10007; No tiene</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="badge badge-red">Alto</span></td></tr>
-                </tbody>
-            </table>
+        <div class="card-grid">
+            <div class="card" style="border-left: 4px solid var(--primary);">
+                <h3>&#127466;&#127464; Ecuapayphone</h3>
+                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.8rem;">Ecuador-domiciled entity &mdash; clientes locales y algunos intermediarios</p>
+                <div class="table-wrapper" style="margin-top: 0;">
+                    <table>
+                        <thead><tr><th>Cliente</th><th>Fact. Feb</th><th>Tipo</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Betano</strong> (v&iacute;a Pagadoor)</td><td>$565,980</td><td>Intermediario</td></tr>
+                            <tr><td><strong>Betcris EC</strong></td><td>$110,479</td><td>Directo</td></tr>
+                            <tr><td>Latribet</td><td>$36,267</td><td>Directo</td></tr>
+                            <tr><td>MasService</td><td>$17,607</td><td>Directo</td></tr>
+                            <tr><td>Databet</td><td>$8,868</td><td>Directo</td></tr>
+                            <tr><td>IGaming</td><td>$186</td><td>Directo</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--pipeline);">
+                <h3>&#127758; Payphone Global</h3>
+                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.8rem;">International processing entity &mdash; Ecuador + LATAM operators</p>
+                <div class="table-wrapper" style="margin-top: 0;">
+                    <table>
+                        <thead><tr><th>Cliente</th><th>Fact. Feb</th><th>Tipo</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Ecuabet</strong></td><td>$3,166,886</td><td>Directo</td></tr>
+                            <tr><td><strong>Hondubet</strong></td><td>$1,299,128</td><td>Directo</td></tr>
+                            <tr><td><strong>Mi Casino</strong></td><td>$531,183</td><td>Directo</td></tr>
+                            <tr><td><strong>BetcrisHN</strong></td><td>$382,407</td><td>Directo</td></tr>
+                            <tr><td><strong>LatinBet</strong></td><td>$307,829</td><td>Directo</td></tr>
+                            <tr><td><strong>Sportbet</strong></td><td>$217,973</td><td>Directo</td></tr>
+                            <tr><td>Ganaplay ES</td><td>$199,511</td><td>Directo</td></tr>
+                            <tr><td>Starplay</td><td>$151,236</td><td>Directo</td></tr>
+                            <tr><td>Betcris GT</td><td>$116,414</td><td>Directo</td></tr>
+                            <tr><td>Astrobet</td><td>$16,534</td><td>Directo</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1023,9 +1057,9 @@
             <div class="card" style="border-left: 4px solid var(--danger);">
                 <h3>&#128308; Cr&iacute;tico</h3>
                 <ul class="action-list">
-                    <li><div class="priority-dot critical"></div><div><strong>Recuperar Doradobet &mdash; $2.2M/mes perdidos:</strong> 5 pa&iacute;ses cayeron a $0 en febrero (NI, HN/Paniplay, CR, SV, GT). Todo va por VS Network Solutions. Contactar al parent company de inmediato.</div></li>
-                    <li><div class="priority-dot critical"></div><div><strong>Crear materiales de venta:</strong> Pitch deck, one-pager, landing page, demo sandbox. SBC Americas en 84 d&iacute;as. Nada existe hoy.</div></li>
+                    <li><div class="priority-dot critical"></div><div><strong>Crear materiales de venta:</strong> Pitch deck, one-pager, landing page, demo sandbox. SBC Americas en 82 d&iacute;as. Nada existe hoy.</div></li>
                     <li><div class="priority-dot critical"></div><div><strong>Convertir pipeline near-term:</strong> Betcris DOM ($100K), OroBet ($250K), Masterbets365 ($250-500K), Forbet ($100K) = $700K-$950K/mes potencial.</div></li>
+                    <li><div class="priority-dot critical"></div><div><strong>Intermediarios Feb $0:</strong> Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) &mdash; todos en blanco en febrero. Investigar de inmediato.</div></li>
                 </ul>
             </div>
             <div class="card" style="border-left: 4px solid var(--accent);">
@@ -1034,7 +1068,7 @@
                     <li><div class="priority-dot high"></div><div><strong>Mejorar m&aacute;rgenes internacionales:</strong> 0.5% net margin en $3.3M/mes no es sostenible (costo 5% vs tarifa 5.5%). Renegociar o ajustar pricing.</div></li>
                     <li><div class="priority-dot high"></div><div><strong>Seguimiento Tier 1:</strong> Stake, Luckia, Codere, 1xBet (propuesta enviada 16 mar), Betcha &mdash; todas sin respuesta.</div></li>
                     <li><div class="priority-dot high"></div><div><strong>Resolver docs bloqueados:</strong> Aciertala (KYC pendiente), SportGana (KYC negado), Trebalia (docs pendientes), RCB Global (sin docs).</div></li>
-                    <li><div class="priority-dot high"></div><div><strong>NDA Latribet + licencias gaming:</strong> Latribet $36K/mes sin NDA. Sportbet, Astrobet, MasService, Databet sin licencia.</div></li>
+                    <li><div class="priority-dot high"></div><div><strong>Definir due&ntilde;o de cuentas internacionales no-betting:</strong> Actualmente en limbo, tasa del 10% fuera de mercado, sin proceso ni contratos definidos.</div></li>
                 </ul>
             </div>
             <div class="card" style="border-left: 4px solid var(--primary);">
@@ -1043,30 +1077,43 @@
                     <li><div class="priority-dot medium"></div><div><strong>Auditar row 36 sin nombre:</strong> $392K &rarr; $23 en febrero. &iquest;Qui&eacute;n es este cliente y qu&eacute; pas&oacute;?</div></li>
                     <li><div class="priority-dot medium"></div><div><strong>CRM migration:</strong> Mover tracking de Excel a Freshsales. 2 archivos duplicados + 5 CSVs sueltos = riesgo de datos.</div></li>
                     <li><div class="priority-dot medium"></div><div><strong>Estrategia de pricing:</strong> Clientes >$700K pagan solo 0.20%. Hondubet ($1.3M) genera ~$6.5K/mes de profit. Revisar estructura.</div></li>
-                    <li><div class="priority-dot medium"></div><div><strong>Intermediarios Feb $0:</strong> Pagadoor, Monnet, ALPS, Zippy no reportan facturaci&oacute;n febrero. &iquest;Retraso en reporte o churn?</div></li>
+                    <li><div class="priority-dot medium"></div><div><strong>Capacidad del equipo:</strong> Paula + Marcela gestionan 60+ clientes activos + 32 pipeline. Definir plan de capacidad.</div></li>
                 </ul>
             </div>
         </div>
 
-        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--dark);">Preguntas para 1-on-1 con Paula</h3>
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--dark);">Preguntas para 1-on-1 con Paula (Head of Bettings)</h3>
         <div class="table-wrapper">
             <table>
                 <thead><tr><th>#</th><th>Pregunta</th><th>Por qu&eacute;</th></tr></thead>
                 <tbody>
-                    <tr><td>1</td><td>&iquest;Qu&eacute; pas&oacute; con Doradobet en 5 pa&iacute;ses?</td><td>$2.2M/mes perdidos. NI, HN, CR, SV, GT todos a $0. VS Network Solutions es el parent &mdash; &iquest;cambiaron de procesador?</td></tr>
-                    <tr><td>2</td><td>&iquest;Qui&eacute;n es el cliente en row 36 ($392K &rarr; $23)?</td><td>RUC 8019022409207. Ca&iacute;da de -100%. Sin nombre en el MasterFile.</td></tr>
-                    <tr><td>3</td><td>&iquest;Por qu&eacute; intermediarios reportan $0 en febrero?</td><td>Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) &mdash; todos en blanco.</td></tr>
-                    <tr><td>4</td><td>&iquest;Estado real de OroBet, Masterbets365, Forbet?</td><td>$600K-$950K/mes potencial. Todos bloqueados en integraci&oacute;n/contrato/licencia.</td></tr>
-                    <tr><td>5</td><td>&iquest;Podemos renegociar pricing para clientes &gt;$700K?</td><td>Hondubet $1.3M/mes genera ~$6.5K profit (0.5% net). No es sostenible.</td></tr>
-                    <tr><td>6</td><td>&iquest;Timeline real para Betcris DOM go-live?</td><td>En integraci&oacute;n desde febrero. Proyecci&oacute;n $100K/mes. Clave para GAT DR.</td></tr>
-                    <tr><td>7</td><td>&iquest;Qu&eacute; le falta al equipo para ir m&aacute;s r&aacute;pido?</td><td>2 personas gestionando 60+ clientes + 29 pipeline</td></tr>
+                    <tr><td>1</td><td>&iquest;Qui&eacute;n es el cliente en row 36 ($392K &rarr; $23)?</td><td>RUC 8019022409207. Ca&iacute;da de -100%. Sin nombre en el MasterFile.</td></tr>
+                    <tr><td>2</td><td>&iquest;Por qu&eacute; intermediarios reportan $0 en febrero?</td><td>Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) &mdash; todos en blanco.</td></tr>
+                    <tr><td>3</td><td>&iquest;Estado real de OroBet, Masterbets365, Forbet?</td><td>$600K-$950K/mes potencial. Todos bloqueados en integraci&oacute;n/contrato/licencia.</td></tr>
+                    <tr><td>4</td><td>&iquest;Podemos renegociar pricing para clientes &gt;$700K?</td><td>Hondubet $1.3M/mes genera ~$6.5K profit (0.5% net). No es sostenible.</td></tr>
+                    <tr><td>5</td><td>&iquest;Timeline real para Betcris DOM go-live?</td><td>En integraci&oacute;n desde febrero. Proyecci&oacute;n $100K/mes. Clave para GAT DR.</td></tr>
+                    <tr><td>6</td><td>&iquest;Qu&eacute; le falta al equipo para ir m&aacute;s r&aacute;pido?</td><td>Paula + Marcela gestionando 60+ clientes + 32 pipeline.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="font-size: 1rem; font-weight: 700; margin: 2rem 0 1rem; color: var(--dark);">Preguntas para Marcela y equipo</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>#</th><th>Pregunta</th><th>Por qu&eacute;</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>&iquest;Status de documentos bloqueados: Aciertala, SportGana, Trebalia, RCB Global?</td><td>4 prospectos en pipeline detenidos por docs/KYC. Necesitan seguimiento directo.</td></tr>
+                    <tr><td>2</td><td>&iquest;Cu&aacute;l es el status real de integraciones activas: Forbet, Juega en Linea, GranLatino, LotBet?</td><td>Representan ~$300K/mes potencial. Necesitamos timelines concretos.</td></tr>
+                    <tr><td>3</td><td>&iquest;CRM migration: qu&eacute; data se necesita migrar primero a Freshsales?</td><td>Actualmente en 2 Excels + 7 CSVs. Riesgo de p&eacute;rdida de datos.</td></tr>
+                    <tr><td>4</td><td>&iquest;Capacidad actual del equipo: cu&aacute;ntos clientes puede gestionar Marcela sola?</td><td>60+ clientes activos + 32 pipeline con equipo reducido.</td></tr>
+                    <tr><td>5</td><td>&iquest;Status de orden de swag para SBC Americas?</td><td>Deadline 20 de mayo. Necesita coordinaci&oacute;n con proveedor.</td></tr>
                 </tbody>
             </table>
         </div>
     </section>
 
     <footer style="padding: 2rem 2.5rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border);">
-        Payphone Betting Dashboard &bull; Confidential &bull; Last updated: March 18, 2026 &bull; Data: Full portfolio (NAC + INT + Intermediarios)
+        Payphone Betting Dashboard &bull; Confidential &bull; Last updated: March 19, 2026 &bull; Data: Full portfolio (NAC + INT + Intermediarios)
     </footer>
 </div>
 
@@ -1130,21 +1177,51 @@ function switchTab(tab) {
 
 // CHARTS
 function initCharts() {
-    // Concentration Doughnut (Full Portfolio)
-    new Chart(document.getElementById('concentrationChart'), {
+    // Ecuador Concentration (Nacional)
+    new Chart(document.getElementById('concentrationEcuadorChart'), {
         type: 'doughnut',
         data: {
-            labels: ['Ecuabet', 'Hondubet', 'Betano', 'Mi Casino', 'BetcrisHN', 'LatinBet', 'Otros'],
+            labels: ['Ecuabet', 'Betano (Pagadoor)', 'Sportbet', 'Betcris EC', 'Latribet', 'MasService', 'Otros'],
             datasets: [{
-                data: [3166886, 1299128, 565980, 531183, 382407, 307829, 1599174],
-                backgroundColor: ['#ef4444', '#FF6400', '#5A00B4', '#FFA000', '#0891b2', '#10b981', '#9ca3af'],
+                data: [3166886, 565980, 217973, 110479, 36267, 17607, 25958],
+                backgroundColor: ['#ef4444', '#5A00B4', '#FF6400', '#0891b2', '#FFA000', '#10b981', '#9ca3af'],
                 borderWidth: 0
             }]
         },
         options: {
             responsive: true,
             plugins: {
-                legend: { position: 'bottom', labels: { padding: 15, usePointStyle: true } },
+                legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true, font: { size: 11 } } },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => {
+                            const val = ctx.parsed;
+                            const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+                            const pct = ((val / total) * 100).toFixed(1);
+                            return ` $${(val/1000000).toFixed(2)}M (${pct}%)`;
+                        }
+                    }
+                }
+            },
+            cutout: '65%'
+        }
+    });
+
+    // International Concentration
+    new Chart(document.getElementById('concentrationInternationalChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Hondubet', 'Mi Casino', 'BetcrisHN', 'LatinBet', 'Ganaplay ES', 'Starplay', 'Betcris GT', 'Otros INT'],
+            datasets: [{
+                data: [1299128, 531183, 382407, 307829, 199511, 151236, 116414, 312466],
+                backgroundColor: ['#ef4444', '#FFA000', '#0891b2', '#10b981', '#5A00B4', '#FF6400', '#7c3aed', '#9ca3af'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true, font: { size: 11 } } },
                 tooltip: {
                     callbacks: {
                         label: ctx => {
@@ -1180,46 +1257,14 @@ function initCharts() {
         }
     });
 
-    // Tier Doughnut (Full Portfolio)
-    // Tier 1 >$100K: Ecuabet 3.17M + Hondubet 1.30M + Betano 566K + Mi Casino 531K + BetcrisHN 382K + LatinBet 308K + Sportbet 218K + Ganaplay ES 200K + Starplay 151K + Betcris GT 116K + Betcris EC 110K + Bet502 106K
-    // Tier 2 $10-100K: Win on Fire 75K + BetpproHN 57K + Betppro SV 36K + Latribet 36K + MasService 18K + Sivarbet 17K + Astrobet 17K
-    // Tier 3 <$10K: Databet 9K + 1Win 5K + TAR 5K + Apuesto 5K + Masterbets 4K + Doradobet HN 3K + others
-    new Chart(document.getElementById('tierChart'), {
-        type: 'doughnut',
-        data: {
-            labels: ['Tier 1 (>$100K)', 'Tier 2 ($10-100K)', 'Tier 3 (<$10K)'],
-            datasets: [{
-                data: [6875141, 255749, 31697],
-                backgroundColor: ['#10b981', '#FFA000', '#ef4444'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'bottom', labels: { padding: 15, usePointStyle: true } },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => {
-                            const val = ctx.parsed;
-                            const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
-                            return ` $${(val/1000).toFixed(0)}K (${((val/total)*100).toFixed(1)}%)`;
-                        }
-                    }
-                }
-            },
-            cutout: '65%'
-        }
-    });
-
     // MoM Change (Full Portfolio - Top movers)
     new Chart(document.getElementById('momChart'), {
         type: 'bar',
         data: {
-            labels: ['Mi Casino', 'Bet502', 'Hondubet', 'Betcris GT', 'Betano', 'Sivarbet', 'Ecuabet', 'Ganaplay ES', 'Ganaplay GT', 'DoradoBet 5x', 'IGaming'],
+            labels: ['Mi Casino', 'Betcris GT', 'Hondubet', 'MasService', 'Bet502', 'Betano', 'Sivarbet', 'Ecuabet', 'Astrobet', 'Ganaplay ES', 'Ganaplay GT'],
             datasets: [{
                 label: 'MoM %',
-                data: [119, 28, 51, 54, 21, 29, -13, -73, -92, -100, -99],
+                data: [119, 54, 51, 43, 28, 21, 29, -13, -32, -73, -92],
                 backgroundColor: ctx => ctx.parsed.y >= 0 ? '#10b981' : '#ef4444'
             }]
         },
