@@ -1,0 +1,224 @@
+{
+  "meta": {
+    "lastUpdated": "March 19, 2026",
+    "password": "payphone2026",
+    "badge": "Data as of March 2026",
+    "monthLabel": "Marzo 2026"
+  },
+  "headerStats": [
+    { "value": "$7.85M", "label": "Revenue Feb 2026 (Full)", "style": "" },
+    { "value": "-26%", "label": "MoM (Jan $10.6M)", "style": "danger" },
+    { "value": "$9.6M", "label": "March MTD (16 days)", "style": "green" },
+    { "value": "32", "label": "Pipeline Activo", "style": "purple" }
+  ],
+  "marchTracker": {
+    "target": "$28.75M ($345M/año)",
+    "weeks": [
+      { "period": "Semana 1", "dates": "Mar 1-7", "nacional": "", "internacional": "", "total": "", "pctTarget": "", "notes": "Pendiente", "current": false },
+      { "period": "Semana 2", "dates": "Mar 8-14", "nacional": "", "internacional": "", "total": "", "pctTarget": "", "notes": "Pendiente", "current": false },
+      { "period": "Semana 3", "dates": "Mar 15-21", "nacional": "", "internacional": "", "total": "$9.6M", "pctTarget": "33.4%", "notes": "MTD al 16 de marzo", "current": true },
+      { "period": "Semana 4", "dates": "Mar 22-31", "nacional": "", "internacional": "", "total": "", "pctTarget": "", "notes": "Pendiente", "current": false }
+    ],
+    "totalNacional": "",
+    "totalInternacional": "",
+    "totalTotal": "$9.6M",
+    "totalPctTarget": "33.4%",
+    "totalNotes": "En progreso"
+  },
+  "revenueKpis": [
+    { "label": "Total Feb 2026", "value": "$7.85M", "delta": "▼ -26% vs Enero ($10.6M)", "deltaDir": "down", "color": "green" },
+    { "label": "Nacionales", "value": "$4.55M", "delta": "▼ -8% MoM", "deltaDir": "down", "color": "blue" },
+    { "label": "Internacionales", "value": "$3.30M", "delta": "▼ -39% MoM", "deltaDir": "down", "color": "amber" },
+    { "label": "March MTD", "value": "$9.6M", "delta": "▲ 33% del target", "deltaDir": "up", "color": "amber" }
+  ],
+  "revenueAlerts": [
+    { "type": "warning", "icon": "📊", "html": "<strong>Merchants to watch (vs semana anterior):</strong> Esta sección mostrará comercios con caída semanal una vez se disponga de data semanal. Estructura: Cliente | Semana anterior | Esta semana | Cambio | Acción. <em>Placeholder — data pendiente.</em>" },
+    { "type": "warning", "icon": "⚠️", "html": "<strong>Concentración:</strong> Ecuabet = 40% del revenue total ($3.17M de $7.85M). Top 3 clientes (Ecuabet + Hondubet + Betano) = 64%. Mejor de lo estimado inicialmente, pero aún requiere diversificación." }
+  ],
+  "sidebarConcentration": {
+    "label": "Concentration Risk",
+    "value": "40%",
+    "detail": "Ecuabet share (Ecuador ops)"
+  },
+  "charts": {
+    "ecuadorConcentration": {
+      "labels": ["Ecuabet", "Betano (Pagadoor)", "Sportbet", "Betcris EC", "Latribet", "MasService", "Otros"],
+      "data": [3166886, 565980, 217973, 110479, 36267, 17607, 25958]
+    },
+    "internationalConcentration": {
+      "labels": ["Hondubet", "Mi Casino", "BetcrisHN", "LatinBet", "Ganaplay ES", "Starplay", "Betcris GT", "Otros INT"],
+      "data": [1299128, 531183, 382407, 307829, 199511, 151236, 116414, 312466]
+    },
+    "revenueBar": {
+      "labels": ["Ecuabet", "Hondubet", "Betano", "Mi Casino", "BetcrisHN", "LatinBet", "Sportbet", "Ganaplay ES", "Starplay", "Betcris GT"],
+      "enero": [3642841, 861192, 466711, 242507, 451516, 350062, 224750, 738018, 160563, 75754],
+      "febrero": [3166886, 1299128, 565980, 531183, 382407, 307829, 217973, 199511, 151236, 116414]
+    },
+    "momChange": {
+      "labels": ["Mi Casino", "Betcris GT", "Hondubet", "MasService", "Bet502", "Betano", "Sivarbet", "Ecuabet", "Astrobet", "Ganaplay ES", "Ganaplay GT"],
+      "data": [119, 54, 51, 43, 28, 21, 29, -13, -32, -73, -92]
+    }
+  },
+  "clientesNacionales": [
+    { "nombre": "Ecuabet", "parentesis": "(Sportek)", "factFeb": "$3,166,886", "varMoM": "-13.1%", "varDir": "down", "nda": "ok", "contrato": "ok", "licencia": "Comoros", "licenciaStatus": "ok", "procesador": "PayphoneGlobal", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Betano", "parentesis": "(vía Pagadoor)", "factFeb": "$565,980", "varMoM": "+21.3%", "varDir": "up", "nda": "vía int.", "ndaStatus": "na", "contrato": "vía int.", "contratoStatus": "na", "licencia": "SI", "licenciaStatus": "ok", "procesador": "Ecuapayphone", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Sportbet", "parentesis": "", "factFeb": "$217,973", "varMoM": "-3.0%", "varDir": "down", "nda": "ok", "contrato": "ok", "licencia": "No", "licenciaStatus": "missing", "procesador": "PayphoneGlobal", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Betcris EC", "parentesis": "", "factFeb": "$110,479", "varMoM": "+14.9%", "varDir": "up", "nda": "ok", "contrato": "ok", "licencia": "—", "licenciaStatus": "na", "procesador": "Ecuapayphone", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Latribet", "parentesis": "", "factFeb": "$36,267", "varMoM": "+7.8%", "varDir": "up", "nda": "pending", "contrato": "ok", "licencia": "Curaçao", "licenciaStatus": "ok", "procesador": "Ecuapayphone", "status": "NDA pend.", "statusColor": "yellow" },
+    { "nombre": "MasService", "parentesis": "(Mas1x2)", "factFeb": "$17,607", "varMoM": "+42.9%", "varDir": "up", "nda": "ok", "contrato": "ok", "licencia": "No", "licenciaStatus": "missing", "procesador": "Ecuapayphone", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Astrobet", "parentesis": "", "factFeb": "$16,534", "varMoM": "-31.8%", "varDir": "down", "nda": "ok", "contrato": "ok", "licencia": "No", "licenciaStatus": "missing", "procesador": "PayphoneGlobal", "status": "Declining", "statusColor": "red" },
+    { "nombre": "Databet", "parentesis": "(Softdata)", "factFeb": "$8,868", "varMoM": "-20.3%", "varDir": "down", "nda": "ok", "contrato": "ok", "licencia": "No", "licenciaStatus": "missing", "procesador": "Ecuapayphone", "status": "Declining", "statusColor": "red" }
+  ],
+  "clientesInternacionales": [
+    { "nombre": "Hondubet", "pais": "Honduras/Panamá", "nda": "ok", "contrato": "ok", "licencia": "Comoros", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Betppro SV", "pais": "El Salvador", "nda": "ok", "contrato": "ok", "licencia": "Lotería SV", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Starplay", "pais": "Panamá", "nda": "ok", "contrato": "ok", "licencia": "JCJ Panamá", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Mi Casino", "pais": "Curaçao", "nda": "ok", "contrato": "ok", "licencia": "CGA Curaçao", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Bet502", "pais": "Guatemala", "nda": "ok", "contrato": "ok", "licencia": "Min. Gobernación", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Ganaplay SV/GT", "pais": "El Salvador, Guatemala", "nda": "ok", "contrato": "ok", "licencia": "Lotería SV", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Win On Fire", "pais": "Costa Rica", "nda": "ok", "contrato": "ok", "licencia": "Pendiente", "licenciaStatus": "pending", "procesador": "USA", "status": "Lic. pend.", "statusColor": "yellow" },
+    { "nombre": "Latin", "pais": "Panamá", "nda": "ok", "contrato": "ok", "licencia": "JCJ Panamá", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Sivarbet", "pais": "El Salvador", "nda": "ok", "contrato": "ok", "licencia": "Comoros", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Lotto.GT", "pais": "Guatemala", "nda": "ok", "contrato": "ok", "licencia": "Registro Mercantil", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "1Win", "pais": "Ecuador (INT)", "nda": "ok", "contrato": "ok", "licencia": "Curaçao", "licenciaStatus": "ok", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Betcris HN", "pais": "Honduras", "nda": "pending", "contrato": "ok", "licencia": "—", "licenciaStatus": "na", "procesador": "USA", "status": "NDA pend.", "statusColor": "yellow" },
+    { "nombre": "Betcris GT", "pais": "Guatemala", "nda": "pending", "contrato": "ok", "licencia": "—", "licenciaStatus": "na", "procesador": "USA", "status": "NDA pend.", "statusColor": "yellow" }
+  ],
+  "intermediarios": [
+    { "nombre": "Pagadoor (ProntoPaga)", "marcas": "Betano, Coolbet, EstelarBet, MilloBet, Forbet, Jugabet, Monetix", "procesador": "ECU", "status": "Activo — crítico", "statusColor": "green" },
+    { "nombre": "Monnet", "marcas": "Forbet", "procesador": "ECU", "status": "Activo", "statusColor": "green" },
+    { "nombre": "Zippy (Chile)", "marcas": "Pelmenzilla, Betnrollnet, Suvyd", "procesador": "USA", "status": "Activo", "statusColor": "green" },
+    { "nombre": "ALPS Ecuador", "marcas": "—", "procesador": "ECU", "status": "NDA firmado", "statusColor": "yellow" },
+    { "nombre": "ALPS Perú", "marcas": "Orobet, Masterbets365", "procesador": "USA", "status": "Contrato pend.", "statusColor": "yellow" },
+    { "nombre": "ALPS SPA (Chile)", "marcas": "—", "procesador": "—", "status": "Contrato pend.", "statusColor": "yellow" },
+    { "nombre": "SmartfastPay", "marcas": "—", "procesador": "ECU", "status": "NDA firmado", "statusColor": "yellow" },
+    { "nombre": "Ficha Dorada", "marcas": "—", "procesador": "—", "status": "Activo", "statusColor": "green" },
+    { "nombre": "WorldSec (BetterBro)", "marcas": "—", "procesador": "Pendiente", "status": "Contrato firmado", "statusColor": "yellow" }
+  ],
+  "pipeline": {
+    "funnel": {
+      "prospeccion": 12,
+      "activacion": 8,
+      "nuevo": 6,
+      "facturacion": 2
+    },
+    "lastUpdated": "19 marzo 2026",
+    "operators": [
+      { "operador": "ECUADORSOFTWARE", "marca": "Masterbets365", "pais": "Ecuador", "proyeccion": "$250-500K", "responsable": "Marce", "estado": "Facturación", "estadoColor": "green", "bgColor": "#f0fdf4" },
+      { "operador": "Tomerly Assets", "marca": "Azar Latino", "pais": "GT, HN", "proyeccion": "—", "responsable": "—", "estado": "Facturación", "estadoColor": "green", "bgColor": "#f0fdf4" },
+      { "operador": "Betcris Banca", "marca": "Betcris DOM", "pais": "Rep. Dominicana", "proyeccion": "$100K", "responsable": "—", "estado": "Nuevo", "estadoColor": "blue", "bgColor": "#eff6ff" },
+      { "operador": "Wave Win", "marca": "4Luck", "pais": "—", "proyeccion": "—", "responsable": "—", "estado": "Nuevo", "estadoColor": "blue", "bgColor": "#eff6ff" },
+      { "operador": "FORBET", "marca": "Forbet", "pais": "Ecuador", "proyeccion": "$100K", "responsable": "—", "estado": "Nuevo", "estadoColor": "blue", "bgColor": "#eff6ff" },
+      { "operador": "Ecuapro", "marca": "Juega en Linea", "pais": "Ecuador", "proyeccion": "$100K", "responsable": "—", "estado": "Nuevo", "estadoColor": "blue", "bgColor": "#eff6ff" },
+      { "operador": "VirtualScores", "marca": "GranLatino", "pais": "Ecuador", "proyeccion": "—", "responsable": "—", "estado": "Nuevo", "estadoColor": "blue", "bgColor": "#eff6ff" },
+      { "operador": "VERTEX", "marca": "LotBet", "pais": "Guatemala", "proyeccion": "—", "responsable": "Marce", "estado": "Nuevo", "estadoColor": "blue", "bgColor": "#eff6ff" },
+      { "operador": "Oro Global", "marca": "OroBet", "pais": "Ecuador", "proyeccion": "$250K", "responsable": "—", "estado": "Activación", "estadoColor": "yellow", "bgColor": "#fefce8" },
+      { "operador": "Honduservice", "marca": "Honduwin", "pais": "Honduras", "proyeccion": "—", "responsable": "Marce/Pao", "estado": "Activación", "estadoColor": "yellow", "bgColor": "#fefce8" },
+      { "operador": "Advisors Comm.", "marca": "ApuestasWin", "pais": "Paraguay", "proyeccion": "—", "responsable": "—", "estado": "Activación", "estadoColor": "yellow", "bgColor": "#fefce8" },
+      { "operador": "Melbet", "marca": "Melbet", "pais": "EC + CA", "proyeccion": "—", "responsable": "—", "estado": "Activación", "estadoColor": "yellow", "bgColor": "#fefce8" },
+      { "operador": "Centribet", "marca": "Centribet", "pais": "HN, GT, PA", "proyeccion": "—", "responsable": "—", "estado": "Activación", "estadoColor": "yellow", "bgColor": "#fefce8" },
+      { "operador": "Twintech SAS", "marca": "Aciertala", "pais": "Ecuador", "proyeccion": "—", "responsable": "Marcela", "estado": "Activación (bloqueado)", "estadoColor": "red", "bgColor": "#fef2f2" },
+      { "operador": "Deportes Virtuales", "marca": "SportGana", "pais": "El Salvador", "proyeccion": "$100K", "responsable": "Marcela", "estado": "Activación (KYC negado)", "estadoColor": "red", "bgColor": "#fef2f2" },
+      { "operador": "Red Servi", "marca": "Trebalia", "pais": "Ecuador", "proyeccion": "—", "responsable": "Marce/Pao", "estado": "Activación (bloqueado)", "estadoColor": "red", "bgColor": "#fef2f2" },
+      { "operador": "Stake", "marca": "Stake", "pais": "CR, PA, RD", "proyeccion": "—", "responsable": "—", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "Luckia", "marca": "Luckia", "pais": "CR, PA, RD", "proyeccion": "—", "responsable": "—", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "Codere", "marca": "Codere", "pais": "Panamá", "proyeccion": "—", "responsable": "—", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "1xBet", "marca": "1xBet", "pais": "Guatemala", "proyeccion": "—", "responsable": "Pao", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "Betcha", "marca": "Betcha", "pais": "Panamá", "proyeccion": "—", "responsable": "—", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "SBET SAS", "marca": "Gana777", "pais": "El Salvador", "proyeccion": "—", "responsable": "—", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "GeniusBet", "marca": "GeniusBet", "pais": "El Salvador", "proyeccion": "—", "responsable": "—", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "Sorti", "marca": "Sorti", "pais": "Ecuador", "proyeccion": "—", "responsable": "—", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "BetGaliano", "marca": "BetGaliano", "pais": "Ecuador", "proyeccion": "—", "responsable": "Marce/Pao", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "Softcede", "marca": "Softcede", "pais": "Ecuador", "proyeccion": "—", "responsable": "Pao", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "ATOMO GAMING", "marca": "Atomo", "pais": "Ecuador", "proyeccion": "—", "responsable": "—", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" },
+      { "operador": "RCB Global", "marca": "RCB", "pais": "USA", "proyeccion": "—", "responsable": "Marce/Pao", "estado": "Prospección", "estadoColor": "purple", "bgColor": "" }
+    ]
+  },
+  "geography": [
+    { "flag": "🇪🇨", "country": "Ecuador", "detail": "15 clientes | ~40 cuentas", "revenue": "$4.14M/mes", "revenueColor": "green", "priority": "P1 — Activo", "priorityColor": "green", "cardClass": "active-rev" },
+    { "flag": "🇨🇴", "country": "Colombia", "detail": "3 contratos | Bancolombia, BBVA", "revenue": "$0", "revenueColor": "red", "priority": "P1 — Rails listos", "priorityColor": "yellow", "cardClass": "p1" },
+    { "flag": "🇬🇹", "country": "Guatemala", "detail": "5 contratos | Banco Industrial, BAC", "revenue": "$0 visible", "revenueColor": "red", "priority": "Contratos firmados", "priorityColor": "yellow", "cardClass": "p3" },
+    { "flag": "🇭🇳", "country": "Honduras", "detail": "5 contratos | BAC, Banrural", "revenue": "$0 visible", "revenueColor": "red", "priority": "Contratos firmados", "priorityColor": "yellow", "cardClass": "p3" },
+    { "flag": "🇸🇻", "country": "El Salvador", "detail": "4 contratos | Agrícola, BAC", "revenue": "$0 visible", "revenueColor": "red", "priority": "Contratos firmados", "priorityColor": "yellow", "cardClass": "p3" },
+    { "flag": "🇵🇦", "country": "Panamá", "detail": "3 contratos | Banco Aliado", "revenue": "$0 visible", "revenueColor": "red", "priority": "Contratos firmados", "priorityColor": "yellow", "cardClass": "p3" },
+    { "flag": "🇨🇷", "country": "Costa Rica", "detail": "2 contratos | BNCR, Lafise", "revenue": "$0 visible", "revenueColor": "red", "priority": "Contratos firmados", "priorityColor": "yellow", "cardClass": "p3" },
+    { "flag": "🇩🇴", "country": "Rep. Dominicana", "detail": "1 en integración (Betcris)", "revenue": "$100K proy.", "revenueColor": "amber", "priority": "P3 — Integrando", "priorityColor": "blue", "cardClass": "p3" },
+    { "flag": "🇵🇪", "country": "Perú", "detail": "1 contrato | Interbank", "revenue": "$0", "revenueColor": "red", "priority": "P2 — Docs pend.", "priorityColor": "gray", "cardClass": "p2" },
+    { "flag": "🇨🇱", "country": "Chile", "detail": "1 contrato (Zippy) | Banco Bice", "revenue": "$0", "revenueColor": "red", "priority": "P2 — En proceso", "priorityColor": "gray", "cardClass": "p2" },
+    { "flag": "🇳🇮", "country": "Nicaragua", "detail": "1 contrato (DoradoBet)", "revenue": "$0 visible", "revenueColor": "red", "priority": "Contrato firmado", "priorityColor": "yellow", "cardClass": "p3" },
+    { "flag": "🇺🇸", "country": "USA", "detail": "2 clientes (1Win, 4Luck)", "revenue": "Pipeline", "revenueColor": "amber", "priority": "1Win activo", "priorityColor": "blue", "cardClass": "" }
+  ],
+  "conferences": {
+    "events": [
+      { "id": "sbc", "date": "2026-06-09", "dateLabel": "9-11 Junio 2026", "name": "SBC Summit Americas", "location": "Fort Lauderdale, FL — Paula + Val", "stats": [{ "label": "asistentes", "value": "10,000+" }, { "label": "exhibidores", "value": "400+" }, { "label": "budget", "value": "$3,150" }], "targets": "Bet365, Betano, Caliente, Betcris, Codere, 1xBet", "cssClass": "sbc" },
+      { "id": "gat-pr", "date": "2026-09-08", "dateLabel": "8-9 Septiembre 2026", "name": "GAT Expo San Juan", "location": "Puerto Rico — Paula", "stats": [{ "label": "asistentes", "value": "200-400" }, { "label": "países", "value": "14+" }, { "label": "budget", "value": "$2,000" }], "targets": "Casinos PR, Asojuegos CO, operadores Caribe", "cssClass": "gat-pr" },
+      { "id": "gat-dr", "date": "2026-11-17", "dateLabel": "17-18 Noviembre 2026", "name": "GAT Expo Santo Domingo", "location": "Rep. Dominicana — Paula", "stats": [{ "label": "delegados", "value": "600+" }, { "label": "países", "value": "20" }, { "label": "budget", "value": "$2,200" }], "targets": "Coljuegos President (Colombia P1 access)", "cssClass": "gat-dr" }
+    ],
+    "materials": [
+      { "material": "Pitch Deck (Betting)", "status": "No existe", "statusColor": "red", "deadline": "30 Abril", "responsable": "Paula + Diseño" },
+      { "material": "One-Pager / Leave-behind", "status": "No existe", "statusColor": "red", "deadline": "15 Mayo", "responsable": "Paula + Diseño" },
+      { "material": "Landing Page (betting)", "status": "No existe", "statusColor": "red", "deadline": "5 Mayo", "responsable": "Marketing + Tech" },
+      { "material": "Demo Sandbox", "status": "No existe", "statusColor": "red", "deadline": "30 Mayo", "responsable": "Tech + Paula" },
+      { "material": "Booth Design (SBC)", "status": "No existe", "statusColor": "red", "deadline": "20 Mayo", "responsable": "Paula + Proveedor" },
+      { "material": "Swag (camisetas, stickers)", "status": "No existe", "statusColor": "red", "deadline": "20 Mayo", "responsable": "Marcela" }
+    ]
+  },
+  "contracts": {
+    "ecuapayphone": [
+      { "cliente": "Betano", "parentesis": "(vía Pagadoor)", "factFeb": "$565,980", "tipo": "Intermediario" },
+      { "cliente": "Betcris EC", "parentesis": "", "factFeb": "$110,479", "tipo": "Directo" },
+      { "cliente": "Latribet", "parentesis": "", "factFeb": "$36,267", "tipo": "Directo" },
+      { "cliente": "MasService", "parentesis": "", "factFeb": "$17,607", "tipo": "Directo" },
+      { "cliente": "Databet", "parentesis": "", "factFeb": "$8,868", "tipo": "Directo" },
+      { "cliente": "IGaming", "parentesis": "", "factFeb": "$186", "tipo": "Directo" }
+    ],
+    "global": [
+      { "cliente": "Ecuabet", "parentesis": "", "factFeb": "$3,166,886", "tipo": "Directo" },
+      { "cliente": "Hondubet", "parentesis": "", "factFeb": "$1,299,128", "tipo": "Directo" },
+      { "cliente": "Mi Casino", "parentesis": "", "factFeb": "$531,183", "tipo": "Directo" },
+      { "cliente": "BetcrisHN", "parentesis": "", "factFeb": "$382,407", "tipo": "Directo" },
+      { "cliente": "LatinBet", "parentesis": "", "factFeb": "$307,829", "tipo": "Directo" },
+      { "cliente": "Sportbet", "parentesis": "", "factFeb": "$217,973", "tipo": "Directo" },
+      { "cliente": "Ganaplay ES", "parentesis": "", "factFeb": "$199,511", "tipo": "Directo" },
+      { "cliente": "Starplay", "parentesis": "", "factFeb": "$151,236", "tipo": "Directo" },
+      { "cliente": "Betcris GT", "parentesis": "", "factFeb": "$116,414", "tipo": "Directo" },
+      { "cliente": "Astrobet", "parentesis": "", "factFeb": "$16,534", "tipo": "Directo" }
+    ]
+  },
+  "actions": {
+    "critico": [
+      "**Crear materiales de venta:** Pitch deck, one-pager, landing page, demo sandbox. SBC Americas en 82 días. Nada existe hoy.",
+      "**Convertir pipeline near-term:** Betcris DOM ($100K), OroBet ($250K), Masterbets365 ($250-500K), Forbet ($100K) = $700K-$950K/mes potencial.",
+      "**Intermediarios Feb $0:** Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) — todos en blanco en febrero. Investigar de inmediato."
+    ],
+    "alto": [
+      "**Mejorar márgenes internacionales:** 0.5% net margin en $3.3M/mes no es sostenible (costo 5% vs tarifa 5.5%). Renegociar o ajustar pricing.",
+      "**Seguimiento Tier 1:** Stake, Luckia, Codere, 1xBet (propuesta enviada 16 mar), Betcha — todas sin respuesta.",
+      "**Resolver docs bloqueados:** Aciertala (KYC pendiente), SportGana (KYC negado), Trebalia (docs pendientes), RCB Global (sin docs).",
+      "**Definir dueño de cuentas internacionales no-betting:** Actualmente en limbo, tasa del 10% fuera de mercado, sin proceso ni contratos definidos."
+    ],
+    "estrategico": [
+      "**Auditar row 36 sin nombre:** $392K → $23 en febrero. ¿Quién es este cliente y qué pasó?",
+      "**CRM migration:** Mover tracking de Excel a Freshsales. 2 archivos duplicados + 5 CSVs sueltos = riesgo de datos.",
+      "**Estrategia de pricing:** Clientes >$700K pagan solo 0.20%. Hondubet ($1.3M) genera ~$6.5K/mes de profit. Revisar estructura.",
+      "**Capacidad del equipo:** Paula + Marcela gestionan 60+ clientes activos + 32 pipeline. Definir plan de capacidad."
+    ]
+  },
+  "questions": {
+    "paula": [
+      { "num": 1, "pregunta": "¿Quién es el cliente en row 36 ($392K → $23)?", "porque": "RUC 8019022409207. Caída de -100%. Sin nombre en el MasterFile." },
+      { "num": 2, "pregunta": "¿Por qué intermediarios reportan $0 en febrero?", "porque": "Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) — todos en blanco." },
+      { "num": 3, "pregunta": "¿Estado real de OroBet, Masterbets365, Forbet?", "porque": "$600K-$950K/mes potencial. Todos bloqueados en integración/contrato/licencia." },
+      { "num": 4, "pregunta": "¿Podemos renegociar pricing para clientes >$700K?", "porque": "Hondubet $1.3M/mes genera ~$6.5K profit (0.5% net). No es sostenible." },
+      { "num": 5, "pregunta": "¿Timeline real para Betcris DOM go-live?", "porque": "En integración desde febrero. Proyección $100K/mes. Clave para GAT DR." },
+      { "num": 6, "pregunta": "¿Qué le falta al equipo para ir más rápido?", "porque": "Paula + Marcela gestionando 60+ clientes + 32 pipeline." }
+    ],
+    "marcela": [
+      { "num": 1, "pregunta": "¿Status de documentos bloqueados: Aciertala, SportGana, Trebalia, RCB Global?", "porque": "4 prospectos en pipeline detenidos por docs/KYC. Necesitan seguimiento directo." },
+      { "num": 2, "pregunta": "¿Cuál es el status real de integraciones activas: Forbet, Juega en Linea, GranLatino, LotBet?", "porque": "Representan ~$300K/mes potencial. Necesitamos timelines concretos." },
+      { "num": 3, "pregunta": "¿CRM migration: qué data se necesita migrar primero a Freshsales?", "porque": "Actualmente en 2 Excels + 7 CSVs. Riesgo de pérdida de datos." },
+      { "num": 4, "pregunta": "¿Capacidad actual del equipo: cuántos clientes puede gestionar Marcela sola?", "porque": "60+ clientes activos + 32 pipeline con equipo reducido." },
+      { "num": 5, "pregunta": "¿Status de orden de swag para SBC Americas?", "porque": "Deadline 20 de mayo. Necesita coordinación con proveedor." }
+    ]
+  }
+}

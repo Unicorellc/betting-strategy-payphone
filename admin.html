@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Betting Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6400;
+            --primary-dark: #e55a00;
+            --primary-light: #ff8533;
+            --violet: #5A00B4;
+            --violet-light: #7b2ff2;
+            --yellow: #FFA000;
+            --dark: #222222;
+            --dark-light: #2d2d2d;
+            --dark-lighter: #3a3a3a;
+            --text: #374151;
+            --text-light: #6b7280;
+            --text-muted: #9ca3af;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --sidebar-width: 260px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* ===== PASSWORD SCREEN ===== */
+        .password-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 50%, #3d3d3d 100%);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10000;
+        }
+        .password-screen.hidden { display: none; }
+        .password-box {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 3rem; text-align: center;
+            max-width: 420px; width: 90%;
+        }
+        .password-box .logo-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .password-box h2 { color: white; font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .password-box .subtitle { color: var(--primary); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .password-box p { color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .password-box input {
+            width: 100%; padding: 0.9rem 1.2rem; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08);
+            color: white; font-size: 1rem; outline: none; margin-bottom: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .password-box input::placeholder { color: rgba(255,255,255,0.3); }
+        .password-box input:focus { border-color: var(--primary); }
+        .password-box button {
+            width: 100%; padding: 0.9rem; border-radius: 12px; border: none;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .password-box button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,100,0,0.4); }
+        .password-error { color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+        .shake { animation: shake 0.3s ease; }
+
+        /* ===== GITHUB TOKEN MODAL ===== */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+        .modal-overlay.hidden { display: none; }
+        .modal {
+            background: var(--white); border-radius: 20px; padding: 2.5rem;
+            max-width: 560px; width: 90%; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { font-size: 1.3rem; color: var(--dark); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .modal .modal-desc { color: var(--text-light); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .modal .steps { background: #f9fafb; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
+        .modal .steps h4 { font-size: 0.85rem; color: var(--dark); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .modal .steps ol { padding-left: 1.25rem; font-size: 0.88rem; color: var(--text); }
+        .modal .steps ol li { margin-bottom: 0.5rem; }
+        .modal .steps ol li strong { color: var(--primary); }
+        .modal .steps a { color: var(--violet); text-decoration: none; font-weight: 600; }
+        .modal .steps a:hover { text-decoration: underline; }
+        .modal label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; }
+        .modal input[type="text"] {
+            width: 100%; padding: 0.8rem 1rem; border-radius: 10px;
+            border: 1.5px solid var(--border); font-size: 0.95rem;
+            font-family: monospace; outline: none; transition: border-color 0.2s;
+        }
+        .modal input[type="text"]:focus { border-color: var(--primary); }
+        .modal .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+        .modal .modal-actions button {
+            flex: 1; padding: 0.8rem; border-radius: 10px; border: none;
+            font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .modal .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        .modal .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(255,100,0,0.4); }
+        .modal .btn-secondary {
+            background: #f3f4f6; color: var(--text);
+        }
+        .modal .btn-secondary:hover { background: #e5e7eb; }
+        .modal-error { color: var(--danger); font-size: 0.83rem; margin-top: 0.5rem; display: none; }
+
+        /* ===== MAIN LAYOUT ===== */
+        .app-container { display: none; }
+        .app-container.visible { display: flex; }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed; left: 0; top: 0; width: var(--sidebar-width); height: 100vh;
+            background: linear-gradient(180deg, var(--dark) 0%, var(--dark-light) 100%);
+            overflow-y: auto; z-index: 1000; padding: 1.5rem 0;
+            border-right: 1px solid rgba(255,255,255,0.05);
+        }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+        .sidebar-logo { padding: 0 1.25rem; margin-bottom: 1.5rem; }
+        .sidebar-logo h1 {
+            color: white; font-size: 1rem; font-weight: 700;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .sidebar-logo .icon { font-size: 1.2rem; }
+        .sidebar-logo p { color: rgba(255,255,255,0.4); font-size: 0.7rem; margin-top: 0.2rem; }
+        .sidebar-section { margin-bottom: 0.75rem; }
+        .sidebar-section-title {
+            color: rgba(255,255,255,0.35); font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            padding: 0 1.25rem; margin-bottom: 0.35rem;
+        }
+        .sidebar-link {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.5rem 1.25rem; color: rgba(255,255,255,0.6);
+            text-decoration: none; font-size: 0.82rem; font-weight: 500;
+            transition: all 0.2s; cursor: pointer; border: none; background: none; width: 100%; text-align: left;
+        }
+        .sidebar-link:hover { color: white; background: rgba(255,255,255,0.05); }
+        .sidebar-link.active { color: var(--primary); background: rgba(255,100,0,0.1); border-right: 3px solid var(--primary); }
+        .sidebar-link .link-icon { font-size: 0.95rem; width: 20px; text-align: center; }
+        .sidebar-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 0.75rem 1.25rem; }
+        .sidebar-actions { padding: 0 1.25rem; margin-top: 1rem; }
+        .sidebar-actions button {
+            width: 100%; padding: 0.6rem; border-radius: 10px; border: none;
+            font-size: 0.82rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; margin-bottom: 0.5rem;
+            display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+        }
+        .btn-save {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(255,100,0,0.4); }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-preview { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.12) !important; }
+        .btn-preview:hover { background: rgba(255,255,255,0.12); color: white; }
+        .btn-disconnect { background: transparent; color: rgba(255,255,255,0.4); font-size: 0.75rem !important; }
+        .btn-disconnect:hover { color: var(--danger); }
+        .sidebar-status {
+            padding: 0.75rem 1.25rem; margin-top: 0.5rem;
+        }
+        .sidebar-status .status-dot {
+            display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+            margin-right: 0.4rem;
+        }
+        .sidebar-status .status-text { color: rgba(255,255,255,0.5); font-size: 0.72rem; }
+        .status-dot.connected { background: var(--success); }
+        .status-dot.disconnected { background: var(--danger); }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: var(--sidebar-width); flex: 1; min-height: 100vh;
+            padding: 2rem 2.5rem;
+        }
+        .main-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 2rem; padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .main-header h2 { font-size: 1.5rem; color: var(--dark); font-weight: 800; }
+        .main-header .badge {
+            background: linear-gradient(135deg, var(--primary), var(--yellow));
+            color: white; padding: 0.3rem 0.8rem; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+
+        /* ===== SECTION CARDS ===== */
+        .section-card {
+            background: var(--white); border-radius: 16px; padding: 1.75rem;
+            margin-bottom: 1.5rem; border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: none;
+        }
+        .section-card.active { display: block; }
+        .section-card h3 {
+            font-size: 1.15rem; font-weight: 700; color: var(--dark);
+            margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .section-card h3 .section-icon { font-size: 1.1rem; }
+        .section-card .section-desc {
+            color: var(--text-light); font-size: 0.83rem; margin-bottom: 1.25rem;
+        }
+        .section-card hr { border: none; border-top: 1px solid #f0f0f0; margin: 1.25rem 0; }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-grid { display: grid; gap: 1rem; }
+        .form-grid-2 { grid-template-columns: 1fr 1fr; }
+        .form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .form-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label {
+            font-size: 0.78rem; font-weight: 600; color: var(--text-light);
+            margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.03em;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 0.6rem 0.8rem; border-radius: 8px;
+            border: 1.5px solid var(--border); font-size: 0.88rem;
+            font-family: 'Inter', sans-serif; outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: var(--white);
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,100,0,0.1);
+        }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .form-group select { cursor: pointer; }
+
+        /* ===== EDITABLE TABLES ===== */
+        .editable-table-wrap { overflow-x: auto; margin-top: 0.5rem; }
+        .editable-table {
+            width: 100%; border-collapse: collapse; font-size: 0.84rem;
+        }
+        .editable-table thead th {
+            background: #f9fafb; padding: 0.6rem 0.7rem;
+            text-align: left; font-weight: 600; color: var(--text-light);
+            font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.04em;
+            border-bottom: 2px solid var(--border); white-space: nowrap;
+        }
+        .editable-table tbody td {
+            padding: 0.45rem 0.5rem; border-bottom: 1px solid #f3f4f6;
+            vertical-align: middle;
+        }
+        .editable-table tbody tr:hover { background: #fefefe; }
+        .editable-table input, .editable-table select {
+            width: 100%; padding: 0.4rem 0.5rem; border-radius: 6px;
+            border: 1px solid #e8e8e8; font-size: 0.82rem;
+            font-family: 'Inter', sans-serif; outline: none;
+            transition: border-color 0.2s;
+            background: transparent;
+        }
+        .editable-table input:focus, .editable-table select:focus {
+            border-color: var(--primary); background: white;
+        }
+        .editable-table .col-narrow { width: 80px; }
+        .editable-table .col-medium { width: 120px; }
+        .editable-table .col-action { width: 40px; text-align: center; }
+
+        .btn-remove-row {
+            width: 28px; height: 28px; border-radius: 6px; border: none;
+            background: #fef2f2; color: var(--danger); cursor: pointer;
+            font-size: 1rem; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .btn-remove-row:hover { background: #fee2e2; transform: scale(1.1); }
+
+        .btn-add-row {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.5rem 1rem; border-radius: 8px; border: 1.5px dashed var(--border);
+            background: transparent; color: var(--text-light); font-size: 0.82rem;
+            font-weight: 500; cursor: pointer; transition: all 0.2s; margin-top: 0.75rem;
+        }
+        .btn-add-row:hover { border-color: var(--primary); color: var(--primary); background: #fff7ed; }
+
+        /* ===== KPI CARD EDITORS ===== */
+        .kpi-edit-card {
+            background: #f9fafb; border-radius: 12px; padding: 1rem;
+            border: 1px solid #eee;
+        }
+        .kpi-edit-card .kpi-card-num {
+            font-size: 0.7rem; font-weight: 700; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem;
+        }
+
+        /* ===== ALERT EDITORS ===== */
+        .alert-edit-card {
+            background: #fffbeb; border-radius: 12px; padding: 1rem;
+            border: 1px solid #fde68a; margin-bottom: 0.75rem;
+        }
+        .alert-edit-card .alert-header {
+            display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
+        }
+        .alert-edit-card .alert-num {
+            font-size: 0.7rem; font-weight: 700; color: var(--warning);
+            text-transform: uppercase;
+        }
+
+        /* ===== ACTION ITEMS ===== */
+        .action-item-row {
+            display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem;
+        }
+        .action-item-row textarea {
+            flex: 1; padding: 0.5rem 0.7rem; border-radius: 8px;
+            border: 1.5px solid var(--border); font-size: 0.85rem;
+            font-family: 'Inter', sans-serif; outline: none; resize: vertical;
+            min-height: 50px; transition: border-color 0.2s;
+        }
+        .action-item-row textarea:focus { border-color: var(--primary); }
+
+        /* ===== CHART DATA EDITORS ===== */
+        .chart-data-section { margin-bottom: 1.25rem; }
+        .chart-data-section h4 {
+            font-size: 0.9rem; font-weight: 700; color: var(--dark);
+            margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;
+        }
+        .chart-data-section h4 .chart-badge {
+            background: var(--violet); color: white; padding: 0.15rem 0.5rem;
+            border-radius: 6px; font-size: 0.65rem; font-weight: 600;
+        }
+
+        /* ===== NOTIFICATIONS ===== */
+        .notification {
+            position: fixed; top: 1.5rem; right: 1.5rem; z-index: 20000;
+            padding: 1rem 1.5rem; border-radius: 12px;
+            font-size: 0.9rem; font-weight: 500; color: white;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            transform: translateX(120%); transition: transform 0.4s cubic-bezier(.36,.07,.19,.97);
+            max-width: 400px;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .notification.show { transform: translateX(0); }
+        .notification.success { background: var(--success); }
+        .notification.error { background: var(--danger); }
+        .notification.info { background: var(--info); }
+
+        /* ===== LOADING SPINNER ===== */
+        .spinner {
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white; border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.85); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 15000;
+        }
+        .loading-overlay.hidden { display: none; }
+        .loading-overlay .loading-spinner {
+            width: 48px; height: 48px; border: 4px solid #eee;
+            border-top-color: var(--primary); border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin-bottom: 1rem;
+        }
+        .loading-overlay p { color: var(--text); font-size: 0.95rem; font-weight: 500; }
+
+        /* ===== CONFERENCE EVENT EDITOR ===== */
+        .event-edit-card {
+            background: #f0fdfa; border-radius: 12px; padding: 1.25rem;
+            border: 1px solid #99f6e4; margin-bottom: 1rem;
+        }
+        .event-edit-card h4 {
+            font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 0.75rem;
+        }
+        .stat-edit-row { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.4rem; }
+        .stat-edit-row input { flex: 1; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 1.25rem; }
+            .form-grid-2, .form-grid-3, .form-grid-4 { grid-template-columns: 1fr; }
+            .mobile-toggle {
+                position: fixed; top: 1rem; left: 1rem; z-index: 1001;
+                width: 40px; height: 40px; border-radius: 10px; border: none;
+                background: var(--dark); color: white; font-size: 1.2rem;
+                cursor: pointer; display: flex; align-items: center; justify-content: center;
+            }
+        }
+        @media (min-width: 901px) {
+            .mobile-toggle { display: none; }
+        }
+
+        /* ===== SIDEBAR CONCENTRATION SECTION ===== */
+        .sidebar-conc-card {
+            margin: 0.75rem 1.25rem; padding: 0.75rem;
+            background: rgba(255,255,255,0.05); border-radius: 10px;
+        }
+        .sidebar-conc-card label { color: rgba(255,255,255,0.5); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .sidebar-conc-card input {
+            width: 100%; padding: 0.35rem 0.5rem; margin-top: 0.25rem;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 6px; color: white; font-size: 0.82rem; outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .sidebar-conc-card input:focus { border-color: var(--primary); }
+
+        /* ===== FUNNEL EDITOR ===== */
+        .funnel-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .funnel-item {
+            background: #f9fafb; border-radius: 10px; padding: 0.75rem;
+            text-align: center; border: 1px solid #eee;
+        }
+        .funnel-item label {
+            display: block; font-size: 0.72rem; font-weight: 600;
+            color: var(--text-light); text-transform: uppercase; margin-bottom: 0.35rem;
+        }
+        .funnel-item input {
+            width: 100%; text-align: center; padding: 0.5rem;
+            border-radius: 8px; border: 1.5px solid var(--border);
+            font-size: 1.1rem; font-weight: 700; outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .funnel-item input:focus { border-color: var(--primary); }
+
+        /* ===== GEO CARDS EDITOR ===== */
+        .geo-edit-card {
+            background: #f9fafb; border-radius: 12px; padding: 1rem;
+            border: 1px solid #eee; margin-bottom: 0.75rem;
+        }
+        .geo-edit-card .geo-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        .geo-edit-card .geo-header span { font-weight: 700; color: var(--dark); }
+
+        /* ===== QUESTION TABLE STYLING ===== */
+        .question-block { margin-bottom: 1.5rem; }
+        .question-block h4 {
+            font-size: 0.95rem; font-weight: 700; color: var(--dark);
+            margin-bottom: 0.5rem; padding-bottom: 0.35rem;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NOTIFICATION -->
+<div id="notification" class="notification"></div>
+
+<!-- LOADING OVERLAY -->
+<div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loading-spinner"></div>
+    <p id="loadingText">Cargando datos...</p>
+</div>
+
+<!-- PASSWORD SCREEN -->
+<div id="passwordScreen" class="password-screen">
+    <div class="password-box">
+        <div class="logo-icon">&#x1F3B0;</div>
+        <h2>Betting Dashboard</h2>
+        <div class="subtitle">PANEL DE ADMINISTRACION</div>
+        <p>Ingresa la contrasena del dashboard</p>
+        <input type="password" id="passwordInput" placeholder="Contrasena..." autocomplete="off">
+        <button onclick="checkPassword()">Ingresar</button>
+        <div id="passwordError" class="password-error">Contrasena incorrecta</div>
+    </div>
+</div>
+
+<!-- GITHUB TOKEN MODAL -->
+<div id="tokenModal" class="modal-overlay hidden">
+    <div class="modal">
+        <h3>&#x1F511; Configurar acceso a GitHub</h3>
+        <p class="modal-desc">Para editar y guardar los datos del dashboard necesitas un token de acceso personal de GitHub.</p>
+        <div class="steps">
+            <h4>Como crear tu token</h4>
+            <ol>
+                <li>Ve a <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com/settings/tokens</a> (Fine-grained tokens)</li>
+                <li>Haz clic en <strong>"Generate new token"</strong></li>
+                <li>Nombre: <strong>Betting Dashboard Admin</strong></li>
+                <li>Expiracion: elige 90 dias o mas</li>
+                <li>En "Repository access" selecciona <strong>"Only select repositories"</strong> y elige <strong>Unicorellc/betting-strategy-payphone</strong></li>
+                <li>En "Permissions" &rarr; "Repository permissions" &rarr; <strong>Contents</strong>: selecciona <strong>Read and write</strong></li>
+                <li>Clic en <strong>"Generate token"</strong> y copialo</li>
+            </ol>
+        </div>
+        <label for="tokenInput">Token de acceso personal</label>
+        <input type="text" id="tokenInput" placeholder="github_pat_xxxxxxxxxxxx..." autocomplete="off">
+        <div id="tokenError" class="modal-error">Token invalido o sin permisos. Verifica que tenga acceso al repositorio.</div>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="skipToken()">Cancelar</button>
+            <button class="btn-primary" onclick="validateAndSaveToken()">Conectar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MOBILE TOGGLE -->
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+
+<!-- APP CONTAINER -->
+<div id="appContainer" class="app-container">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <h1><span class="icon">&#x1F3B0;</span> Betting Admin</h1>
+            <p>Panel de Administracion</p>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">General</div>
+            <button class="sidebar-link active" onclick="showSection('meta', this)">
+                <span class="link-icon">&#9881;</span> Meta / Configuracion
+            </button>
+            <button class="sidebar-link" onclick="showSection('headerStats', this)">
+                <span class="link-icon">&#128202;</span> Header Stats
+            </button>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Revenue</div>
+            <button class="sidebar-link" onclick="showSection('marchTracker', this)">
+                <span class="link-icon">&#128197;</span> March Tracker
+            </button>
+            <button class="sidebar-link" onclick="showSection('revenueKpis', this)">
+                <span class="link-icon">&#128200;</span> Revenue KPIs
+            </button>
+            <button class="sidebar-link" onclick="showSection('revenueAlerts', this)">
+                <span class="link-icon">&#9888;</span> Revenue Alerts
+            </button>
+            <button class="sidebar-link" onclick="showSection('charts', this)">
+                <span class="link-icon">&#128202;</span> Charts Data
+            </button>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Clientes</div>
+            <button class="sidebar-link" onclick="showSection('clientesNacionales', this)">
+                <span class="link-icon">&#127466;&#127464;</span> Clientes Nacionales
+            </button>
+            <button class="sidebar-link" onclick="showSection('clientesInternacionales', this)">
+                <span class="link-icon">&#127758;</span> Clientes Internacionales
+            </button>
+            <button class="sidebar-link" onclick="showSection('intermediarios', this)">
+                <span class="link-icon">&#128279;</span> Intermediarios
+            </button>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Pipeline</div>
+            <button class="sidebar-link" onclick="showSection('pipeline', this)">
+                <span class="link-icon">&#128640;</span> Pipeline
+            </button>
+            <button class="sidebar-link" onclick="showSection('geography', this)">
+                <span class="link-icon">&#127757;</span> Geografia
+            </button>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Operaciones</div>
+            <button class="sidebar-link" onclick="showSection('conferences', this)">
+                <span class="link-icon">&#127915;</span> Conferencias
+            </button>
+            <button class="sidebar-link" onclick="showSection('contracts', this)">
+                <span class="link-icon">&#128196;</span> Contratos
+            </button>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Acciones</div>
+            <button class="sidebar-link" onclick="showSection('actions', this)">
+                <span class="link-icon">&#9889;</span> Action Items
+            </button>
+            <button class="sidebar-link" onclick="showSection('questions', this)">
+                <span class="link-icon">&#10067;</span> Preguntas
+            </button>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-actions">
+            <button class="btn-save" id="btnSave" onclick="saveToGitHub()">
+                <span id="saveIcon">&#128190;</span>
+                <span id="saveText">Guardar Cambios</span>
+            </button>
+            <button class="btn-preview btn-save" onclick="openPreview()" style="background: rgba(255,255,255,0.08);">
+                &#128065; Vista Previa
+            </button>
+            <button class="btn-disconnect btn-save" onclick="disconnectGitHub()" style="background: transparent;">
+                &#128275; Desconectar GitHub
+            </button>
+        </div>
+
+        <div class="sidebar-status">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="status-text" id="statusText"></span>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="main-header">
+            <h2>Admin Panel</h2>
+            <span class="badge" id="headerBadge">Cargando...</span>
+        </div>
+
+        <!-- ===== SECTION: META ===== -->
+        <div class="section-card active" id="section-meta">
+            <h3><span class="section-icon">&#9881;</span> Meta / Configuracion</h3>
+            <p class="section-desc">Datos generales del dashboard: fecha de actualizacion, badge y contrasena.</p>
+            <div class="form-grid form-grid-2">
+                <div class="form-group">
+                    <label>Ultima Actualizacion</label>
+                    <input type="text" id="meta-lastUpdated" placeholder="March 19, 2026">
+                </div>
+                <div class="form-group">
+                    <label>Etiqueta del Mes</label>
+                    <input type="text" id="meta-monthLabel" placeholder="Marzo 2026">
+                </div>
+                <div class="form-group">
+                    <label>Texto del Badge</label>
+                    <input type="text" id="meta-badge" placeholder="Data as of March 2026">
+                </div>
+                <div class="form-group">
+                    <label>Contrasena del Dashboard</label>
+                    <input type="text" id="meta-password" placeholder="payphone2026">
+                </div>
+            </div>
+            <hr>
+            <h3 style="font-size:1rem;"><span class="section-icon">&#128202;</span> Sidebar: Concentration Risk</h3>
+            <p class="section-desc">Widget del sidebar con riesgo de concentracion.</p>
+            <div class="form-grid form-grid-3">
+                <div class="form-group">
+                    <label>Label</label>
+                    <input type="text" id="sidebarConc-label" placeholder="Concentration Risk">
+                </div>
+                <div class="form-group">
+                    <label>Valor</label>
+                    <input type="text" id="sidebarConc-value" placeholder="40%">
+                </div>
+                <div class="form-group">
+                    <label>Detalle</label>
+                    <input type="text" id="sidebarConc-detail" placeholder="Ecuabet share (Ecuador ops)">
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SECTION: HEADER STATS ===== -->
+        <div class="section-card" id="section-headerStats">
+            <h3><span class="section-icon">&#128202;</span> Header Stats</h3>
+            <p class="section-desc">Las 4 tarjetas KPI principales que aparecen en la parte superior del dashboard.</p>
+            <div class="form-grid form-grid-2" id="headerStatsGrid"></div>
+        </div>
+
+        <!-- ===== SECTION: MARCH TRACKER ===== -->
+        <div class="section-card" id="section-marchTracker">
+            <h3><span class="section-icon">&#128197;</span> March Tracker</h3>
+            <p class="section-desc">Seguimiento semanal de revenue del mes con target y totales.</p>
+            <div class="form-grid form-grid-2" style="margin-bottom:1rem;">
+                <div class="form-group">
+                    <label>Target del Mes</label>
+                    <input type="text" id="marchTracker-target">
+                </div>
+            </div>
+            <div class="editable-table-wrap">
+                <table class="editable-table" id="marchTrackerTable">
+                    <thead>
+                        <tr>
+                            <th>Periodo</th>
+                            <th>Fechas</th>
+                            <th>Nacional</th>
+                            <th>Internacional</th>
+                            <th>Total</th>
+                            <th>% Target</th>
+                            <th>Notas</th>
+                            <th>Semana Actual</th>
+                        </tr>
+                    </thead>
+                    <tbody id="marchTrackerBody"></tbody>
+                </table>
+            </div>
+            <hr>
+            <h3 style="font-size:1rem;">Totales del Mes</h3>
+            <div class="form-grid form-grid-4" style="margin-top:0.75rem;">
+                <div class="form-group">
+                    <label>Total Nacional</label>
+                    <input type="text" id="marchTracker-totalNacional">
+                </div>
+                <div class="form-group">
+                    <label>Total Internacional</label>
+                    <input type="text" id="marchTracker-totalInternacional">
+                </div>
+                <div class="form-group">
+                    <label>Total General</label>
+                    <input type="text" id="marchTracker-totalTotal">
+                </div>
+                <div class="form-group">
+                    <label>% Target Total</label>
+                    <input type="text" id="marchTracker-totalPctTarget">
+                </div>
+            </div>
+            <div class="form-group" style="margin-top:0.5rem;">
+                <label>Notas Totales</label>
+                <input type="text" id="marchTracker-totalNotes">
+            </div>
+        </div>
+
+        <!-- ===== SECTION: REVENUE KPIS ===== -->
+        <div class="section-card" id="section-revenueKpis">
+            <h3><span class="section-icon">&#128200;</span> Revenue KPIs</h3>
+            <p class="section-desc">Las 4 tarjetas de KPIs de revenue con valor, delta y direccion.</p>
+            <div class="form-grid form-grid-2" id="revenueKpisGrid"></div>
+        </div>
+
+        <!-- ===== SECTION: REVENUE ALERTS ===== -->
+        <div class="section-card" id="section-revenueAlerts">
+            <h3><span class="section-icon">&#9888;</span> Revenue Alerts</h3>
+            <p class="section-desc">Alertas y advertencias del modulo de revenue. Soporta HTML basico (&lt;strong&gt;, &lt;em&gt;).</p>
+            <div id="revenueAlertsContainer"></div>
+            <button class="btn-add-row" onclick="addRevenueAlert()">+ Agregar alerta</button>
+        </div>
+
+        <!-- ===== SECTION: CHARTS ===== -->
+        <div class="section-card" id="section-charts">
+            <h3><span class="section-icon">&#128202;</span> Charts Data</h3>
+            <p class="section-desc">Datos para los graficos del dashboard. Cada grafico tiene etiquetas y valores numericos.</p>
+
+            <!-- Ecuador Concentration -->
+            <div class="chart-data-section">
+                <h4>Concentracion Ecuador <span class="chart-badge">Doughnut</span></h4>
+                <div class="editable-table-wrap">
+                    <table class="editable-table" id="chartEcuadorTable">
+                        <thead><tr><th>Etiqueta</th><th>Valor ($)</th><th class="col-action"></th></tr></thead>
+                        <tbody id="chartEcuadorBody"></tbody>
+                    </table>
+                </div>
+                <button class="btn-add-row" onclick="addChartRow('chartEcuadorBody')">+ Agregar fila</button>
+            </div>
+            <hr>
+
+            <!-- International Concentration -->
+            <div class="chart-data-section">
+                <h4>Concentracion Internacional <span class="chart-badge">Doughnut</span></h4>
+                <div class="editable-table-wrap">
+                    <table class="editable-table" id="chartIntlTable">
+                        <thead><tr><th>Etiqueta</th><th>Valor ($)</th><th class="col-action"></th></tr></thead>
+                        <tbody id="chartIntlBody"></tbody>
+                    </table>
+                </div>
+                <button class="btn-add-row" onclick="addChartRow('chartIntlBody')">+ Agregar fila</button>
+            </div>
+            <hr>
+
+            <!-- Revenue Bar -->
+            <div class="chart-data-section">
+                <h4>Revenue Comparativo (Barras) <span class="chart-badge">Bar Chart</span></h4>
+                <div class="editable-table-wrap">
+                    <table class="editable-table" id="chartBarTable">
+                        <thead><tr><th>Cliente</th><th>Enero ($)</th><th>Febrero ($)</th><th class="col-action"></th></tr></thead>
+                        <tbody id="chartBarBody"></tbody>
+                    </table>
+                </div>
+                <button class="btn-add-row" onclick="addChartBarRow()">+ Agregar fila</button>
+            </div>
+            <hr>
+
+            <!-- MoM Change -->
+            <div class="chart-data-section">
+                <h4>Cambio MoM (%) <span class="chart-badge">Horizontal Bar</span></h4>
+                <div class="editable-table-wrap">
+                    <table class="editable-table" id="chartMomTable">
+                        <thead><tr><th>Cliente</th><th>Cambio (%)</th><th class="col-action"></th></tr></thead>
+                        <tbody id="chartMomBody"></tbody>
+                    </table>
+                </div>
+                <button class="btn-add-row" onclick="addChartRow('chartMomBody')">+ Agregar fila</button>
+            </div>
+        </div>
+
+        <!-- ===== SECTION: CLIENTES NACIONALES ===== -->
+        <div class="section-card" id="section-clientesNacionales">
+            <h3><span class="section-icon">&#127466;&#127464;</span> Clientes Nacionales</h3>
+            <p class="section-desc">Tabla de clientes nacionales con facturacion, compliance y status.</p>
+            <div class="editable-table-wrap">
+                <table class="editable-table" id="clientesNacTable">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Parentesis</th>
+                            <th>Fact. Feb</th>
+                            <th>Var MoM</th>
+                            <th>Dir.</th>
+                            <th>NDA</th>
+                            <th>Contrato</th>
+                            <th>Licencia</th>
+                            <th>Lic. Status</th>
+                            <th>Procesador</th>
+                            <th>Status</th>
+                            <th>Color</th>
+                            <th class="col-action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientesNacBody"></tbody>
+                </table>
+            </div>
+            <button class="btn-add-row" onclick="addClienteNacional()">+ Agregar cliente nacional</button>
+        </div>
+
+        <!-- ===== SECTION: CLIENTES INTERNACIONALES ===== -->
+        <div class="section-card" id="section-clientesInternacionales">
+            <h3><span class="section-icon">&#127758;</span> Clientes Internacionales</h3>
+            <p class="section-desc">Tabla de clientes internacionales con pais, compliance y status.</p>
+            <div class="editable-table-wrap">
+                <table class="editable-table" id="clientesIntlTable">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Pais</th>
+                            <th>NDA</th>
+                            <th>Contrato</th>
+                            <th>Licencia</th>
+                            <th>Lic. Status</th>
+                            <th>Procesador</th>
+                            <th>Status</th>
+                            <th>Color</th>
+                            <th class="col-action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientesIntlBody"></tbody>
+                </table>
+            </div>
+            <button class="btn-add-row" onclick="addClienteInternacional()">+ Agregar cliente internacional</button>
+        </div>
+
+        <!-- ===== SECTION: INTERMEDIARIOS ===== -->
+        <div class="section-card" id="section-intermediarios">
+            <h3><span class="section-icon">&#128279;</span> Intermediarios</h3>
+            <p class="section-desc">Tabla de intermediarios/agregadores con marcas y status.</p>
+            <div class="editable-table-wrap">
+                <table class="editable-table" id="intermediariosTable">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Marcas</th>
+                            <th>Procesador</th>
+                            <th>Status</th>
+                            <th>Color</th>
+                            <th class="col-action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="intermediariosBody"></tbody>
+                </table>
+            </div>
+            <button class="btn-add-row" onclick="addIntermediario()">+ Agregar intermediario</button>
+        </div>
+
+        <!-- ===== SECTION: PIPELINE ===== -->
+        <div class="section-card" id="section-pipeline">
+            <h3><span class="section-icon">&#128640;</span> Pipeline</h3>
+            <p class="section-desc">Embudo de pipeline y tabla de operadores con proyecciones y estados.</p>
+
+            <h3 style="font-size:1rem; margin-bottom:0.5rem;">Embudo (Funnel)</h3>
+            <div class="funnel-grid">
+                <div class="funnel-item">
+                    <label>Prospeccion</label>
+                    <input type="number" id="funnel-prospeccion">
+                </div>
+                <div class="funnel-item">
+                    <label>Activacion</label>
+                    <input type="number" id="funnel-activacion">
+                </div>
+                <div class="funnel-item">
+                    <label>Nuevo</label>
+                    <input type="number" id="funnel-nuevo">
+                </div>
+                <div class="funnel-item">
+                    <label>Facturacion</label>
+                    <input type="number" id="funnel-facturacion">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1rem;">
+                <label>Ultima Actualizacion Pipeline</label>
+                <input type="text" id="pipeline-lastUpdated" style="max-width:300px;">
+            </div>
+
+            <hr>
+            <h3 style="font-size:1rem;">Operadores</h3>
+            <div class="editable-table-wrap">
+                <table class="editable-table" id="pipelineTable">
+                    <thead>
+                        <tr>
+                            <th>Operador</th>
+                            <th>Marca</th>
+                            <th>Pais</th>
+                            <th>Proyeccion</th>
+                            <th>Responsable</th>
+                            <th>Estado</th>
+                            <th>Color Estado</th>
+                            <th>Color Fondo</th>
+                            <th class="col-action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="pipelineBody"></tbody>
+                </table>
+            </div>
+            <button class="btn-add-row" onclick="addPipelineOperator()">+ Agregar operador</button>
+        </div>
+
+        <!-- ===== SECTION: GEOGRAPHY ===== -->
+        <div class="section-card" id="section-geography">
+            <h3><span class="section-icon">&#127757;</span> Geografia</h3>
+            <p class="section-desc">Tarjetas de paises con detalle, revenue y prioridad.</p>
+            <div id="geographyContainer"></div>
+            <button class="btn-add-row" onclick="addGeography()">+ Agregar pais</button>
+        </div>
+
+        <!-- ===== SECTION: CONFERENCES ===== -->
+        <div class="section-card" id="section-conferences">
+            <h3><span class="section-icon">&#127915;</span> Conferencias</h3>
+            <p class="section-desc">Eventos programados y materiales de venta necesarios.</p>
+
+            <h3 style="font-size:1rem; margin-bottom:0.5rem;">Eventos</h3>
+            <div id="conferencesEventsContainer"></div>
+            <button class="btn-add-row" onclick="addConferenceEvent()" style="margin-bottom:1.5rem;">+ Agregar evento</button>
+
+            <hr>
+            <h3 style="font-size:1rem; margin-bottom:0.5rem;">Materiales</h3>
+            <div class="editable-table-wrap">
+                <table class="editable-table" id="materialsTable">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Status</th>
+                            <th>Color Status</th>
+                            <th>Deadline</th>
+                            <th>Responsable</th>
+                            <th class="col-action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="materialsBody"></tbody>
+                </table>
+            </div>
+            <button class="btn-add-row" onclick="addMaterial()">+ Agregar material</button>
+        </div>
+
+        <!-- ===== SECTION: CONTRACTS ===== -->
+        <div class="section-card" id="section-contracts">
+            <h3><span class="section-icon">&#128196;</span> Contratos</h3>
+            <p class="section-desc">Clientes por procesador: Ecuapayphone y PayphoneGlobal.</p>
+
+            <h3 style="font-size:1rem; margin-bottom:0.5rem;">Ecuapayphone</h3>
+            <div class="editable-table-wrap">
+                <table class="editable-table" id="contractsEcuTable">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Parentesis</th>
+                            <th>Fact. Feb</th>
+                            <th>Tipo</th>
+                            <th class="col-action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="contractsEcuBody"></tbody>
+                </table>
+            </div>
+            <button class="btn-add-row" onclick="addContractRow('contractsEcuBody')">+ Agregar contrato Ecuapayphone</button>
+
+            <hr>
+            <h3 style="font-size:1rem; margin-bottom:0.5rem;">PayphoneGlobal</h3>
+            <div class="editable-table-wrap">
+                <table class="editable-table" id="contractsGlobalTable">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Parentesis</th>
+                            <th>Fact. Feb</th>
+                            <th>Tipo</th>
+                            <th class="col-action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="contractsGlobalBody"></tbody>
+                </table>
+            </div>
+            <button class="btn-add-row" onclick="addContractRow('contractsGlobalBody')">+ Agregar contrato Global</button>
+        </div>
+
+        <!-- ===== SECTION: ACTIONS ===== -->
+        <div class="section-card" id="section-actions">
+            <h3><span class="section-icon">&#9889;</span> Action Items</h3>
+            <p class="section-desc">Acciones priorizadas. Soporta **negritas** con doble asterisco (Markdown).</p>
+
+            <h3 style="font-size:1rem; margin-bottom:0.5rem; color: var(--danger);">&#128308; Critico</h3>
+            <div id="actionsCriticoContainer"></div>
+            <button class="btn-add-row" onclick="addActionItem('actionsCriticoContainer')">+ Agregar accion critica</button>
+
+            <hr>
+            <h3 style="font-size:1rem; margin-bottom:0.5rem; color: var(--warning);">&#128992; Alto</h3>
+            <div id="actionsAltoContainer"></div>
+            <button class="btn-add-row" onclick="addActionItem('actionsAltoContainer')">+ Agregar accion alta</button>
+
+            <hr>
+            <h3 style="font-size:1rem; margin-bottom:0.5rem; color: var(--info);">&#128309; Estrategico</h3>
+            <div id="actionsEstrategicoContainer"></div>
+            <button class="btn-add-row" onclick="addActionItem('actionsEstrategicoContainer')">+ Agregar accion estrategica</button>
+        </div>
+
+        <!-- ===== SECTION: QUESTIONS ===== -->
+        <div class="section-card" id="section-questions">
+            <h3><span class="section-icon">&#10067;</span> Preguntas</h3>
+            <p class="section-desc">Preguntas pendientes para Paula y Marcela.</p>
+
+            <div class="question-block">
+                <h4>Preguntas para Paula</h4>
+                <div class="editable-table-wrap">
+                    <table class="editable-table" id="questionsPaulaTable">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">#</th>
+                                <th>Pregunta</th>
+                                <th>Por que</th>
+                                <th class="col-action"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="questionsPaulaBody"></tbody>
+                    </table>
+                </div>
+                <button class="btn-add-row" onclick="addQuestionRow('questionsPaulaBody')">+ Agregar pregunta para Paula</button>
+            </div>
+
+            <div class="question-block">
+                <h4>Preguntas para Marcela</h4>
+                <div class="editable-table-wrap">
+                    <table class="editable-table" id="questionsMarcelaTable">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">#</th>
+                                <th>Pregunta</th>
+                                <th>Por que</th>
+                                <th class="col-action"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="questionsMarcelaBody"></tbody>
+                    </table>
+                </div>
+                <button class="btn-add-row" onclick="addQuestionRow('questionsMarcelaBody')">+ Agregar pregunta para Marcela</button>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+// ==========================================
+//  GLOBALS
+// ==========================================
+const REPO = 'Unicorellc/betting-strategy-payphone';
+const BRANCH = 'main';
+const FILE_PATH = 'data.json';
+const API_URL = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+
+let currentData = null;
+let currentSha = null;
+let dashboardPassword = 'payphone2026';
+
+// ==========================================
+//  PASSWORD
+// ==========================================
+document.getElementById('passwordInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+});
+
+function checkPassword() {
+    const input = document.getElementById('passwordInput').value;
+    if (input === dashboardPassword) {
+        document.getElementById('passwordScreen').classList.add('hidden');
+        initApp();
+    } else {
+        const box = document.querySelector('.password-box');
+        const err = document.getElementById('passwordError');
+        err.style.display = 'block';
+        box.classList.add('shake');
+        setTimeout(() => box.classList.remove('shake'), 300);
+    }
+}
+
+// ==========================================
+//  APP INIT
+// ==========================================
+function initApp() {
+    const token = localStorage.getItem('gh_betting_token');
+    if (!token) {
+        document.getElementById('tokenModal').classList.remove('hidden');
+    } else {
+        loadFromGitHub();
+    }
+}
+
+// ==========================================
+//  GITHUB TOKEN
+// ==========================================
+async function validateAndSaveToken() {
+    const token = document.getElementById('tokenInput').value.trim();
+    if (!token) {
+        showTokenError('Por favor ingresa un token.');
+        return;
+    }
+
+    showLoading('Verificando token...');
+    try {
+        const res = await fetch(API_URL + '?ref=' + BRANCH, {
+            headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (!res.ok) throw new Error('No autorizado');
+
+        localStorage.setItem('gh_betting_token', token);
+        document.getElementById('tokenModal').classList.add('hidden');
+        hideLoading();
+        loadFromGitHub();
+    } catch (e) {
+        hideLoading();
+        showTokenError('Token invalido o sin permisos. Verifica que tenga acceso al repositorio.');
+    }
+}
+
+function showTokenError(msg) {
+    const el = document.getElementById('tokenError');
+    el.textContent = msg;
+    el.style.display = 'block';
+}
+
+function skipToken() {
+    document.getElementById('tokenModal').classList.add('hidden');
+    notify('Se necesita un token de GitHub para guardar cambios.', 'info');
+    document.getElementById('appContainer').classList.add('visible');
+    updateGitHubStatus(false);
+}
+
+function disconnectGitHub() {
+    if (confirm('Seguro que deseas desconectar tu token de GitHub? Tendras que configurarlo de nuevo para guardar cambios.')) {
+        localStorage.removeItem('gh_betting_token');
+        updateGitHubStatus(false);
+        notify('Token de GitHub eliminado.', 'info');
+    }
+}
+
+function updateGitHubStatus(connected) {
+    const dot = document.getElementById('statusDot');
+    const text = document.getElementById('statusText');
+    if (connected) {
+        dot.className = 'status-dot connected';
+        text.textContent = 'Conectado a GitHub';
+    } else {
+        dot.className = 'status-dot disconnected';
+        text.textContent = 'Sin conexion a GitHub';
+    }
+}
+
+// ==========================================
+//  LOAD FROM GITHUB
+// ==========================================
+async function loadFromGitHub() {
+    const token = localStorage.getItem('gh_betting_token');
+    if (!token) {
+        document.getElementById('tokenModal').classList.remove('hidden');
+        return;
+    }
+
+    showLoading('Cargando datos desde GitHub...');
+    try {
+        const res = await fetch(API_URL + '?ref=' + BRANCH, {
+            headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' },
+            cache: 'no-store'
+        });
+        if (!res.ok) throw new Error('Error al cargar: ' + res.status);
+
+        const fileData = await res.json();
+        currentSha = fileData.sha;
+
+        const content = atob(fileData.content.replace(/\n/g, ''));
+        currentData = JSON.parse(content);
+        dashboardPassword = currentData.meta.password || 'payphone2026';
+
+        populateAllForms();
+        document.getElementById('appContainer').classList.add('visible');
+        updateGitHubStatus(true);
+        document.getElementById('headerBadge').textContent = currentData.meta.badge || 'Admin';
+        hideLoading();
+        notify('Datos cargados correctamente.', 'success');
+    } catch (e) {
+        hideLoading();
+        notify('Error al cargar datos: ' + e.message, 'error');
+        document.getElementById('appContainer').classList.add('visible');
+        updateGitHubStatus(false);
+    }
+}
+
+// ==========================================
+//  SAVE TO GITHUB
+// ==========================================
+async function saveToGitHub() {
+    const token = localStorage.getItem('gh_betting_token');
+    if (!token) {
+        document.getElementById('tokenModal').classList.remove('hidden');
+        return;
+    }
+
+    const btn = document.getElementById('btnSave');
+    const saveIcon = document.getElementById('saveIcon');
+    const saveText = document.getElementById('saveText');
+    btn.disabled = true;
+    saveIcon.innerHTML = '<span class="spinner"></span>';
+    saveText.textContent = 'Guardando...';
+
+    try {
+        collectAllFormData();
+
+        const jsonStr = JSON.stringify(currentData, null, 2);
+        const base64 = btoa(unescape(encodeURIComponent(jsonStr)));
+
+        // Get fresh SHA first
+        const shaRes = await fetch(API_URL + '?ref=' + BRANCH, {
+            headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' },
+            cache: 'no-store'
+        });
+        if (shaRes.ok) {
+            const shaData = await shaRes.json();
+            currentSha = shaData.sha;
+        }
+
+        const res = await fetch(API_URL, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'Update betting dashboard data via admin panel',
+                content: base64,
+                sha: currentSha,
+                branch: BRANCH
+            })
+        });
+
+        if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.message || 'Error al guardar');
+        }
+
+        const result = await res.json();
+        currentSha = result.content.sha;
+        document.getElementById('headerBadge').textContent = currentData.meta.badge || 'Admin';
+        notify('Cambios guardados correctamente en GitHub.', 'success');
+    } catch (e) {
+        notify('Error al guardar: ' + e.message, 'error');
+    } finally {
+        btn.disabled = false;
+        saveIcon.innerHTML = '&#128190;';
+        saveText.textContent = 'Guardar Cambios';
+    }
+}
+
+// ==========================================
+//  PREVIEW
+// ==========================================
+function openPreview() {
+    collectAllFormData();
+    const previewData = JSON.stringify(currentData);
+    localStorage.setItem('betting_preview_data', previewData);
+
+    const dashboardUrl = window.location.href.replace('admin.html', 'index.html') + '?preview=1';
+    window.open(dashboardUrl, '_blank');
+}
+
+// ==========================================
+//  SIDEBAR NAVIGATION
+// ==========================================
+function showSection(sectionId, btnEl) {
+    document.querySelectorAll('.section-card').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('section-' + sectionId).classList.add('active');
+    if (btnEl) btnEl.classList.add('active');
+    // Close mobile sidebar
+    document.querySelector('.sidebar').classList.remove('open');
+}
+
+// ==========================================
+//  NOTIFICATIONS
+// ==========================================
+function notify(message, type) {
+    const el = document.getElementById('notification');
+    const icons = { success: '&#10004;', error: '&#10060;', info: '&#8505;' };
+    el.innerHTML = (icons[type] || '') + ' ' + message;
+    el.className = 'notification ' + type;
+    setTimeout(() => el.classList.add('show'), 10);
+    setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+function showLoading(text) {
+    document.getElementById('loadingText').textContent = text || 'Cargando...';
+    document.getElementById('loadingOverlay').classList.remove('hidden');
+}
+function hideLoading() {
+    document.getElementById('loadingOverlay').classList.add('hidden');
+}
+
+// ==========================================
+//  STATUS COLOR SELECT OPTIONS
+// ==========================================
+function statusColorSelect(value) {
+    return `<select value="${value}">
+        <option value="green" ${value==='green'?'selected':''}>Verde</option>
+        <option value="yellow" ${value==='yellow'?'selected':''}>Amarillo</option>
+        <option value="red" ${value==='red'?'selected':''}>Rojo</option>
+        <option value="blue" ${value==='blue'?'selected':''}>Azul</option>
+        <option value="purple" ${value==='purple'?'selected':''}>Morado</option>
+        <option value="amber" ${value==='amber'?'selected':''}>Ambar</option>
+        <option value="gray" ${value==='gray'?'selected':''}>Gris</option>
+    </select>`;
+}
+
+function licStatusSelect(value) {
+    return `<select>
+        <option value="ok" ${value==='ok'?'selected':''}>OK</option>
+        <option value="pending" ${value==='pending'?'selected':''}>Pendiente</option>
+        <option value="missing" ${value==='missing'?'selected':''}>Faltante</option>
+        <option value="na" ${value==='na'?'selected':''}>N/A</option>
+    </select>`;
+}
+
+function dirSelect(value) {
+    return `<select>
+        <option value="up" ${value==='up'?'selected':''}>&#9650; Up</option>
+        <option value="down" ${value==='down'?'selected':''}>&#9660; Down</option>
+    </select>`;
+}
+
+function styleSelect(value) {
+    return `<select>
+        <option value="" ${value===''?'selected':''}>Normal</option>
+        <option value="danger" ${value==='danger'?'selected':''}>Danger</option>
+        <option value="green" ${value==='green'?'selected':''}>Verde</option>
+        <option value="purple" ${value==='purple'?'selected':''}>Morado</option>
+    </select>`;
+}
+
+function alertTypeSelect(value) {
+    return `<select>
+        <option value="warning" ${value==='warning'?'selected':''}>Warning</option>
+        <option value="info" ${value==='info'?'selected':''}>Info</option>
+        <option value="danger" ${value==='danger'?'selected':''}>Danger</option>
+    </select>`;
+}
+
+// ==========================================
+//  HELPER: escape HTML for input values
+// ==========================================
+function esc(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ==========================================
+//  POPULATE ALL FORMS
+// ==========================================
+function populateAllForms() {
+    if (!currentData) return;
+    const d = currentData;
+
+    // Meta
+    document.getElementById('meta-lastUpdated').value = d.meta.lastUpdated || '';
+    document.getElementById('meta-monthLabel').value = d.meta.monthLabel || '';
+    document.getElementById('meta-badge').value = d.meta.badge || '';
+    document.getElementById('meta-password').value = d.meta.password || '';
+
+    // Sidebar Concentration
+    document.getElementById('sidebarConc-label').value = (d.sidebarConcentration && d.sidebarConcentration.label) || '';
+    document.getElementById('sidebarConc-value').value = (d.sidebarConcentration && d.sidebarConcentration.value) || '';
+    document.getElementById('sidebarConc-detail').value = (d.sidebarConcentration && d.sidebarConcentration.detail) || '';
+
+    // Header Stats
+    populateHeaderStats(d.headerStats);
+
+    // March Tracker
+    populateMarchTracker(d.marchTracker);
+
+    // Revenue KPIs
+    populateRevenueKpis(d.revenueKpis);
+
+    // Revenue Alerts
+    populateRevenueAlerts(d.revenueAlerts);
+
+    // Charts
+    populateCharts(d.charts);
+
+    // Clientes Nacionales
+    populateClientesNacionales(d.clientesNacionales);
+
+    // Clientes Internacionales
+    populateClientesInternacionales(d.clientesInternacionales);
+
+    // Intermediarios
+    populateIntermediarios(d.intermediarios);
+
+    // Pipeline
+    populatePipeline(d.pipeline);
+
+    // Geography
+    populateGeography(d.geography);
+
+    // Conferences
+    populateConferences(d.conferences);
+
+    // Contracts
+    populateContracts(d.contracts);
+
+    // Actions
+    populateActions(d.actions);
+
+    // Questions
+    populateQuestions(d.questions);
+}
+
+// ==========================================
+//  POPULATE: Header Stats
+// ==========================================
+function populateHeaderStats(stats) {
+    const grid = document.getElementById('headerStatsGrid');
+    grid.innerHTML = '';
+    stats.forEach((s, i) => {
+        grid.innerHTML += `
+        <div class="kpi-edit-card">
+            <div class="kpi-card-num">Tarjeta ${i+1}</div>
+            <div class="form-grid form-grid-2">
+                <div class="form-group">
+                    <label>Valor</label>
+                    <input type="text" data-hs="${i}" data-field="value" value="${esc(s.value)}">
+                </div>
+                <div class="form-group">
+                    <label>Label</label>
+                    <input type="text" data-hs="${i}" data-field="label" value="${esc(s.label)}">
+                </div>
+                <div class="form-group">
+                    <label>Estilo</label>
+                    ${styleSelect(s.style || '')}
+                </div>
+            </div>
+        </div>`;
+    });
+    // Bind selects
+    grid.querySelectorAll('select').forEach((sel, idx) => {
+        sel.setAttribute('data-hs', idx);
+        sel.setAttribute('data-field', 'style');
+    });
+}
+
+// ==========================================
+//  POPULATE: March Tracker
+// ==========================================
+function populateMarchTracker(mt) {
+    document.getElementById('marchTracker-target').value = mt.target || '';
+    document.getElementById('marchTracker-totalNacional').value = mt.totalNacional || '';
+    document.getElementById('marchTracker-totalInternacional').value = mt.totalInternacional || '';
+    document.getElementById('marchTracker-totalTotal').value = mt.totalTotal || '';
+    document.getElementById('marchTracker-totalPctTarget').value = mt.totalPctTarget || '';
+    document.getElementById('marchTracker-totalNotes').value = mt.totalNotes || '';
+
+    const tbody = document.getElementById('marchTrackerBody');
+    tbody.innerHTML = '';
+    mt.weeks.forEach((w, i) => {
+        tbody.innerHTML += `<tr>
+            <td><input type="text" value="${esc(w.period)}"></td>
+            <td><input type="text" value="${esc(w.dates)}"></td>
+            <td><input type="text" value="${esc(w.nacional)}"></td>
+            <td><input type="text" value="${esc(w.internacional)}"></td>
+            <td><input type="text" value="${esc(w.total)}"></td>
+            <td><input type="text" value="${esc(w.pctTarget)}"></td>
+            <td><input type="text" value="${esc(w.notes)}"></td>
+            <td><select>
+                <option value="false" ${!w.current?'selected':''}>No</option>
+                <option value="true" ${w.current?'selected':''}>Si</option>
+            </select></td>
+        </tr>`;
+    });
+}
+
+// ==========================================
+//  POPULATE: Revenue KPIs
+// ==========================================
+function populateRevenueKpis(kpis) {
+    const grid = document.getElementById('revenueKpisGrid');
+    grid.innerHTML = '';
+    kpis.forEach((k, i) => {
+        grid.innerHTML += `
+        <div class="kpi-edit-card">
+            <div class="kpi-card-num">KPI ${i+1}</div>
+            <div class="form-grid form-grid-2">
+                <div class="form-group">
+                    <label>Label</label>
+                    <input type="text" data-rk="${i}" data-field="label" value="${esc(k.label)}">
+                </div>
+                <div class="form-group">
+                    <label>Valor</label>
+                    <input type="text" data-rk="${i}" data-field="value" value="${esc(k.value)}">
+                </div>
+                <div class="form-group">
+                    <label>Delta (texto)</label>
+                    <input type="text" data-rk="${i}" data-field="delta" value="${esc(k.delta)}">
+                </div>
+                <div class="form-group">
+                    <label>Direccion</label>
+                    ${dirSelect(k.deltaDir)}
+                </div>
+                <div class="form-group">
+                    <label>Color</label>
+                    ${statusColorSelect(k.color)}
+                </div>
+            </div>
+        </div>`;
+    });
+}
+
+// ==========================================
+//  POPULATE: Revenue Alerts
+// ==========================================
+function populateRevenueAlerts(alerts) {
+    const container = document.getElementById('revenueAlertsContainer');
+    container.innerHTML = '';
+    alerts.forEach((a, i) => {
+        container.innerHTML += `
+        <div class="alert-edit-card" data-alert-idx="${i}">
+            <div class="alert-header">
+                <span class="alert-num">Alerta ${i+1}</span>
+                <button class="btn-remove-row" onclick="this.closest('.alert-edit-card').remove()" title="Eliminar">&times;</button>
+            </div>
+            <div class="form-grid form-grid-3" style="margin-bottom:0.5rem;">
+                <div class="form-group">
+                    <label>Tipo</label>
+                    ${alertTypeSelect(a.type)}
+                </div>
+                <div class="form-group">
+                    <label>Icono (emoji)</label>
+                    <input type="text" value="${esc(a.icon)}" class="alert-icon-input">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Contenido HTML</label>
+                <textarea class="alert-html-input" rows="3">${esc(a.html)}</textarea>
+            </div>
+        </div>`;
+    });
+}
+
+function addRevenueAlert() {
+    const container = document.getElementById('revenueAlertsContainer');
+    const idx = container.children.length;
+    const div = document.createElement('div');
+    div.className = 'alert-edit-card';
+    div.setAttribute('data-alert-idx', idx);
+    div.innerHTML = `
+        <div class="alert-header">
+            <span class="alert-num">Alerta ${idx+1}</span>
+            <button class="btn-remove-row" onclick="this.closest('.alert-edit-card').remove()" title="Eliminar">&times;</button>
+        </div>
+        <div class="form-grid form-grid-3" style="margin-bottom:0.5rem;">
+            <div class="form-group">
+                <label>Tipo</label>
+                ${alertTypeSelect('warning')}
+            </div>
+            <div class="form-group">
+                <label>Icono (emoji)</label>
+                <input type="text" value="" class="alert-icon-input">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Contenido HTML</label>
+            <textarea class="alert-html-input" rows="3"></textarea>
+        </div>`;
+    container.appendChild(div);
+}
+
+// ==========================================
+//  POPULATE: Charts
+// ==========================================
+function populateCharts(charts) {
+    // Ecuador
+    populateSimpleChartTable('chartEcuadorBody', charts.ecuadorConcentration.labels, charts.ecuadorConcentration.data);
+    // International
+    populateSimpleChartTable('chartIntlBody', charts.internationalConcentration.labels, charts.internationalConcentration.data);
+    // Bar
+    populateBarChartTable(charts.revenueBar);
+    // MoM
+    populateSimpleChartTable('chartMomBody', charts.momChange.labels, charts.momChange.data);
+}
+
+function populateSimpleChartTable(tbodyId, labels, data) {
+    const tbody = document.getElementById(tbodyId);
+    tbody.innerHTML = '';
+    labels.forEach((label, i) => {
+        tbody.innerHTML += `<tr>
+            <td><input type="text" value="${esc(label)}"></td>
+            <td><input type="number" value="${data[i]}"></td>
+            <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>
+        </tr>`;
+    });
+}
+
+function addChartRow(tbodyId) {
+    const tbody = document.getElementById(tbodyId);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" value=""></td>
+        <td><input type="number" value="0"></td>
+        <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+function populateBarChartTable(barData) {
+    const tbody = document.getElementById('chartBarBody');
+    tbody.innerHTML = '';
+    barData.labels.forEach((label, i) => {
+        tbody.innerHTML += `<tr>
+            <td><input type="text" value="${esc(label)}"></td>
+            <td><input type="number" value="${barData.enero[i]}"></td>
+            <td><input type="number" value="${barData.febrero[i]}"></td>
+            <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>
+        </tr>`;
+    });
+}
+
+function addChartBarRow() {
+    const tbody = document.getElementById('chartBarBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" value=""></td>
+        <td><input type="number" value="0"></td>
+        <td><input type="number" value="0"></td>
+        <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+// ==========================================
+//  POPULATE: Clientes Nacionales
+// ==========================================
+function populateClientesNacionales(clientes) {
+    const tbody = document.getElementById('clientesNacBody');
+    tbody.innerHTML = '';
+    clientes.forEach(c => {
+        tbody.innerHTML += `<tr>
+            <td><input type="text" value="${esc(c.nombre)}"></td>
+            <td><input type="text" value="${esc(c.parentesis)}"></td>
+            <td><input type="text" value="${esc(c.factFeb)}"></td>
+            <td><input type="text" value="${esc(c.varMoM)}"></td>
+            <td>${dirSelect(c.varDir)}</td>
+            <td><input type="text" value="${esc(c.nda)}"></td>
+            <td><input type="text" value="${esc(c.contrato)}"></td>
+            <td><input type="text" value="${esc(c.licencia)}"></td>
+            <td>${licStatusSelect(c.licenciaStatus)}</td>
+            <td><input type="text" value="${esc(c.procesador)}"></td>
+            <td><input type="text" value="${esc(c.status)}"></td>
+            <td>${statusColorSelect(c.statusColor)}</td>
+            <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>
+        </tr>`;
+    });
+}
+
+function addClienteNacional() {
+    const tbody = document.getElementById('clientesNacBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value="$0"></td>
+        <td><input type="text" value="0%"></td>
+        <td>${dirSelect('up')}</td>
+        <td><input type="text" value="pending"></td>
+        <td><input type="text" value="pending"></td>
+        <td><input type="text" value=""></td>
+        <td>${licStatusSelect('pending')}</td>
+        <td><input type="text" value="Ecuapayphone"></td>
+        <td><input type="text" value="Nuevo"></td>
+        <td>${statusColorSelect('yellow')}</td>
+        <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+// ==========================================
+//  POPULATE: Clientes Internacionales
+// ==========================================
+function populateClientesInternacionales(clientes) {
+    const tbody = document.getElementById('clientesIntlBody');
+    tbody.innerHTML = '';
+    clientes.forEach(c => {
+        tbody.innerHTML += `<tr>
+            <td><input type="text" value="${esc(c.nombre)}"></td>
+            <td><input type="text" value="${esc(c.pais)}"></td>
+            <td><input type="text" value="${esc(c.nda)}"></td>
+            <td><input type="text" value="${esc(c.contrato)}"></td>
+            <td><input type="text" value="${esc(c.licencia)}"></td>
+            <td>${licStatusSelect(c.licenciaStatus)}</td>
+            <td><input type="text" value="${esc(c.procesador)}"></td>
+            <td><input type="text" value="${esc(c.status)}"></td>
+            <td>${statusColorSelect(c.statusColor)}</td>
+            <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>
+        </tr>`;
+    });
+}
+
+function addClienteInternacional() {
+    const tbody = document.getElementById('clientesIntlBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value="pending"></td>
+        <td><input type="text" value="pending"></td>
+        <td><input type="text" value=""></td>
+        <td>${licStatusSelect('pending')}</td>
+        <td><input type="text" value="USA"></td>
+        <td><input type="text" value="Nuevo"></td>
+        <td>${statusColorSelect('yellow')}</td>
+        <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+// ==========================================
+//  POPULATE: Intermediarios
+// ==========================================
+function populateIntermediarios(items) {
+    const tbody = document.getElementById('intermediariosBody');
+    tbody.innerHTML = '';
+    items.forEach(item => {
+        tbody.innerHTML += `<tr>
+            <td><input type="text" value="${esc(item.nombre)}"></td>
+            <td><input type="text" value="${esc(item.marcas)}"></td>
+            <td><input type="text" value="${esc(item.procesador)}"></td>
+            <td><input type="text" value="${esc(item.status)}"></td>
+            <td>${statusColorSelect(item.statusColor)}</td>
+            <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>
+        </tr>`;
+    });
+}
+
+function addIntermediario() {
+    const tbody = document.getElementById('intermediariosBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value="Nuevo"></td>
+        <td>${statusColorSelect('yellow')}</td>
+        <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+// ==========================================
+//  POPULATE: Pipeline
+// ==========================================
+function populatePipeline(pipeline) {
+    document.getElementById('funnel-prospeccion').value = pipeline.funnel.prospeccion;
+    document.getElementById('funnel-activacion').value = pipeline.funnel.activacion;
+    document.getElementById('funnel-nuevo').value = pipeline.funnel.nuevo;
+    document.getElementById('funnel-facturacion').value = pipeline.funnel.facturacion;
+    document.getElementById('pipeline-lastUpdated').value = pipeline.lastUpdated || '';
+
+    const tbody = document.getElementById('pipelineBody');
+    tbody.innerHTML = '';
+    pipeline.operators.forEach(op => {
+        tbody.innerHTML += `<tr>
+            <td><input type="text" value="${esc(op.operador)}"></td>
+            <td><input type="text" value="${esc(op.marca)}"></td>
+            <td><input type="text" value="${esc(op.pais)}"></td>
+            <td><input type="text" value="${esc(op.proyeccion)}"></td>
+            <td><input type="text" value="${esc(op.responsable)}"></td>
+            <td><input type="text" value="${esc(op.estado)}"></td>
+            <td>${statusColorSelect(op.estadoColor)}</td>
+            <td><input type="text" value="${esc(op.bgColor)}"></td>
+            <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>
+        </tr>`;
+    });
+}
+
+function addPipelineOperator() {
+    const tbody = document.getElementById('pipelineBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value="Prospeccion"></td>
+        <td>${statusColorSelect('purple')}</td>
+        <td><input type="text" value=""></td>
+        <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+// ==========================================
+//  POPULATE: Geography
+// ==========================================
+function populateGeography(geos) {
+    const container = document.getElementById('geographyContainer');
+    container.innerHTML = '';
+    geos.forEach((g, i) => {
+        container.innerHTML += `
+        <div class="geo-edit-card" data-geo-idx="${i}">
+            <div class="geo-header">
+                <span>${g.flag} ${g.country}</span>
+                <button class="btn-remove-row" onclick="this.closest('.geo-edit-card').remove()" title="Eliminar">&times;</button>
+            </div>
+            <div class="form-grid form-grid-4">
+                <div class="form-group"><label>Bandera (emoji)</label><input type="text" class="geo-flag" value="${esc(g.flag)}"></div>
+                <div class="form-group"><label>Pais</label><input type="text" class="geo-country" value="${esc(g.country)}"></div>
+                <div class="form-group"><label>Detalle</label><input type="text" class="geo-detail" value="${esc(g.detail)}"></div>
+                <div class="form-group"><label>Revenue</label><input type="text" class="geo-revenue" value="${esc(g.revenue)}"></div>
+                <div class="form-group"><label>Color Revenue</label>${statusColorSelect(g.revenueColor).replace('<select', '<select class="geo-revenueColor"')}</div>
+                <div class="form-group"><label>Prioridad</label><input type="text" class="geo-priority" value="${esc(g.priority)}"></div>
+                <div class="form-group"><label>Color Prioridad</label>${statusColorSelect(g.priorityColor).replace('<select', '<select class="geo-priorityColor"')}</div>
+                <div class="form-group"><label>Card Class</label><input type="text" class="geo-cardClass" value="${esc(g.cardClass)}"></div>
+            </div>
+        </div>`;
+    });
+}
+
+function addGeography() {
+    const container = document.getElementById('geographyContainer');
+    const div = document.createElement('div');
+    div.className = 'geo-edit-card';
+    div.innerHTML = `
+        <div class="geo-header">
+            <span>Nuevo Pais</span>
+            <button class="btn-remove-row" onclick="this.closest('.geo-edit-card').remove()" title="Eliminar">&times;</button>
+        </div>
+        <div class="form-grid form-grid-4">
+            <div class="form-group"><label>Bandera (emoji)</label><input type="text" class="geo-flag" value=""></div>
+            <div class="form-group"><label>Pais</label><input type="text" class="geo-country" value=""></div>
+            <div class="form-group"><label>Detalle</label><input type="text" class="geo-detail" value=""></div>
+            <div class="form-group"><label>Revenue</label><input type="text" class="geo-revenue" value="$0"></div>
+            <div class="form-group"><label>Color Revenue</label>${statusColorSelect('red').replace('<select', '<select class="geo-revenueColor"')}</div>
+            <div class="form-group"><label>Prioridad</label><input type="text" class="geo-priority" value=""></div>
+            <div class="form-group"><label>Color Prioridad</label>${statusColorSelect('gray').replace('<select', '<select class="geo-priorityColor"')}</div>
+            <div class="form-group"><label>Card Class</label><input type="text" class="geo-cardClass" value=""></div>
+        </div>`;
+    container.appendChild(div);
+}
+
+// ==========================================
+//  POPULATE: Conferences
+// ==========================================
+function populateConferences(conf) {
+    // Events
+    const evContainer = document.getElementById('conferencesEventsContainer');
+    evContainer.innerHTML = '';
+    conf.events.forEach((ev, i) => {
+        let statsHtml = '';
+        ev.stats.forEach((st, si) => {
+            statsHtml += `<div class="stat-edit-row">
+                <input type="text" value="${esc(st.label)}" placeholder="Label" class="stat-label">
+                <input type="text" value="${esc(st.value)}" placeholder="Valor" class="stat-value">
+                <button class="btn-remove-row" onclick="this.closest('.stat-edit-row').remove()" style="width:24px;height:24px;font-size:0.8rem;">&times;</button>
+            </div>`;
+        });
+
+        evContainer.innerHTML += `
+        <div class="event-edit-card" data-event-idx="${i}">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4>Evento: ${esc(ev.name)}</h4>
+                <button class="btn-remove-row" onclick="this.closest('.event-edit-card').remove()">&times;</button>
+            </div>
+            <div class="form-grid form-grid-3" style="margin-bottom:0.75rem;">
+                <div class="form-group"><label>ID</label><input type="text" class="ev-id" value="${esc(ev.id)}"></div>
+                <div class="form-group"><label>Fecha (YYYY-MM-DD)</label><input type="text" class="ev-date" value="${esc(ev.date)}"></div>
+                <div class="form-group"><label>Fecha Display</label><input type="text" class="ev-dateLabel" value="${esc(ev.dateLabel)}"></div>
+                <div class="form-group"><label>Nombre</label><input type="text" class="ev-name" value="${esc(ev.name)}"></div>
+                <div class="form-group"><label>Ubicacion</label><input type="text" class="ev-location" value="${esc(ev.location)}"></div>
+                <div class="form-group"><label>CSS Class</label><input type="text" class="ev-cssClass" value="${esc(ev.cssClass)}"></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0.75rem;">
+                <label>Targets</label>
+                <input type="text" class="ev-targets" value="${esc(ev.targets)}">
+            </div>
+            <label style="font-size:0.75rem; font-weight:600; color:var(--text-light); text-transform:uppercase; margin-bottom:0.3rem; display:block;">Stats</label>
+            <div class="ev-stats-container">${statsHtml}</div>
+            <button class="btn-add-row" onclick="addEventStat(this)" style="margin-top:0.25rem; font-size:0.78rem;">+ Stat</button>
+        </div>`;
+    });
+
+    // Materials
+    const matBody = document.getElementById('materialsBody');
+    matBody.innerHTML = '';
+    conf.materials.forEach(m => {
+        matBody.innerHTML += `<tr>
+            <td><input type="text" value="${esc(m.material)}"></td>
+            <td><input type="text" value="${esc(m.status)}"></td>
+            <td>${statusColorSelect(m.statusColor)}</td>
+            <td><input type="text" value="${esc(m.deadline)}"></td>
+            <td><input type="text" value="${esc(m.responsable)}"></td>
+            <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>
+        </tr>`;
+    });
+}
+
+function addConferenceEvent() {
+    const container = document.getElementById('conferencesEventsContainer');
+    const div = document.createElement('div');
+    div.className = 'event-edit-card';
+    div.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h4>Nuevo Evento</h4>
+            <button class="btn-remove-row" onclick="this.closest('.event-edit-card').remove()">&times;</button>
+        </div>
+        <div class="form-grid form-grid-3" style="margin-bottom:0.75rem;">
+            <div class="form-group"><label>ID</label><input type="text" class="ev-id" value=""></div>
+            <div class="form-group"><label>Fecha (YYYY-MM-DD)</label><input type="text" class="ev-date" value=""></div>
+            <div class="form-group"><label>Fecha Display</label><input type="text" class="ev-dateLabel" value=""></div>
+            <div class="form-group"><label>Nombre</label><input type="text" class="ev-name" value=""></div>
+            <div class="form-group"><label>Ubicacion</label><input type="text" class="ev-location" value=""></div>
+            <div class="form-group"><label>CSS Class</label><input type="text" class="ev-cssClass" value=""></div>
+        </div>
+        <div class="form-group" style="margin-bottom:0.75rem;">
+            <label>Targets</label>
+            <input type="text" class="ev-targets" value="">
+        </div>
+        <label style="font-size:0.75rem; font-weight:600; color:var(--text-light); text-transform:uppercase; margin-bottom:0.3rem; display:block;">Stats</label>
+        <div class="ev-stats-container"></div>
+        <button class="btn-add-row" onclick="addEventStat(this)" style="margin-top:0.25rem; font-size:0.78rem;">+ Stat</button>`;
+    container.appendChild(div);
+}
+
+function addEventStat(btn) {
+    const container = btn.previousElementSibling;
+    const div = document.createElement('div');
+    div.className = 'stat-edit-row';
+    div.innerHTML = `
+        <input type="text" value="" placeholder="Label" class="stat-label">
+        <input type="text" value="" placeholder="Valor" class="stat-value">
+        <button class="btn-remove-row" onclick="this.closest('.stat-edit-row').remove()" style="width:24px;height:24px;font-size:0.8rem;">&times;</button>`;
+    container.appendChild(div);
+}
+
+function addMaterial() {
+    const tbody = document.getElementById('materialsBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" value=""></td>
+        <td><input type="text" value="Pendiente"></td>
+        <td>${statusColorSelect('red')}</td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+// ==========================================
+//  POPULATE: Contracts
+// ==========================================
+function populateContracts(contracts) {
+    populateContractTable('contractsEcuBody', contracts.ecuapayphone);
+    populateContractTable('contractsGlobalBody', contracts.global);
+}
+
+function populateContractTable(tbodyId, items) {
+    const tbody = document.getElementById(tbodyId);
+    tbody.innerHTML = '';
+    items.forEach(c => {
+        tbody.innerHTML += `<tr>
+            <td><input type="text" value="${esc(c.cliente)}"></td>
+            <td><input type="text" value="${esc(c.parentesis)}"></td>
+            <td><input type="text" value="${esc(c.factFeb)}"></td>
+            <td><input type="text" value="${esc(c.tipo)}"></td>
+            <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>
+        </tr>`;
+    });
+}
+
+function addContractRow(tbodyId) {
+    const tbody = document.getElementById(tbodyId);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value="$0"></td>
+        <td><input type="text" value="Directo"></td>
+        <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+// ==========================================
+//  POPULATE: Actions
+// ==========================================
+function populateActions(actions) {
+    populateActionList('actionsCriticoContainer', actions.critico);
+    populateActionList('actionsAltoContainer', actions.alto);
+    populateActionList('actionsEstrategicoContainer', actions.estrategico);
+}
+
+function populateActionList(containerId, items) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    items.forEach((item, i) => {
+        container.innerHTML += `
+        <div class="action-item-row">
+            <textarea>${esc(item)}</textarea>
+            <button class="btn-remove-row" onclick="this.closest('.action-item-row').remove()">&times;</button>
+        </div>`;
+    });
+}
+
+function addActionItem(containerId) {
+    const container = document.getElementById(containerId);
+    const div = document.createElement('div');
+    div.className = 'action-item-row';
+    div.innerHTML = `
+        <textarea placeholder="Nueva accion..."></textarea>
+        <button class="btn-remove-row" onclick="this.closest('.action-item-row').remove()">&times;</button>`;
+    container.appendChild(div);
+}
+
+// ==========================================
+//  POPULATE: Questions
+// ==========================================
+function populateQuestions(questions) {
+    populateQuestionTable('questionsPaulaBody', questions.paula);
+    populateQuestionTable('questionsMarcelaBody', questions.marcela);
+}
+
+function populateQuestionTable(tbodyId, items) {
+    const tbody = document.getElementById(tbodyId);
+    tbody.innerHTML = '';
+    items.forEach(q => {
+        tbody.innerHTML += `<tr>
+            <td><input type="number" value="${q.num}" style="width:45px; text-align:center;"></td>
+            <td><input type="text" value="${esc(q.pregunta)}"></td>
+            <td><input type="text" value="${esc(q.porque)}"></td>
+            <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>
+        </tr>`;
+    });
+}
+
+function addQuestionRow(tbodyId) {
+    const tbody = document.getElementById(tbodyId);
+    const nextNum = tbody.rows.length + 1;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="number" value="${nextNum}" style="width:45px; text-align:center;"></td>
+        <td><input type="text" value=""></td>
+        <td><input type="text" value=""></td>
+        <td class="col-action"><button class="btn-remove-row" onclick="this.closest('tr').remove()">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+// ==========================================
+//  COLLECT ALL FORM DATA
+// ==========================================
+function collectAllFormData() {
+    if (!currentData) currentData = {};
+
+    // Meta
+    currentData.meta = {
+        lastUpdated: document.getElementById('meta-lastUpdated').value,
+        password: document.getElementById('meta-password').value,
+        badge: document.getElementById('meta-badge').value,
+        monthLabel: document.getElementById('meta-monthLabel').value
+    };
+    dashboardPassword = currentData.meta.password;
+
+    // Sidebar Concentration
+    currentData.sidebarConcentration = {
+        label: document.getElementById('sidebarConc-label').value,
+        value: document.getElementById('sidebarConc-value').value,
+        detail: document.getElementById('sidebarConc-detail').value
+    };
+
+    // Header Stats
+    currentData.headerStats = [];
+    const hsCards = document.querySelectorAll('#headerStatsGrid .kpi-edit-card');
+    hsCards.forEach((card, i) => {
+        const inputs = card.querySelectorAll('input');
+        const sel = card.querySelector('select');
+        currentData.headerStats.push({
+            value: inputs[0].value,
+            label: inputs[1].value,
+            style: sel ? sel.value : ''
+        });
+    });
+
+    // March Tracker
+    currentData.marchTracker = {
+        target: document.getElementById('marchTracker-target').value,
+        weeks: [],
+        totalNacional: document.getElementById('marchTracker-totalNacional').value,
+        totalInternacional: document.getElementById('marchTracker-totalInternacional').value,
+        totalTotal: document.getElementById('marchTracker-totalTotal').value,
+        totalPctTarget: document.getElementById('marchTracker-totalPctTarget').value,
+        totalNotes: document.getElementById('marchTracker-totalNotes').value
+    };
+    const mtRows = document.querySelectorAll('#marchTrackerBody tr');
+    mtRows.forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const sel = row.querySelector('select');
+        currentData.marchTracker.weeks.push({
+            period: inputs[0].value,
+            dates: inputs[1].value,
+            nacional: inputs[2].value,
+            internacional: inputs[3].value,
+            total: inputs[4].value,
+            pctTarget: inputs[5].value,
+            notes: inputs[6].value,
+            current: sel.value === 'true'
+        });
+    });
+
+    // Revenue KPIs
+    currentData.revenueKpis = [];
+    const rkCards = document.querySelectorAll('#revenueKpisGrid .kpi-edit-card');
+    rkCards.forEach(card => {
+        const inputs = card.querySelectorAll('input');
+        const selects = card.querySelectorAll('select');
+        currentData.revenueKpis.push({
+            label: inputs[0].value,
+            value: inputs[1].value,
+            delta: inputs[2].value,
+            deltaDir: selects[0].value,
+            color: selects[1].value
+        });
+    });
+
+    // Revenue Alerts
+    currentData.revenueAlerts = [];
+    document.querySelectorAll('#revenueAlertsContainer .alert-edit-card').forEach(card => {
+        currentData.revenueAlerts.push({
+            type: card.querySelector('select').value,
+            icon: card.querySelector('.alert-icon-input').value,
+            html: card.querySelector('.alert-html-input').value
+        });
+    });
+
+    // Charts
+    currentData.charts = {
+        ecuadorConcentration: collectSimpleChart('chartEcuadorBody'),
+        internationalConcentration: collectSimpleChart('chartIntlBody'),
+        revenueBar: collectBarChart(),
+        momChange: collectSimpleChart('chartMomBody')
+    };
+
+    // Clientes Nacionales
+    currentData.clientesNacionales = [];
+    document.querySelectorAll('#clientesNacBody tr').forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const selects = row.querySelectorAll('select');
+        currentData.clientesNacionales.push({
+            nombre: inputs[0].value,
+            parentesis: inputs[1].value,
+            factFeb: inputs[2].value,
+            varMoM: inputs[3].value,
+            varDir: selects[0].value,
+            nda: inputs[4].value,
+            contrato: inputs[5].value,
+            licencia: inputs[6].value,
+            licenciaStatus: selects[1].value,
+            procesador: inputs[7].value,
+            status: inputs[8].value,
+            statusColor: selects[2].value
+        });
+    });
+
+    // Clientes Internacionales
+    currentData.clientesInternacionales = [];
+    document.querySelectorAll('#clientesIntlBody tr').forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const selects = row.querySelectorAll('select');
+        currentData.clientesInternacionales.push({
+            nombre: inputs[0].value,
+            pais: inputs[1].value,
+            nda: inputs[2].value,
+            contrato: inputs[3].value,
+            licencia: inputs[4].value,
+            licenciaStatus: selects[0].value,
+            procesador: inputs[5].value,
+            status: inputs[6].value,
+            statusColor: selects[1].value
+        });
+    });
+
+    // Intermediarios
+    currentData.intermediarios = [];
+    document.querySelectorAll('#intermediariosBody tr').forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const sel = row.querySelector('select');
+        currentData.intermediarios.push({
+            nombre: inputs[0].value,
+            marcas: inputs[1].value,
+            procesador: inputs[2].value,
+            status: inputs[3].value,
+            statusColor: sel.value
+        });
+    });
+
+    // Pipeline
+    currentData.pipeline = {
+        funnel: {
+            prospeccion: parseInt(document.getElementById('funnel-prospeccion').value) || 0,
+            activacion: parseInt(document.getElementById('funnel-activacion').value) || 0,
+            nuevo: parseInt(document.getElementById('funnel-nuevo').value) || 0,
+            facturacion: parseInt(document.getElementById('funnel-facturacion').value) || 0
+        },
+        lastUpdated: document.getElementById('pipeline-lastUpdated').value,
+        operators: []
+    };
+    document.querySelectorAll('#pipelineBody tr').forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const sel = row.querySelector('select');
+        currentData.pipeline.operators.push({
+            operador: inputs[0].value,
+            marca: inputs[1].value,
+            pais: inputs[2].value,
+            proyeccion: inputs[3].value,
+            responsable: inputs[4].value,
+            estado: inputs[5].value,
+            estadoColor: sel.value,
+            bgColor: inputs[6].value
+        });
+    });
+
+    // Geography
+    currentData.geography = [];
+    document.querySelectorAll('#geographyContainer .geo-edit-card').forEach(card => {
+        currentData.geography.push({
+            flag: card.querySelector('.geo-flag').value,
+            country: card.querySelector('.geo-country').value,
+            detail: card.querySelector('.geo-detail').value,
+            revenue: card.querySelector('.geo-revenue').value,
+            revenueColor: card.querySelector('.geo-revenueColor').value,
+            priority: card.querySelector('.geo-priority').value,
+            priorityColor: card.querySelector('.geo-priorityColor').value,
+            cardClass: card.querySelector('.geo-cardClass').value
+        });
+    });
+
+    // Conferences
+    currentData.conferences = { events: [], materials: [] };
+    document.querySelectorAll('#conferencesEventsContainer .event-edit-card').forEach(card => {
+        const stats = [];
+        card.querySelectorAll('.ev-stats-container .stat-edit-row').forEach(row => {
+            stats.push({
+                label: row.querySelector('.stat-label').value,
+                value: row.querySelector('.stat-value').value
+            });
+        });
+        currentData.conferences.events.push({
+            id: card.querySelector('.ev-id').value,
+            date: card.querySelector('.ev-date').value,
+            dateLabel: card.querySelector('.ev-dateLabel').value,
+            name: card.querySelector('.ev-name').value,
+            location: card.querySelector('.ev-location').value,
+            stats: stats,
+            targets: card.querySelector('.ev-targets').value,
+            cssClass: card.querySelector('.ev-cssClass').value
+        });
+    });
+    document.querySelectorAll('#materialsBody tr').forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const sel = row.querySelector('select');
+        currentData.conferences.materials.push({
+            material: inputs[0].value,
+            status: inputs[1].value,
+            statusColor: sel.value,
+            deadline: inputs[2].value,
+            responsable: inputs[3].value
+        });
+    });
+
+    // Contracts
+    currentData.contracts = {
+        ecuapayphone: collectContractTable('contractsEcuBody'),
+        global: collectContractTable('contractsGlobalBody')
+    };
+
+    // Actions
+    currentData.actions = {
+        critico: collectActionList('actionsCriticoContainer'),
+        alto: collectActionList('actionsAltoContainer'),
+        estrategico: collectActionList('actionsEstrategicoContainer')
+    };
+
+    // Questions
+    currentData.questions = {
+        paula: collectQuestionTable('questionsPaulaBody'),
+        marcela: collectQuestionTable('questionsMarcelaBody')
+    };
+}
+
+function collectSimpleChart(tbodyId) {
+    const labels = [];
+    const data = [];
+    document.querySelectorAll('#' + tbodyId + ' tr').forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        labels.push(inputs[0].value);
+        data.push(parseFloat(inputs[1].value) || 0);
+    });
+    return { labels, data };
+}
+
+function collectBarChart() {
+    const labels = [], enero = [], febrero = [];
+    document.querySelectorAll('#chartBarBody tr').forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        labels.push(inputs[0].value);
+        enero.push(parseFloat(inputs[1].value) || 0);
+        febrero.push(parseFloat(inputs[2].value) || 0);
+    });
+    return { labels, enero, febrero };
+}
+
+function collectContractTable(tbodyId) {
+    const items = [];
+    document.querySelectorAll('#' + tbodyId + ' tr').forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        items.push({
+            cliente: inputs[0].value,
+            parentesis: inputs[1].value,
+            factFeb: inputs[2].value,
+            tipo: inputs[3].value
+        });
+    });
+    return items;
+}
+
+function collectActionList(containerId) {
+    const items = [];
+    document.querySelectorAll('#' + containerId + ' .action-item-row textarea').forEach(ta => {
+        if (ta.value.trim()) items.push(ta.value);
+    });
+    return items;
+}
+
+function collectQuestionTable(tbodyId) {
+    const items = [];
+    document.querySelectorAll('#' + tbodyId + ' tr').forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        items.push({
+            num: parseInt(inputs[0].value) || 1,
+            pregunta: inputs[1].value,
+            porque: inputs[2].value
+        });
+    });
+    return items;
+}
+
+// ==========================================
+//  KEYBOARD SHORTCUT: Ctrl/Cmd + S to save
+// ==========================================
+document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+        e.preventDefault();
+        saveToGitHub();
+    }
+});
+</script>
+</body>
+</html>

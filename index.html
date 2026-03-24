@@ -79,6 +79,20 @@
         @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
         .shake { animation: shake 0.3s ease; }
 
+        /* LOADING */
+        .loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); display: flex; align-items: center; justify-content: center;
+            z-index: 9999; flex-direction: column; gap: 1rem;
+        }
+        .loading-screen .spinner {
+            width: 40px; height: 40px; border: 4px solid var(--border);
+            border-top-color: var(--primary); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-screen p { color: var(--text-light); font-size: 0.9rem; }
+
         /* SIDEBAR */
         .sidebar {
             position: fixed; left: 0; top: 0; width: var(--sidebar-width); height: 100vh;
@@ -87,9 +101,7 @@
             border-right: 1px solid rgba(255,255,255,0.05);
             transition: transform 0.3s ease;
         }
-        .sidebar-logo {
-            padding: 0 1.5rem; margin-bottom: 2rem;
-        }
+        .sidebar-logo { padding: 0 1.5rem; margin-bottom: 2rem; }
         .sidebar-logo h1 {
             color: white; font-size: 1.1rem; font-weight: 700;
             display: flex; align-items: center; gap: 0.5rem;
@@ -150,9 +162,7 @@
         }
         .header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; }
         .header p { font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 600px; margin-bottom: 2rem; }
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
         .stat-card {
             background: rgba(255,255,255,0.08); backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
@@ -162,18 +172,16 @@
         .stat-card .label { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.5px; }
         .stat-card.danger { border-color: rgba(239,68,68,0.4); }
         .stat-card.danger .value { color: var(--danger-light); }
+        .stat-card.green .value { color: var(--secondary); }
+        .stat-card.purple .value { color: #a78bfa; }
 
         /* SECTIONS */
         section { padding: 2.5rem; }
         section:nth-child(even) { background: white; }
-        .section-header {
-            display: flex; align-items: center; gap: 0.7rem;
-            margin-bottom: 1.5rem;
-        }
+        .section-header { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.5rem; }
         .section-header .icon {
             width: 40px; height: 40px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
         }
         .section-header h2 { font-size: 1.4rem; font-weight: 700; color: var(--dark); }
         .section-header p { font-size: 0.85rem; color: var(--text-light); }
@@ -182,8 +190,7 @@
         .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; }
         .card {
             background: white; border-radius: 16px; padding: 1.5rem;
-            border: 1px solid var(--border);
-            transition: all 0.3s; position: relative;
+            border: 1px solid var(--border); transition: all 0.3s; position: relative;
         }
         .card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
         .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
@@ -195,9 +202,7 @@
             background: white; border-radius: 16px; padding: 1.5rem;
             border: 1px solid var(--border); position: relative; overflow: hidden;
         }
-        .kpi-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-        }
+        .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
         .kpi-card.green::before { background: var(--secondary); }
         .kpi-card.red::before { background: var(--danger); }
         .kpi-card.blue::before { background: var(--primary); }
@@ -211,8 +216,7 @@
         /* CHARTS */
         .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
         .chart-container {
-            background: white; border-radius: 16px; padding: 1.5rem;
-            border: 1px solid var(--border);
+            background: white; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border);
         }
         .chart-container h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem; }
         .chart-container canvas { max-height: 300px; }
@@ -220,8 +224,7 @@
         /* ALERT BOX */
         .alert {
             border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem;
-            display: flex; align-items: flex-start; gap: 0.8rem;
-            font-size: 0.9rem;
+            display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.9rem;
         }
         .alert .icon { font-size: 1.2rem; flex-shrink: 0; }
         .alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
@@ -271,10 +274,7 @@
 
         /* FUNNEL */
         .funnel { display: flex; gap: 0; margin-bottom: 2rem; align-items: stretch; }
-        .funnel-stage {
-            flex: 1; text-align: center; padding: 1.2rem 0.5rem;
-            position: relative; color: white;
-        }
+        .funnel-stage { flex: 1; text-align: center; padding: 1.2rem 0.5rem; position: relative; color: white; }
         .funnel-stage:first-child { border-radius: 12px 0 0 12px; }
         .funnel-stage:last-child { border-radius: 0 12px 12px 0; }
         .funnel-stage .count { font-size: 2rem; font-weight: 800; }
@@ -323,9 +323,7 @@
             display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.9rem;
         }
         .action-list li:last-child { border-bottom: none; }
-        .priority-dot {
-            width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 0.4rem;
-        }
+        .priority-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 0.4rem; }
         .priority-dot.critical { background: var(--danger); }
         .priority-dot.high { background: var(--accent); }
         .priority-dot.medium { background: var(--primary); }
@@ -365,6 +363,12 @@
     </div>
 </div>
 
+<!-- LOADING SCREEN -->
+<div class="loading-screen" id="loadingScreen" style="display:none;">
+    <div class="spinner"></div>
+    <p>Cargando dashboard...</p>
+</div>
+
 <!-- MOBILE TOGGLE -->
 <button class="mobile-toggle" onclick="toggleSidebar()">&#9776;</button>
 
@@ -372,7 +376,7 @@
 <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
         <h1><span>&#127920;</span> Betting Dashboard</h1>
-        <p>Payphone &bull; Marzo 2026</p>
+        <p id="sidebarMonth">Payphone</p>
     </div>
 
     <div class="sidebar-section">
@@ -398,14 +402,10 @@
     <div class="sidebar-section">
         <div class="sidebar-section-title">Tools</div>
         <a href="action-items.html"><span class="icon">&#9745;</span> Action Items &amp; War Room</a>
+        <a href="admin.html"><span class="icon">&#9881;</span> Admin Panel</a>
     </div>
 
-    <div class="sidebar-section" style="margin-top: 2rem; padding: 0 1.5rem;">
-        <div style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 1rem;">
-            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Concentration Risk</div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #fca5a5;">40%</div>
-            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);">Ecuabet share (Ecuador ops)</div>
-        </div>
+    <div class="sidebar-section" style="margin-top: 2rem; padding: 0 1.5rem;" id="sidebarConcentration">
     </div>
 </nav>
 
@@ -415,27 +415,10 @@
     <!-- HEADER -->
     <header class="header">
         <div class="header-content">
-            <span class="header-badge">&#128202; Data as of March 2026</span>
+            <span class="header-badge" id="headerBadge"></span>
             <h1>Betting Vertical Dashboard</h1>
             <p>Estado completo de la vertical de apuestas &mdash; clientes, revenue, pipeline, conferencias y contratos en un solo lugar.</p>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="value">$7.85M</div>
-                    <div class="label">Revenue Feb 2026 (Full)</div>
-                </div>
-                <div class="stat-card danger">
-                    <div class="value">-26%</div>
-                    <div class="label">MoM (Jan $10.6M)</div>
-                </div>
-                <div class="stat-card">
-                    <div class="value" style="color: var(--secondary);">$9.6M</div>
-                    <div class="label">March MTD (16 days)</div>
-                </div>
-                <div class="stat-card">
-                    <div class="value" style="color: var(--pipeline);">32</div>
-                    <div class="label">Pipeline Activo</div>
-                </div>
-            </div>
+            <div class="stats-grid" id="headerStats"></div>
         </div>
     </header>
 
@@ -445,34 +428,20 @@
             <div class="icon" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af;">&#128197;</div>
             <div>
                 <h2>March 2026 Weekly Revenue Tracker</h2>
-                <p>Target mensual: $28.75M ($345M/a&ntilde;o) &mdash; Actualizado semanalmente por Paula &amp; Marcela</p>
+                <p id="marchTrackerSubtitle"></p>
             </div>
         </div>
-
         <div class="table-wrapper">
             <table>
                 <thead>
-                    <tr>
-                        <th>Periodo</th>
-                        <th>Nacional</th>
-                        <th>Internacional</th>
-                        <th>Total</th>
-                        <th>% Target</th>
-                        <th>Notas</th>
-                    </tr>
+                    <tr><th>Periodo</th><th>Nacional</th><th>Internacional</th><th>Total</th><th>% Target</th><th>Notas</th></tr>
                 </thead>
-                <tbody>
-                    <tr><td><strong>Semana 1</strong> (Mar 1-7)</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color: var(--text-muted);">Pendiente</td></tr>
-                    <tr><td><strong>Semana 2</strong> (Mar 8-14)</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color: var(--text-muted);">Pendiente</td></tr>
-                    <tr style="background: #eff6ff;"><td><strong>Semana 3</strong> (Mar 15-21) &#9664;</td><td>&mdash;</td><td>&mdash;</td><td><strong>$9.6M</strong></td><td>33.4%</td><td>MTD al 16 de marzo</td></tr>
-                    <tr><td><strong>Semana 4</strong> (Mar 22-31)</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color: var(--text-muted);">Pendiente</td></tr>
-                    <tr style="background: #f0fdf4; font-weight: 600;"><td><strong>Total Marzo</strong></td><td>&mdash;</td><td>&mdash;</td><td><strong>$9.6M</strong></td><td><strong>33.4%</strong></td><td>En progreso</td></tr>
-                </tbody>
+                <tbody id="marchTrackerBody"></tbody>
             </table>
         </div>
     </section>
 
-    <!-- SECTION 1: REVENUE -->
+    <!-- REVENUE -->
     <section id="revenue">
         <div class="section-header">
             <div class="icon" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: var(--secondary);">&#128200;</div>
@@ -481,40 +450,8 @@
                 <p>Facturaci&oacute;n mensual de la vertical de betting</p>
             </div>
         </div>
-
-        <div class="alert alert-warning">
-            <span class="icon">&#128202;</span>
-            <div><strong>Merchants to watch (vs semana anterior):</strong> Esta secci&oacute;n mostrar&aacute; comercios con ca&iacute;da semanal una vez se disponga de data semanal. Estructura: Cliente | Semana anterior | Esta semana | Cambio | Acci&oacute;n. <em>Placeholder &mdash; data pendiente.</em></div>
-        </div>
-
-        <div class="alert alert-warning">
-            <span class="icon">&#9888;&#65039;</span>
-            <div><strong>Concentraci&oacute;n:</strong> Ecuabet = 40% del revenue total ($3.17M de $7.85M). Top 3 clientes (Ecuabet + Hondubet + Betano) = 64%. Mejor de lo estimado inicialmente, pero a&uacute;n requiere diversificaci&oacute;n.</div>
-        </div>
-
-        <div class="kpi-grid">
-            <div class="kpi-card green">
-                <div class="kpi-label">Total Feb 2026</div>
-                <div class="kpi-value">$7.85M</div>
-                <div class="kpi-delta down">&#9660; -26% vs Enero ($10.6M)</div>
-            </div>
-            <div class="kpi-card blue">
-                <div class="kpi-label">Nacionales</div>
-                <div class="kpi-value">$4.55M</div>
-                <div class="kpi-delta down">&#9660; -8% MoM</div>
-            </div>
-            <div class="kpi-card amber">
-                <div class="kpi-label">Internacionales</div>
-                <div class="kpi-value">$3.30M</div>
-                <div class="kpi-delta down">&#9660; -39% MoM</div>
-            </div>
-            <div class="kpi-card amber">
-                <div class="kpi-label">March MTD</div>
-                <div class="kpi-value">$9.6M</div>
-                <div class="kpi-delta up">&#9650; 33% del target</div>
-            </div>
-        </div>
-
+        <div id="revenueAlerts"></div>
+        <div class="kpi-grid" id="revenueKpis"></div>
         <div class="chart-row">
             <div class="chart-container">
                 <h3>Concentraci&oacute;n Ecuador (Nacional)</h3>
@@ -525,7 +462,6 @@
                 <canvas id="concentrationInternationalChart"></canvas>
             </div>
         </div>
-
         <div class="chart-row">
             <div class="chart-container">
                 <h3>Revenue por Cliente &mdash; Ene vs Feb 2026</h3>
@@ -538,7 +474,7 @@
         </div>
     </section>
 
-    <!-- SECTION 2: CLIENT PORTFOLIO -->
+    <!-- CLIENT PORTFOLIO -->
     <section id="clients">
         <div class="section-header">
             <div class="icon" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: var(--primary);">&#128101;</div>
@@ -547,116 +483,23 @@
                 <p>60+ contratos firmados en 10+ pa&iacute;ses</p>
             </div>
         </div>
-
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('nacionales')">Nacionales (Ecuador)</div>
-            <div class="tab" onclick="switchTab('internacional')">Internacional</div>
-            <div class="tab" onclick="switchTab('intermediarios')">Intermediarios</div>
+            <div class="tab active" onclick="switchTab('nacionales', this)">Nacionales (Ecuador)</div>
+            <div class="tab" onclick="switchTab('internacional', this)">Internacional</div>
+            <div class="tab" onclick="switchTab('intermediarios', this)">Intermediarios</div>
         </div>
 
-        <!-- NACIONALES -->
         <div class="tab-content active" id="tab-nacionales">
             <div class="table-wrapper">
                 <table>
                     <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Fact. Feb</th>
-                            <th>Var MoM</th>
-                            <th>NDA</th>
-                            <th>Contrato</th>
-                            <th>Licencia</th>
-                            <th>Procesador</th>
-                            <th>Status</th>
-                        </tr>
+                        <tr><th>Cliente</th><th>Fact. Feb</th><th>Var MoM</th><th>NDA</th><th>Contrato</th><th>Licencia</th><th>Procesador</th><th>Status</th></tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Ecuabet</strong> (Sportek)</td>
-                            <td><strong>$3,166,886</strong></td>
-                            <td><span class="kpi-delta down">-13.1%</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-ok">Comoros</span></td>
-                            <td>PayphoneGlobal</td>
-                            <td><span class="badge badge-green">Activo</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Betano</strong> (v&iacute;a Pagadoor)</td>
-                            <td><strong>$565,980</strong></td>
-                            <td><span class="kpi-delta up">+21.3%</span></td>
-                            <td><span class="doc-na">v&iacute;a int.</span></td>
-                            <td><span class="doc-na">v&iacute;a int.</span></td>
-                            <td><span class="doc-ok">SI</span></td>
-                            <td>Ecuapayphone</td>
-                            <td><span class="badge badge-green">Activo</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Sportbet</strong></td>
-                            <td>$217,973</td>
-                            <td><span class="kpi-delta down">-3.0%</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-missing">No</span></td>
-                            <td>PayphoneGlobal</td>
-                            <td><span class="badge badge-green">Activo</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Betcris EC</strong></td>
-                            <td>$110,479</td>
-                            <td><span class="kpi-delta up">+14.9%</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-na">&mdash;</span></td>
-                            <td>Ecuapayphone</td>
-                            <td><span class="badge badge-green">Activo</span></td>
-                        </tr>
-                        <tr>
-                            <td>Latribet</td>
-                            <td>$36,267</td>
-                            <td><span class="kpi-delta up">+7.8%</span></td>
-                            <td><span class="doc-pending">Pend.</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-ok">Cura&ccedil;ao</span></td>
-                            <td>Ecuapayphone</td>
-                            <td><span class="badge badge-yellow">NDA pend.</span></td>
-                        </tr>
-                        <tr>
-                            <td>MasService (Mas1x2)</td>
-                            <td>$17,607</td>
-                            <td><span class="kpi-delta up">+42.9%</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-missing">No</span></td>
-                            <td>Ecuapayphone</td>
-                            <td><span class="badge badge-green">Activo</span></td>
-                        </tr>
-                        <tr>
-                            <td>Astrobet</td>
-                            <td>$16,534</td>
-                            <td><span class="kpi-delta down">-31.8%</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-missing">No</span></td>
-                            <td>PayphoneGlobal</td>
-                            <td><span class="badge badge-red">Declining</span></td>
-                        </tr>
-                        <tr>
-                            <td>Databet (Softdata)</td>
-                            <td>$8,868</td>
-                            <td><span class="kpi-delta down">-20.3%</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-ok">&#10003;</span></td>
-                            <td><span class="doc-missing">No</span></td>
-                            <td>Ecuapayphone</td>
-                            <td><span class="badge badge-red">Declining</span></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="nacionalesBody"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- INTERNACIONAL -->
         <div class="tab-content" id="tab-internacional">
             <div class="alert alert-info">
                 <span class="icon">&#128161;</span>
@@ -665,36 +508,13 @@
             <div class="table-wrapper">
                 <table>
                     <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Pa&iacute;s</th>
-                            <th>NDA</th>
-                            <th>Contrato</th>
-                            <th>Licencia</th>
-                            <th>Procesador</th>
-                            <th>Status</th>
-                        </tr>
+                        <tr><th>Cliente</th><th>Pa&iacute;s</th><th>NDA</th><th>Contrato</th><th>Licencia</th><th>Procesador</th><th>Status</th></tr>
                     </thead>
-                    <tbody>
-                        <tr><td><strong>Hondubet</strong></td><td>Honduras/Panam&aacute;</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td><strong>Betppro SV</strong></td><td>El Salvador</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Loter&iacute;a SV</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td><strong>Starplay</strong></td><td>Panam&aacute;</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">JCJ Panam&aacute;</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td><strong>Mi Casino</strong></td><td>Cura&ccedil;ao</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">CGA Cura&ccedil;ao</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td><strong>Bet502</strong></td><td>Guatemala</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Min. Gobernaci&oacute;n</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td><strong>Ganaplay SV/GT</strong></td><td>El Salvador, Guatemala</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Loter&iacute;a SV</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td><strong>Win On Fire</strong></td><td>Costa Rica</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-pending">Pendiente</span></td><td>USA</td><td><span class="badge badge-yellow">Lic. pend.</span></td></tr>
-                        <tr><td><strong>Latin</strong></td><td>Panam&aacute;</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">JCJ Panam&aacute;</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td><strong>Sivarbet</strong></td><td>El Salvador</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Comoros</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td><strong>Lotto.GT</strong></td><td>Guatemala</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Registro Mercantil</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td><strong>1Win</strong></td><td>Ecuador (INT)</td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-ok">Cura&ccedil;ao</span></td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td>Betcris HN</td><td>Honduras</td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">&mdash;</span></td><td>USA</td><td><span class="badge badge-yellow">NDA pend.</span></td></tr>
-                        <tr><td>Betcris GT</td><td>Guatemala</td><td><span class="doc-pending">Pend.</span></td><td><span class="doc-ok">&#10003;</span></td><td><span class="doc-na">&mdash;</span></td><td>USA</td><td><span class="badge badge-yellow">NDA pend.</span></td></tr>
-                    </tbody>
+                    <tbody id="internacionalesBody"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- INTERMEDIARIOS -->
         <div class="tab-content" id="tab-intermediarios">
             <div class="alert alert-info">
                 <span class="icon">&#128279;</span>
@@ -703,114 +523,36 @@
             <div class="table-wrapper">
                 <table>
                     <thead>
-                        <tr>
-                            <th>Intermediario</th>
-                            <th>Marcas que Procesa</th>
-                            <th>Procesador</th>
-                            <th>Status</th>
-                        </tr>
+                        <tr><th>Intermediario</th><th>Marcas que Procesa</th><th>Procesador</th><th>Status</th></tr>
                     </thead>
-                    <tbody>
-                        <tr><td><strong>Pagadoor (ProntoPaga)</strong></td><td>Betano, Coolbet, EstelarBet, MilloBet, Forbet, Jugabet, Monetix</td><td>ECU</td><td><span class="badge badge-green">Activo &mdash; cr&iacute;tico</span></td></tr>
-                        <tr><td>Monnet</td><td>Forbet</td><td>ECU</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td>Zippy (Chile)</td><td>Pelmenzilla, Betnrollnet, Suvyd</td><td>USA</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td>ALPS Ecuador</td><td>&mdash;</td><td>ECU</td><td><span class="badge badge-yellow">NDA firmado</span></td></tr>
-                        <tr><td>ALPS Per&uacute;</td><td>Orobet, Masterbets365</td><td>USA</td><td><span class="badge badge-yellow">Contrato pend.</span></td></tr>
-                        <tr><td>ALPS SPA (Chile)</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Contrato pend.</span></td></tr>
-                        <tr><td>SmartfastPay</td><td>&mdash;</td><td>ECU</td><td><span class="badge badge-yellow">NDA firmado</span></td></tr>
-                        <tr><td>Ficha Dorada</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-green">Activo</span></td></tr>
-                        <tr><td>WorldSec (BetterBro)</td><td>&mdash;</td><td>Pendiente</td><td><span class="badge badge-yellow">Contrato firmado</span></td></tr>
-                    </tbody>
+                    <tbody id="intermediariosBody"></tbody>
                 </table>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3: PIPELINE -->
+    <!-- PIPELINE -->
     <section id="pipeline">
         <div class="section-header">
             <div class="icon" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: var(--pipeline);">&#128640;</div>
             <div>
                 <h2>Pipeline Tracker</h2>
-                <p>28 operadores en 4 fases &mdash; Prospecci&oacute;n, Activaci&oacute;n, Nuevo, Facturaci&oacute;n</p>
+                <p id="pipelineSubtitle"></p>
             </div>
         </div>
-
-        <div class="funnel">
-            <div class="funnel-stage" style="background: linear-gradient(135deg, #FF6400, #ff8533);">
-                <div class="count">12</div>
-                <div class="label">Prospecci&oacute;n</div>
-            </div>
-            <div class="funnel-stage" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
-                <div class="count">8</div>
-                <div class="label">Activaci&oacute;n</div>
-            </div>
-            <div class="funnel-stage" style="background: linear-gradient(135deg, #5A00B4, #7b2ff2);">
-                <div class="count">6</div>
-                <div class="label">Nuevo</div>
-            </div>
-            <div class="funnel-stage" style="background: linear-gradient(135deg, #10b981, #34d399);">
-                <div class="count">2</div>
-                <div class="label">Facturaci&oacute;n</div>
-            </div>
-        </div>
-
-        <div class="alert alert-info">
-            <span class="icon">&#128197;</span>
-            <div><strong>Pipeline se actualiza semanalmente.</strong> Etapas: Prospecci&oacute;n (contacto/propuesta) &rarr; Activaci&oacute;n (docs/KYC/onboarding) &rarr; Nuevo (integraci&oacute;n/pruebas) &rarr; Facturaci&oacute;n (en vivo). &Uacute;ltima actualizaci&oacute;n: 19 marzo 2026.</div>
-        </div>
-
+        <div class="funnel" id="pipelineFunnel"></div>
+        <div class="alert alert-info" id="pipelineAlert"></div>
         <div class="table-wrapper">
             <table>
                 <thead>
-                    <tr>
-                        <th>Operador</th>
-                        <th>Marca</th>
-                        <th>Pa&iacute;s</th>
-                        <th>Proyecci&oacute;n</th>
-                        <th>Responsable</th>
-                        <th>Estado</th>
-                    </tr>
+                    <tr><th>Operador</th><th>Marca</th><th>Pa&iacute;s</th><th>Proyecci&oacute;n</th><th>Responsable</th><th>Estado</th></tr>
                 </thead>
-                <tbody>
-                    <!-- FACTURACION (live billing) -->
-                    <tr style="background: #f0fdf4;"><td><strong>ECUADORSOFTWARE</strong></td><td>Masterbets365</td><td>Ecuador</td><td>$250-500K</td><td>Marce</td><td><span class="badge badge-green">Facturaci&oacute;n</span></td></tr>
-                    <tr style="background: #f0fdf4;"><td><strong>Tomerly Assets</strong></td><td>Azar Latino</td><td>GT, HN</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-green">Facturaci&oacute;n</span></td></tr>
-                    <!-- NUEVO (integration/testing) -->
-                    <tr style="background: #eff6ff;"><td><strong>Betcris Banca</strong></td><td>Betcris DOM</td><td><strong>Rep. Dominicana</strong></td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
-                    <tr style="background: #eff6ff;"><td>Wave Win</td><td>4Luck</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
-                    <tr style="background: #eff6ff;"><td>FORBET</td><td>Forbet</td><td>Ecuador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
-                    <tr style="background: #eff6ff;"><td>Ecuapro</td><td>Juega en Linea</td><td>Ecuador</td><td>$100K</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
-                    <tr style="background: #eff6ff;"><td>VirtualScores</td><td>GranLatino</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
-                    <tr style="background: #eff6ff;"><td>VERTEX</td><td>LotBet</td><td>Guatemala</td><td>&mdash;</td><td>Marce</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
-                    <!-- ACTIVACION (docs/KYC/onboarding) -->
-                    <tr style="background: #fefce8;"><td>Oro Global</td><td>OroBet</td><td>Ecuador</td><td>$250K</td><td>&mdash;</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
-                    <tr style="background: #fefce8;"><td>Honduservice</td><td>Honduwin</td><td>Honduras</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
-                    <tr style="background: #fefce8;"><td>Advisors Comm.</td><td>ApuestasWin</td><td>Paraguay</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
-                    <tr style="background: #fefce8;"><td>Melbet</td><td>Melbet</td><td>EC + CA</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
-                    <tr style="background: #fefce8;"><td>Centribet</td><td>Centribet</td><td>HN, GT, PA</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-yellow">Activaci&oacute;n</span></td></tr>
-                    <tr style="background: #fef2f2;"><td>Twintech SAS</td><td>Aciertala</td><td>Ecuador</td><td>&mdash;</td><td>Marcela</td><td><span class="badge badge-red">Activaci&oacute;n (bloqueado)</span></td></tr>
-                    <tr style="background: #fef2f2;"><td>Deportes Virtuales</td><td>SportGana</td><td>El Salvador</td><td>$100K</td><td>Marcela</td><td><span class="badge badge-red">Activaci&oacute;n (KYC negado)</span></td></tr>
-                    <tr style="background: #fef2f2;"><td>Red Servi</td><td>Trebalia</td><td>Ecuador</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-red">Activaci&oacute;n (bloqueado)</span></td></tr>
-                    <!-- PROSPECCION (first contact/proposal) -->
-                    <tr><td><strong>Stake</strong></td><td>Stake</td><td>CR, PA, RD</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td><strong>Luckia</strong></td><td>Luckia</td><td>CR, PA, RD</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td><strong>Codere</strong></td><td>Codere</td><td>Panam&aacute;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td><strong>1xBet</strong></td><td>1xBet</td><td>Guatemala</td><td>&mdash;</td><td>Pao</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td>Betcha</td><td>Betcha</td><td>Panam&aacute;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td>SBET SAS</td><td>Gana777</td><td>El Salvador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td>GeniusBet</td><td>GeniusBet</td><td>El Salvador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td>Sorti</td><td>Sorti</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td>BetGaliano</td><td>BetGaliano</td><td>Ecuador</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td>Softcede</td><td>Softcede</td><td>Ecuador</td><td>&mdash;</td><td>Pao</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td>ATOMO GAMING</td><td>Atomo</td><td>Ecuador</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                    <tr><td>RCB Global</td><td>RCB</td><td>USA</td><td>&mdash;</td><td>Marce/Pao</td><td><span class="badge badge-purple">Prospecci&oacute;n</span></td></tr>
-                </tbody>
+                <tbody id="pipelineBody"></tbody>
             </table>
         </div>
     </section>
 
-    <!-- SECTION 4: GEOGRAPHY -->
+    <!-- GEOGRAPHY -->
     <section id="geography">
         <div class="section-header">
             <div class="icon" style="background: linear-gradient(135deg, #ccfbf1, #99f6e4); color: var(--conference);">&#127758;</div>
@@ -819,174 +561,33 @@
                 <p>Contratos en 10+ pa&iacute;ses, revenue de 1 &mdash; el gap m&aacute;s grande</p>
             </div>
         </div>
-
         <div class="alert alert-info">
             <span class="icon">&#127758;</span>
-            <div><strong>Presencia activa en 10+ pa&iacute;ses.</strong> Ecuador ($4.55M), Honduras ($1.3M), El Salvador, Guatemala, Panam&aacute;, Costa Rica, Cura&ccedil;ao y Rep. Dominicana con contratos activos. Objetivo: expandir facturaci&oacute;n en mercados con infraestructura lista.</div>
+            <div><strong>Presencia activa en 10+ pa&iacute;ses.</strong> Ecuador ($4.55M), Honduras ($1.3M), El Salvador, Guatemala, Panam&aacute;, Costa Rica, Cura&ccedil;ao y Rep. Dominicana con contratos activos.</div>
         </div>
-
-        <div class="geo-grid">
-            <div class="geo-card active-rev">
-                <div class="flag">&#127466;&#127464;</div>
-                <div class="country">Ecuador</div>
-                <div class="detail">15 clientes | ~40 cuentas</div>
-                <div class="revenue" style="color: var(--secondary);">$4.14M/mes</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-green">P1 &mdash; Activo</span></div>
-            </div>
-            <div class="geo-card p1">
-                <div class="flag">&#127464;&#127476;</div>
-                <div class="country">Colombia</div>
-                <div class="detail">3 contratos | Bancolombia, BBVA</div>
-                <div class="revenue" style="color: var(--danger);">$0</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">P1 &mdash; Rails listos</span></div>
-            </div>
-            <div class="geo-card p3">
-                <div class="flag">&#127468;&#127481;</div>
-                <div class="country">Guatemala</div>
-                <div class="detail">5 contratos | Banco Industrial, BAC</div>
-                <div class="revenue" style="color: var(--danger);">$0 visible</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
-            </div>
-            <div class="geo-card p3">
-                <div class="flag">&#127469;&#127475;</div>
-                <div class="country">Honduras</div>
-                <div class="detail">5 contratos | BAC, Banrural</div>
-                <div class="revenue" style="color: var(--danger);">$0 visible</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
-            </div>
-            <div class="geo-card p3">
-                <div class="flag">&#127480;&#127483;</div>
-                <div class="country">El Salvador</div>
-                <div class="detail">4 contratos | Agr&iacute;cola, BAC</div>
-                <div class="revenue" style="color: var(--danger);">$0 visible</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
-            </div>
-            <div class="geo-card p3">
-                <div class="flag">&#127477;&#127462;</div>
-                <div class="country">Panam&aacute;</div>
-                <div class="detail">3 contratos | Banco Aliado</div>
-                <div class="revenue" style="color: var(--danger);">$0 visible</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
-            </div>
-            <div class="geo-card p3">
-                <div class="flag">&#127464;&#127479;</div>
-                <div class="country">Costa Rica</div>
-                <div class="detail">2 contratos | BNCR, Lafise</div>
-                <div class="revenue" style="color: var(--danger);">$0 visible</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contratos firmados</span></div>
-            </div>
-            <div class="geo-card p3">
-                <div class="flag">&#127465;&#127476;</div>
-                <div class="country">Rep. Dominicana</div>
-                <div class="detail">1 en integraci&oacute;n (Betcris)</div>
-                <div class="revenue" style="color: var(--accent);">$100K proy.</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-blue">P3 &mdash; Integrando</span></div>
-            </div>
-            <div class="geo-card p2">
-                <div class="flag">&#127477;&#127466;</div>
-                <div class="country">Per&uacute;</div>
-                <div class="detail">1 contrato | Interbank</div>
-                <div class="revenue" style="color: var(--danger);">$0</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-gray">P2 &mdash; Docs pend.</span></div>
-            </div>
-            <div class="geo-card p2">
-                <div class="flag">&#127464;&#127473;</div>
-                <div class="country">Chile</div>
-                <div class="detail">1 contrato (Zippy) | Banco Bice</div>
-                <div class="revenue" style="color: var(--danger);">$0</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-gray">P2 &mdash; En proceso</span></td>
-            </div>
-            <div class="geo-card p3">
-                <div class="flag">&#127475;&#127470;</div>
-                <div class="country">Nicaragua</div>
-                <div class="detail">1 contrato (DoradoBet)</div>
-                <div class="revenue" style="color: var(--danger);">$0 visible</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-yellow">Contrato firmado</span></div>
-            </div>
-            <div class="geo-card">
-                <div class="flag">&#127482;&#127480;</div>
-                <div class="country">USA</div>
-                <div class="detail">2 clientes (1Win, 4Luck)</div>
-                <div class="revenue" style="color: var(--accent);">Pipeline</div>
-                <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-blue">1Win activo</span></div>
-            </div>
-        </div>
+        <div class="geo-grid" id="geoGrid"></div>
     </section>
 
-    <!-- SECTION 5: CONFERENCES -->
+    <!-- CONFERENCES -->
     <section id="conferences">
         <div class="section-header">
             <div class="icon" style="background: linear-gradient(135deg, #cffafe, #a5f3fc); color: var(--conference);">&#127915;</div>
             <div>
                 <h2>Conference War Room</h2>
-                <p>3 conferencias de betting en 2026 &mdash; $9,300 inversi&oacute;n total</p>
+                <p>3 conferencias de betting en 2026</p>
             </div>
         </div>
-
-        <div class="timeline">
-            <div class="timeline-item sbc">
-                <div class="timeline-date">9-11 Junio 2026</div>
-                <div class="timeline-title">SBC Summit Americas</div>
-                <div class="timeline-location">Fort Lauderdale, FL &mdash; Paula + Val</div>
-                <div class="timeline-stats">
-                    <div class="timeline-stat"><strong>10,000+</strong> asistentes</div>
-                    <div class="timeline-stat"><strong>400+</strong> exhibidores</div>
-                    <div class="timeline-stat"><strong>$3,150</strong> budget</div>
-                </div>
-                <div class="timeline-stats" style="margin-top: 0.5rem;">
-                    <div class="timeline-stat"><strong>Targets:</strong> Bet365, Betano, Caliente, Betcris, Codere, 1xBet</div>
-                </div>
-                <div class="countdown" id="countdown-sbc" style="background: #f3e8ff; color: #5A00B4;"></div>
-            </div>
-            <div class="timeline-item gat-pr">
-                <div class="timeline-date">8-9 Septiembre 2026</div>
-                <div class="timeline-title">GAT Expo San Juan</div>
-                <div class="timeline-location">Puerto Rico &mdash; Paula</div>
-                <div class="timeline-stats">
-                    <div class="timeline-stat"><strong>200-400</strong> asistentes</div>
-                    <div class="timeline-stat"><strong>14+</strong> pa&iacute;ses</div>
-                    <div class="timeline-stat"><strong>$2,000</strong> budget</div>
-                </div>
-                <div class="timeline-stats" style="margin-top: 0.5rem;">
-                    <div class="timeline-stat"><strong>Targets:</strong> Casinos PR, Asojuegos CO, operadores Caribe</div>
-                </div>
-                <div class="countdown" id="countdown-gat-pr" style="background: #ecfdf5; color: #059669;"></div>
-            </div>
-            <div class="timeline-item gat-dr">
-                <div class="timeline-date">17-18 Noviembre 2026</div>
-                <div class="timeline-title">GAT Expo Santo Domingo</div>
-                <div class="timeline-location">Rep. Dominicana &mdash; Paula</div>
-                <div class="timeline-stats">
-                    <div class="timeline-stat"><strong>600+</strong> delegados</div>
-                    <div class="timeline-stat"><strong>20</strong> pa&iacute;ses</div>
-                    <div class="timeline-stat"><strong>$2,200</strong> budget</div>
-                </div>
-                <div class="timeline-stats" style="margin-top: 0.5rem;">
-                    <div class="timeline-stat"><strong>Key:</strong> Coljuegos President (Colombia P1 access)</div>
-                </div>
-                <div class="countdown" id="countdown-gat-dr" style="background: #fffbeb; color: #b45309;"></div>
-            </div>
-        </div>
-
+        <div class="timeline" id="conferencesTimeline"></div>
         <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--dark);">Materials Creation Timeline</h3>
         <div class="table-wrapper">
             <table>
-                <thead>
-                    <tr><th>Material</th><th>Status</th><th>Deadline</th><th>Responsable</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Pitch Deck (Betting)</td><td><span class="badge badge-red">No existe</span></td><td>30 Abril</td><td>Paula + Dise&ntilde;o</td></tr>
-                    <tr><td>One-Pager / Leave-behind</td><td><span class="badge badge-red">No existe</span></td><td>15 Mayo</td><td>Paula + Dise&ntilde;o</td></tr>
-                    <tr><td>Landing Page (betting)</td><td><span class="badge badge-red">No existe</span></td><td>5 Mayo</td><td>Marketing + Tech</td></tr>
-                    <tr><td>Demo Sandbox</td><td><span class="badge badge-red">No existe</span></td><td>30 Mayo</td><td>Tech + Paula</td></tr>
-                    <tr><td>Booth Design (SBC)</td><td><span class="badge badge-red">No existe</span></td><td>20 Mayo</td><td>Paula + Proveedor</td></tr>
-                    <tr><td>Swag (camisetas, stickers)</td><td><span class="badge badge-red">No existe</span></td><td>20 Mayo</td><td>Marcela</td></tr>
-                </tbody>
+                <thead><tr><th>Material</th><th>Status</th><th>Deadline</th><th>Responsable</th></tr></thead>
+                <tbody id="materialsBody"></tbody>
             </table>
         </div>
     </section>
 
-    <!-- SECTION 6: CONTRACTS & ENTITIES -->
+    <!-- CONTRACTS -->
     <section id="contracts">
         <div class="section-header">
             <div class="icon" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: var(--pipeline);">&#128196;</div>
@@ -995,55 +596,35 @@
                 <p>Asignaci&oacute;n de clientes por entidad legal &mdash; Ecuapayphone vs Payphone Global</p>
             </div>
         </div>
-
         <div class="alert alert-info">
             <span class="icon">&#128196;</span>
-            <div><strong>Dos entidades legales procesan pagos de betting:</strong> <em>Ecuapayphone</em> (Ecuador-domiciled, clientes locales) y <em>Payphone Global</em> (procesamiento internacional). Cada cliente est&aacute; asignado a una entidad seg&uacute;n su contrato vigente. <strong>Limpiar y definir claramente es prioridad.</strong></div>
+            <div><strong>Dos entidades legales procesan pagos de betting:</strong> <em>Ecuapayphone</em> (Ecuador-domiciled, clientes locales) y <em>Payphone Global</em> (procesamiento internacional).</div>
         </div>
-
         <div class="card-grid">
             <div class="card" style="border-left: 4px solid var(--primary);">
                 <h3>&#127466;&#127464; Ecuapayphone</h3>
-                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.8rem;">Ecuador-domiciled entity &mdash; clientes locales y algunos intermediarios</p>
+                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.8rem;">Ecuador-domiciled entity</p>
                 <div class="table-wrapper" style="margin-top: 0;">
                     <table>
                         <thead><tr><th>Cliente</th><th>Fact. Feb</th><th>Tipo</th></tr></thead>
-                        <tbody>
-                            <tr><td><strong>Betano</strong> (v&iacute;a Pagadoor)</td><td>$565,980</td><td>Intermediario</td></tr>
-                            <tr><td><strong>Betcris EC</strong></td><td>$110,479</td><td>Directo</td></tr>
-                            <tr><td>Latribet</td><td>$36,267</td><td>Directo</td></tr>
-                            <tr><td>MasService</td><td>$17,607</td><td>Directo</td></tr>
-                            <tr><td>Databet</td><td>$8,868</td><td>Directo</td></tr>
-                            <tr><td>IGaming</td><td>$186</td><td>Directo</td></tr>
-                        </tbody>
+                        <tbody id="contractsEcuaBody"></tbody>
                     </table>
                 </div>
             </div>
             <div class="card" style="border-left: 4px solid var(--pipeline);">
                 <h3>&#127758; Payphone Global</h3>
-                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.8rem;">International processing entity &mdash; Ecuador + LATAM operators</p>
+                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.8rem;">International processing entity</p>
                 <div class="table-wrapper" style="margin-top: 0;">
                     <table>
                         <thead><tr><th>Cliente</th><th>Fact. Feb</th><th>Tipo</th></tr></thead>
-                        <tbody>
-                            <tr><td><strong>Ecuabet</strong></td><td>$3,166,886</td><td>Directo</td></tr>
-                            <tr><td><strong>Hondubet</strong></td><td>$1,299,128</td><td>Directo</td></tr>
-                            <tr><td><strong>Mi Casino</strong></td><td>$531,183</td><td>Directo</td></tr>
-                            <tr><td><strong>BetcrisHN</strong></td><td>$382,407</td><td>Directo</td></tr>
-                            <tr><td><strong>LatinBet</strong></td><td>$307,829</td><td>Directo</td></tr>
-                            <tr><td><strong>Sportbet</strong></td><td>$217,973</td><td>Directo</td></tr>
-                            <tr><td>Ganaplay ES</td><td>$199,511</td><td>Directo</td></tr>
-                            <tr><td>Starplay</td><td>$151,236</td><td>Directo</td></tr>
-                            <tr><td>Betcris GT</td><td>$116,414</td><td>Directo</td></tr>
-                            <tr><td>Astrobet</td><td>$16,534</td><td>Directo</td></tr>
-                        </tbody>
+                        <tbody id="contractsGlobalBody"></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 7: ACTIONS -->
+    <!-- ACTIONS -->
     <section id="actions">
         <div class="section-header">
             <div class="icon" style="background: linear-gradient(135deg, #fef2f2, #fecaca); color: var(--danger);">&#9889;</div>
@@ -1052,48 +633,13 @@
                 <p>Prioridades cr&iacute;ticas para las pr&oacute;ximas semanas</p>
             </div>
         </div>
-
-        <div class="card-grid" style="margin-bottom: 2rem;">
-            <div class="card" style="border-left: 4px solid var(--danger);">
-                <h3>&#128308; Cr&iacute;tico</h3>
-                <ul class="action-list">
-                    <li><div class="priority-dot critical"></div><div><strong>Crear materiales de venta:</strong> Pitch deck, one-pager, landing page, demo sandbox. SBC Americas en 82 d&iacute;as. Nada existe hoy.</div></li>
-                    <li><div class="priority-dot critical"></div><div><strong>Convertir pipeline near-term:</strong> Betcris DOM ($100K), OroBet ($250K), Masterbets365 ($250-500K), Forbet ($100K) = $700K-$950K/mes potencial.</div></li>
-                    <li><div class="priority-dot critical"></div><div><strong>Intermediarios Feb $0:</strong> Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) &mdash; todos en blanco en febrero. Investigar de inmediato.</div></li>
-                </ul>
-            </div>
-            <div class="card" style="border-left: 4px solid var(--accent);">
-                <h3>&#128992; Alto</h3>
-                <ul class="action-list">
-                    <li><div class="priority-dot high"></div><div><strong>Mejorar m&aacute;rgenes internacionales:</strong> 0.5% net margin en $3.3M/mes no es sostenible (costo 5% vs tarifa 5.5%). Renegociar o ajustar pricing.</div></li>
-                    <li><div class="priority-dot high"></div><div><strong>Seguimiento Tier 1:</strong> Stake, Luckia, Codere, 1xBet (propuesta enviada 16 mar), Betcha &mdash; todas sin respuesta.</div></li>
-                    <li><div class="priority-dot high"></div><div><strong>Resolver docs bloqueados:</strong> Aciertala (KYC pendiente), SportGana (KYC negado), Trebalia (docs pendientes), RCB Global (sin docs).</div></li>
-                    <li><div class="priority-dot high"></div><div><strong>Definir due&ntilde;o de cuentas internacionales no-betting:</strong> Actualmente en limbo, tasa del 10% fuera de mercado, sin proceso ni contratos definidos.</div></li>
-                </ul>
-            </div>
-            <div class="card" style="border-left: 4px solid var(--primary);">
-                <h3>&#128309; Estrat&eacute;gico</h3>
-                <ul class="action-list">
-                    <li><div class="priority-dot medium"></div><div><strong>Auditar row 36 sin nombre:</strong> $392K &rarr; $23 en febrero. &iquest;Qui&eacute;n es este cliente y qu&eacute; pas&oacute;?</div></li>
-                    <li><div class="priority-dot medium"></div><div><strong>CRM migration:</strong> Mover tracking de Excel a Freshsales. 2 archivos duplicados + 5 CSVs sueltos = riesgo de datos.</div></li>
-                    <li><div class="priority-dot medium"></div><div><strong>Estrategia de pricing:</strong> Clientes >$700K pagan solo 0.20%. Hondubet ($1.3M) genera ~$6.5K/mes de profit. Revisar estructura.</div></li>
-                    <li><div class="priority-dot medium"></div><div><strong>Capacidad del equipo:</strong> Paula + Marcela gestionan 60+ clientes activos + 32 pipeline. Definir plan de capacidad.</div></li>
-                </ul>
-            </div>
-        </div>
+        <div class="card-grid" style="margin-bottom: 2rem;" id="actionsGrid"></div>
 
         <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--dark);">Preguntas para 1-on-1 con Paula (Head of Bettings)</h3>
-        <div class="table-wrapper">
+        <div class="table-wrapper" style="margin-bottom: 2rem;">
             <table>
                 <thead><tr><th>#</th><th>Pregunta</th><th>Por qu&eacute;</th></tr></thead>
-                <tbody>
-                    <tr><td>1</td><td>&iquest;Qui&eacute;n es el cliente en row 36 ($392K &rarr; $23)?</td><td>RUC 8019022409207. Ca&iacute;da de -100%. Sin nombre en el MasterFile.</td></tr>
-                    <tr><td>2</td><td>&iquest;Por qu&eacute; intermediarios reportan $0 en febrero?</td><td>Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) &mdash; todos en blanco.</td></tr>
-                    <tr><td>3</td><td>&iquest;Estado real de OroBet, Masterbets365, Forbet?</td><td>$600K-$950K/mes potencial. Todos bloqueados en integraci&oacute;n/contrato/licencia.</td></tr>
-                    <tr><td>4</td><td>&iquest;Podemos renegociar pricing para clientes &gt;$700K?</td><td>Hondubet $1.3M/mes genera ~$6.5K profit (0.5% net). No es sostenible.</td></tr>
-                    <tr><td>5</td><td>&iquest;Timeline real para Betcris DOM go-live?</td><td>En integraci&oacute;n desde febrero. Proyecci&oacute;n $100K/mes. Clave para GAT DR.</td></tr>
-                    <tr><td>6</td><td>&iquest;Qu&eacute; le falta al equipo para ir m&aacute;s r&aacute;pido?</td><td>Paula + Marcela gestionando 60+ clientes + 32 pipeline.</td></tr>
-                </tbody>
+                <tbody id="questionsPaulaBody"></tbody>
             </table>
         </div>
 
@@ -1101,32 +647,26 @@
         <div class="table-wrapper">
             <table>
                 <thead><tr><th>#</th><th>Pregunta</th><th>Por qu&eacute;</th></tr></thead>
-                <tbody>
-                    <tr><td>1</td><td>&iquest;Status de documentos bloqueados: Aciertala, SportGana, Trebalia, RCB Global?</td><td>4 prospectos en pipeline detenidos por docs/KYC. Necesitan seguimiento directo.</td></tr>
-                    <tr><td>2</td><td>&iquest;Cu&aacute;l es el status real de integraciones activas: Forbet, Juega en Linea, GranLatino, LotBet?</td><td>Representan ~$300K/mes potencial. Necesitamos timelines concretos.</td></tr>
-                    <tr><td>3</td><td>&iquest;CRM migration: qu&eacute; data se necesita migrar primero a Freshsales?</td><td>Actualmente en 2 Excels + 7 CSVs. Riesgo de p&eacute;rdida de datos.</td></tr>
-                    <tr><td>4</td><td>&iquest;Capacidad actual del equipo: cu&aacute;ntos clientes puede gestionar Marcela sola?</td><td>60+ clientes activos + 32 pipeline con equipo reducido.</td></tr>
-                    <tr><td>5</td><td>&iquest;Status de orden de swag para SBC Americas?</td><td>Deadline 20 de mayo. Necesita coordinaci&oacute;n con proveedor.</td></tr>
-                </tbody>
+                <tbody id="questionsMarcelaBody"></tbody>
             </table>
         </div>
     </section>
 
-    <footer style="padding: 2rem 2.5rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border);">
-        Payphone Betting Dashboard &bull; Confidential &bull; Last updated: March 19, 2026 &bull; Data: Full portfolio (NAC + INT + Intermediarios)
-    </footer>
+    <footer id="footerBar" style="padding: 2rem 2.5rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border);"></footer>
 </div>
 
 <script>
-// PASSWORD
+let DATA = null;
+
+// ─── PASSWORD ───
 function checkPassword() {
     const input = document.getElementById('passwordInput');
-    if (input.value === 'payphone2026') {
+    const pwd = DATA ? DATA.meta.password : 'payphone2026';
+    if (input.value === pwd) {
         sessionStorage.setItem('betting-auth', 'true');
         document.getElementById('passwordScreen').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
-        initCharts();
-        initCountdowns();
+        document.getElementById('loadingScreen').style.display = 'flex';
+        loadData();
     } else {
         document.getElementById('passwordError').style.display = 'block';
         document.getElementById('passwordBox').classList.add('shake');
@@ -1134,30 +674,275 @@ function checkPassword() {
     }
 }
 document.getElementById('passwordInput').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
+
 if (sessionStorage.getItem('betting-auth') === 'true') {
     document.getElementById('passwordScreen').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-    window.addEventListener('load', () => { initCharts(); initCountdowns(); });
+    document.getElementById('loadingScreen').style.display = 'flex';
+    window.addEventListener('load', loadData);
 }
 
-// SIDEBAR
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
+// ─── LOAD DATA ───
+async function loadData() {
+    try {
+        const resp = await fetch('data.json?t=' + Date.now());
+        DATA = await resp.json();
+        renderAll();
+    } catch (e) {
+        console.error('Failed to load data.json', e);
+        document.getElementById('loadingScreen').innerHTML = '<p style="color:#ef4444;">Error cargando datos. Recarga la p&aacute;gina.</p>';
+    }
 }
-// Active link
+
+// ─── RENDER ALL ───
+function renderAll() {
+    renderSidebar();
+    renderHeader();
+    renderMarchTracker();
+    renderRevenue();
+    renderClients();
+    renderPipeline();
+    renderGeography();
+    renderConferences();
+    renderContracts();
+    renderActions();
+    renderQuestions();
+    renderFooter();
+    initCharts();
+    initCountdowns();
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+}
+
+// ─── HELPERS ───
+function docIcon(status) {
+    if (status === 'ok') return '<span class="doc-ok">&#10003;</span>';
+    if (status === 'pending') return '<span class="doc-pending">Pend.</span>';
+    if (status === 'missing') return '<span class="doc-missing">No</span>';
+    return '<span class="doc-na">&mdash;</span>';
+}
+
+function docCell(val, status) {
+    if (status === 'ok') return '<span class="doc-ok">' + (val === 'ok' ? '&#10003;' : val) + '</span>';
+    if (status === 'pending') return '<span class="doc-pending">' + (val === 'pending' ? 'Pend.' : val) + '</span>';
+    if (status === 'missing') return '<span class="doc-missing">' + (val === 'missing' ? 'No' : val) + '</span>';
+    if (status === 'na') return '<span class="doc-na">' + (val || '&mdash;') + '</span>';
+    // fallback: infer from value
+    if (val === 'ok') return '<span class="doc-ok">&#10003;</span>';
+    if (val === 'pending') return '<span class="doc-pending">Pend.</span>';
+    if (val === 'missing') return '<span class="doc-missing">No</span>';
+    return '<span class="doc-na">' + (val || '&mdash;') + '</span>';
+}
+
+// ─── SIDEBAR ───
+function renderSidebar() {
+    document.getElementById('sidebarMonth').textContent = 'Payphone \u2022 ' + (DATA.meta.monthLabel || 'Marzo 2026');
+    const sc = DATA.sidebarConcentration;
+    if (sc) {
+        document.getElementById('sidebarConcentration').innerHTML = `
+            <div style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 1rem;">
+                <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">${sc.label}</div>
+                <div style="font-size: 1.5rem; font-weight: 800; color: #fca5a5;">${sc.value}</div>
+                <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5);">${sc.detail}</div>
+            </div>`;
+    }
+}
+
+// ─── HEADER ───
+function renderHeader() {
+    document.getElementById('headerBadge').innerHTML = '&#128202; ' + DATA.meta.badge;
+    const grid = document.getElementById('headerStats');
+    grid.innerHTML = DATA.headerStats.map(s => {
+        const cls = s.style ? ' ' + s.style : '';
+        const colorStyle = s.style === 'green' ? ' style="color: var(--secondary);"' : s.style === 'purple' ? ' style="color: #a78bfa;"' : '';
+        return `<div class="stat-card${cls}">
+            <div class="value"${colorStyle}>${s.value}</div>
+            <div class="label">${s.label}</div>
+        </div>`;
+    }).join('');
+}
+
+// ─── MARCH TRACKER ───
+function renderMarchTracker() {
+    const mt = DATA.marchTracker;
+    document.getElementById('marchTrackerSubtitle').textContent = 'Target mensual: ' + mt.target + ' \u2014 Actualizado semanalmente por Paula & Marcela';
+    let html = '';
+    mt.weeks.forEach(w => {
+        const style = w.current ? ' style="background: #eff6ff;"' : '';
+        const arrow = w.current ? ' &#9664;' : '';
+        const n = w.nacional || '&mdash;';
+        const i = w.internacional || '&mdash;';
+        const t = w.total ? '<strong>' + w.total + '</strong>' : '&mdash;';
+        const p = w.pctTarget || '&mdash;';
+        const notes = w.notes || 'Pendiente';
+        const noteStyle = notes === 'Pendiente' ? ' style="color: var(--text-muted);"' : '';
+        html += `<tr${style}><td><strong>${w.period}</strong> (${w.dates})${arrow}</td><td>${n}</td><td>${i}</td><td>${t}</td><td>${p}</td><td${noteStyle}>${notes}</td></tr>`;
+    });
+    const tn = mt.totalNacional || '&mdash;';
+    const ti = mt.totalInternacional || '&mdash;';
+    const tt = mt.totalTotal ? '<strong>' + mt.totalTotal + '</strong>' : '&mdash;';
+    const tp = mt.totalPctTarget ? '<strong>' + mt.totalPctTarget + '</strong>' : '&mdash;';
+    html += `<tr style="background: #f0fdf4; font-weight: 600;"><td><strong>Total Marzo</strong></td><td>${tn}</td><td>${ti}</td><td>${tt}</td><td>${tp}</td><td>${mt.totalNotes || ''}</td></tr>`;
+    document.getElementById('marchTrackerBody').innerHTML = html;
+}
+
+// ─── REVENUE ───
+function renderRevenue() {
+    // Alerts
+    const alertsDiv = document.getElementById('revenueAlerts');
+    alertsDiv.innerHTML = DATA.revenueAlerts.map(a => `
+        <div class="alert alert-${a.type}">
+            <span class="icon">${a.icon}</span>
+            <div>${a.html}</div>
+        </div>`).join('');
+
+    // KPIs
+    const kpiDiv = document.getElementById('revenueKpis');
+    kpiDiv.innerHTML = DATA.revenueKpis.map(k => `
+        <div class="kpi-card ${k.color}">
+            <div class="kpi-label">${k.label}</div>
+            <div class="kpi-value">${k.value}</div>
+            <div class="kpi-delta ${k.deltaDir}">${k.delta}</div>
+        </div>`).join('');
+}
+
+// ─── CLIENTS ───
+function renderClients() {
+    // Nacionales
+    const nacBody = document.getElementById('nacionalesBody');
+    nacBody.innerHTML = DATA.clientesNacionales.map(c => {
+        const name = c.parentesis ? `<strong>${c.nombre}</strong> ${c.parentesis}` : `<strong>${c.nombre}</strong>`;
+        const nda = docCell(c.nda, c.ndaStatus || (c.nda === 'ok' ? 'ok' : c.nda === 'pending' ? 'pending' : c.nda === 'missing' ? 'missing' : 'na'));
+        const contrato = docCell(c.contrato, c.contratoStatus || (c.contrato === 'ok' ? 'ok' : c.contrato === 'pending' ? 'pending' : 'na'));
+        const licencia = docCell(c.licencia, c.licenciaStatus);
+        return `<tr><td>${name}</td><td><strong>${c.factFeb}</strong></td><td><span class="kpi-delta ${c.varDir}">${c.varMoM}</span></td><td>${nda}</td><td>${contrato}</td><td>${licencia}</td><td>${c.procesador}</td><td><span class="badge badge-${c.statusColor}">${c.status}</span></td></tr>`;
+    }).join('');
+
+    // Internacionales
+    const intBody = document.getElementById('internacionalesBody');
+    intBody.innerHTML = DATA.clientesInternacionales.map(c => {
+        const nda = docCell(c.nda, c.nda === 'ok' ? 'ok' : c.nda === 'pending' ? 'pending' : 'na');
+        const contrato = docCell(c.contrato, c.contrato === 'ok' ? 'ok' : c.contrato === 'pending' ? 'pending' : 'na');
+        const licencia = docCell(c.licencia, c.licenciaStatus);
+        return `<tr><td><strong>${c.nombre}</strong></td><td>${c.pais}</td><td>${nda}</td><td>${contrato}</td><td>${licencia}</td><td>${c.procesador}</td><td><span class="badge badge-${c.statusColor}">${c.status}</span></td></tr>`;
+    }).join('');
+
+    // Intermediarios
+    const medBody = document.getElementById('intermediariosBody');
+    medBody.innerHTML = DATA.intermediarios.map(c => {
+        return `<tr><td><strong>${c.nombre}</strong></td><td>${c.marcas}</td><td>${c.procesador}</td><td><span class="badge badge-${c.statusColor}">${c.status}</span></td></tr>`;
+    }).join('');
+}
+
+// ─── PIPELINE ───
+function renderPipeline() {
+    const f = DATA.pipeline.funnel;
+    const total = f.prospeccion + f.activacion + f.nuevo + f.facturacion;
+    document.getElementById('pipelineSubtitle').textContent = total + ' operadores en 4 fases \u2014 Prospecci\u00f3n, Activaci\u00f3n, Nuevo, Facturaci\u00f3n';
+
+    document.getElementById('pipelineFunnel').innerHTML = `
+        <div class="funnel-stage" style="background: linear-gradient(135deg, #FF6400, #ff8533);"><div class="count">${f.prospeccion}</div><div class="label">Prospecci&oacute;n</div></div>
+        <div class="funnel-stage" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);"><div class="count">${f.activacion}</div><div class="label">Activaci&oacute;n</div></div>
+        <div class="funnel-stage" style="background: linear-gradient(135deg, #5A00B4, #7b2ff2);"><div class="count">${f.nuevo}</div><div class="label">Nuevo</div></div>
+        <div class="funnel-stage" style="background: linear-gradient(135deg, #10b981, #34d399);"><div class="count">${f.facturacion}</div><div class="label">Facturaci&oacute;n</div></div>`;
+
+    document.getElementById('pipelineAlert').innerHTML = `
+        <span class="icon">&#128197;</span>
+        <div><strong>Pipeline se actualiza semanalmente.</strong> Etapas: Prospecci&oacute;n &rarr; Activaci&oacute;n &rarr; Nuevo &rarr; Facturaci&oacute;n. &Uacute;ltima actualizaci&oacute;n: ${DATA.pipeline.lastUpdated}.</div>`;
+
+    document.getElementById('pipelineBody').innerHTML = DATA.pipeline.operators.map(o => {
+        const style = o.bgColor ? ` style="background: ${o.bgColor};"` : '';
+        const bold = ['Facturación', 'Nuevo', 'Prospección'].some(s => o.estado.startsWith(s)) && o.operador === o.operador.toUpperCase() || o.marca === o.marca;
+        return `<tr${style}><td><strong>${o.operador}</strong></td><td>${o.marca}</td><td>${o.pais}</td><td>${o.proyeccion}</td><td>${o.responsable}</td><td><span class="badge badge-${o.estadoColor}">${o.estado}</span></td></tr>`;
+    }).join('');
+}
+
+// ─── GEOGRAPHY ───
+function renderGeography() {
+    const revenueColorMap = { green: 'var(--secondary)', red: 'var(--danger)', amber: 'var(--accent)' };
+    document.getElementById('geoGrid').innerHTML = DATA.geography.map(g => {
+        const revColor = revenueColorMap[g.revenueColor] || 'var(--text)';
+        return `<div class="geo-card ${g.cardClass}">
+            <div class="flag">${g.flag}</div>
+            <div class="country">${g.country}</div>
+            <div class="detail">${g.detail}</div>
+            <div class="revenue" style="color: ${revColor};">${g.revenue}</div>
+            <div class="detail" style="margin-top:0.3rem;"><span class="badge badge-${g.priorityColor}">${g.priority}</span></div>
+        </div>`;
+    }).join('');
+}
+
+// ─── CONFERENCES ───
+function renderConferences() {
+    document.getElementById('conferencesTimeline').innerHTML = DATA.conferences.events.map(e => {
+        const statsHtml = e.stats.map(s => `<div class="timeline-stat"><strong>${s.value}</strong> ${s.label}</div>`).join('');
+        return `<div class="timeline-item ${e.cssClass}">
+            <div class="timeline-date">${e.dateLabel}</div>
+            <div class="timeline-title">${e.name}</div>
+            <div class="timeline-location">${e.location}</div>
+            <div class="timeline-stats">${statsHtml}</div>
+            <div class="timeline-stats" style="margin-top: 0.5rem;"><div class="timeline-stat"><strong>Targets:</strong> ${e.targets}</div></div>
+            <div class="countdown" id="countdown-${e.id}" style="background: #f3e8ff; color: #5A00B4;"></div>
+        </div>`;
+    }).join('');
+
+    document.getElementById('materialsBody').innerHTML = DATA.conferences.materials.map(m => {
+        return `<tr><td>${m.material}</td><td><span class="badge badge-${m.statusColor}">${m.status}</span></td><td>${m.deadline}</td><td>${m.responsable}</td></tr>`;
+    }).join('');
+}
+
+// ─── CONTRACTS ───
+function renderContracts() {
+    document.getElementById('contractsEcuaBody').innerHTML = DATA.contracts.ecuapayphone.map(c => {
+        const name = c.parentesis ? `<strong>${c.cliente}</strong> ${c.parentesis}` : (c.cliente === c.cliente.toUpperCase() ? c.cliente : `<strong>${c.cliente}</strong>`);
+        return `<tr><td>${name}</td><td>${c.factFeb}</td><td>${c.tipo}</td></tr>`;
+    }).join('');
+
+    document.getElementById('contractsGlobalBody').innerHTML = DATA.contracts.global.map(c => {
+        return `<tr><td><strong>${c.cliente}</strong></td><td>${c.factFeb}</td><td>${c.tipo}</td></tr>`;
+    }).join('');
+}
+
+// ─── ACTIONS ───
+function renderActions() {
+    const grid = document.getElementById('actionsGrid');
+    const sections = [
+        { key: 'critico', title: '&#128308; Cr\u00edtico', border: 'var(--danger)', dotClass: 'critical' },
+        { key: 'alto', title: '&#128992; Alto', border: 'var(--accent)', dotClass: 'high' },
+        { key: 'estrategico', title: '&#128309; Estrat\u00e9gico', border: 'var(--primary)', dotClass: 'medium' }
+    ];
+    grid.innerHTML = sections.map(s => {
+        const items = DATA.actions[s.key].map(item => `<li><div class="priority-dot ${s.dotClass}"></div><div>${item}</div></li>`).join('');
+        return `<div class="card" style="border-left: 4px solid ${s.border};"><h3>${s.title}</h3><ul class="action-list">${items}</ul></div>`;
+    }).join('');
+}
+
+// ─── QUESTIONS ───
+function renderQuestions() {
+    document.getElementById('questionsPaulaBody').innerHTML = DATA.questions.paula.map(q =>
+        `<tr><td>${q.num}</td><td>${q.pregunta}</td><td>${q.porque}</td></tr>`
+    ).join('');
+    document.getElementById('questionsMarcelaBody').innerHTML = DATA.questions.marcela.map(q =>
+        `<tr><td>${q.num}</td><td>${q.pregunta}</td><td>${q.porque}</td></tr>`
+    ).join('');
+}
+
+// ─── FOOTER ───
+function renderFooter() {
+    document.getElementById('footerBar').innerHTML = `Payphone Betting Dashboard &bull; Confidential &bull; Last updated: ${DATA.meta.lastUpdated} &bull; Data: Full portfolio (NAC + INT + Intermediarios)`;
+}
+
+// ─── SIDEBAR NAV ───
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.sidebar a[href^="#"]');
 window.addEventListener('scroll', () => {
     let current = '';
-    sections.forEach(s => {
-        if (window.scrollY >= s.offsetTop - 200) current = s.getAttribute('id');
-    });
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.getAttribute('id'); });
     navLinks.forEach(a => {
         a.classList.remove('active');
         if (a.getAttribute('href') === '#' + current) a.classList.add('active');
     });
 });
-// Smooth scroll
 navLinks.forEach(a => {
     a.addEventListener('click', e => {
         e.preventDefault();
@@ -1167,129 +952,77 @@ navLinks.forEach(a => {
     });
 });
 
-// TABS
-function switchTab(tab) {
+// ─── TABS ───
+function switchTab(tab, el) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    event.target.classList.add('active');
+    el.classList.add('active');
     document.getElementById('tab-' + tab).classList.add('active');
 }
 
-// CHARTS
+// ─── CHARTS ───
 function initCharts() {
-    // Ecuador Concentration (Nacional)
-    new Chart(document.getElementById('concentrationEcuadorChart'), {
+    const cd = DATA.charts;
+    const doughnutOpts = (labels, data, colors) => ({
         type: 'doughnut',
-        data: {
-            labels: ['Ecuabet', 'Betano (Pagadoor)', 'Sportbet', 'Betcris EC', 'Latribet', 'MasService', 'Otros'],
-            datasets: [{
-                data: [3166886, 565980, 217973, 110479, 36267, 17607, 25958],
-                backgroundColor: ['#ef4444', '#5A00B4', '#FF6400', '#0891b2', '#FFA000', '#10b981', '#9ca3af'],
-                borderWidth: 0
-            }]
-        },
+        data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 0 }] },
         options: {
             responsive: true,
             plugins: {
                 legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true, font: { size: 11 } } },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => {
-                            const val = ctx.parsed;
-                            const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
-                            const pct = ((val / total) * 100).toFixed(1);
-                            return ` $${(val/1000000).toFixed(2)}M (${pct}%)`;
-                        }
-                    }
-                }
+                tooltip: { callbacks: { label: ctx => { const v = ctx.parsed; const t = ctx.dataset.data.reduce((a,b)=>a+b,0); return ` $${(v/1e6).toFixed(2)}M (${((v/t)*100).toFixed(1)}%)`; } } }
             },
             cutout: '65%'
         }
     });
 
-    // International Concentration
-    new Chart(document.getElementById('concentrationInternationalChart'), {
-        type: 'doughnut',
-        data: {
-            labels: ['Hondubet', 'Mi Casino', 'BetcrisHN', 'LatinBet', 'Ganaplay ES', 'Starplay', 'Betcris GT', 'Otros INT'],
-            datasets: [{
-                data: [1299128, 531183, 382407, 307829, 199511, 151236, 116414, 312466],
-                backgroundColor: ['#ef4444', '#FFA000', '#0891b2', '#10b981', '#5A00B4', '#FF6400', '#7c3aed', '#9ca3af'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true, font: { size: 11 } } },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => {
-                            const val = ctx.parsed;
-                            const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
-                            const pct = ((val / total) * 100).toFixed(1);
-                            return ` $${(val/1000000).toFixed(2)}M (${pct}%)`;
-                        }
-                    }
-                }
-            },
-            cutout: '65%'
-        }
-    });
+    new Chart(document.getElementById('concentrationEcuadorChart'),
+        doughnutOpts(cd.ecuadorConcentration.labels, cd.ecuadorConcentration.data,
+            ['#ef4444','#5A00B4','#FF6400','#0891b2','#FFA000','#10b981','#9ca3af']));
 
-    // Revenue Bar (Top 10 Full Portfolio)
+    new Chart(document.getElementById('concentrationInternationalChart'),
+        doughnutOpts(cd.internationalConcentration.labels, cd.internationalConcentration.data,
+            ['#ef4444','#FFA000','#0891b2','#10b981','#5A00B4','#FF6400','#7c3aed','#9ca3af']));
+
     new Chart(document.getElementById('revenueChart'), {
         type: 'bar',
         data: {
-            labels: ['Ecuabet', 'Hondubet', 'Betano', 'Mi Casino', 'BetcrisHN', 'LatinBet', 'Sportbet', 'Ganaplay ES', 'Starplay', 'Betcris GT'],
+            labels: cd.revenueBar.labels,
             datasets: [
-                { label: 'Enero', data: [3642841, 861192, 466711, 242507, 451516, 350062, 224750, 738018, 160563, 75754], backgroundColor: 'rgba(255,100,0,0.7)' },
-                { label: 'Febrero', data: [3166886, 1299128, 565980, 531183, 382407, 307829, 217973, 199511, 151236, 116414], backgroundColor: 'rgba(16,185,129,0.7)' }
+                { label: 'Enero', data: cd.revenueBar.enero, backgroundColor: 'rgba(255,100,0,0.7)' },
+                { label: 'Febrero', data: cd.revenueBar.febrero, backgroundColor: 'rgba(16,185,129,0.7)' }
             ]
         },
         options: {
             responsive: true,
             plugins: { legend: { position: 'top', labels: { usePointStyle: true } } },
             scales: {
-                y: { ticks: { callback: v => v >= 1000000 ? '$' + (v/1000000).toFixed(1) + 'M' : '$' + (v/1000) + 'K' }, grid: { color: '#f3f4f6' } },
+                y: { ticks: { callback: v => v >= 1e6 ? '$'+(v/1e6).toFixed(1)+'M' : '$'+(v/1000)+'K' }, grid: { color: '#f3f4f6' } },
                 x: { grid: { display: false }, ticks: { maxRotation: 45, minRotation: 45 } }
             }
         }
     });
 
-    // MoM Change (Full Portfolio - Top movers)
     new Chart(document.getElementById('momChart'), {
         type: 'bar',
         data: {
-            labels: ['Mi Casino', 'Betcris GT', 'Hondubet', 'MasService', 'Bet502', 'Betano', 'Sivarbet', 'Ecuabet', 'Astrobet', 'Ganaplay ES', 'Ganaplay GT'],
-            datasets: [{
-                label: 'MoM %',
-                data: [119, 54, 51, 43, 28, 21, 29, -13, -32, -73, -92],
-                backgroundColor: ctx => ctx.parsed.y >= 0 ? '#10b981' : '#ef4444'
-            }]
+            labels: cd.momChange.labels,
+            datasets: [{ label: 'MoM %', data: cd.momChange.data, backgroundColor: ctx => ctx.parsed.y >= 0 ? '#10b981' : '#ef4444' }]
         },
         options: {
-            indexAxis: 'y',
-            responsive: true,
+            indexAxis: 'y', responsive: true,
             plugins: { legend: { display: false } },
-            scales: {
-                x: { ticks: { callback: v => v + '%' }, grid: { color: '#f3f4f6' } },
-                y: { grid: { display: false } }
-            }
+            scales: { x: { ticks: { callback: v => v + '%' }, grid: { color: '#f3f4f6' } }, y: { grid: { display: false } } }
         }
     });
 }
 
-// COUNTDOWNS
+// ─── COUNTDOWNS ───
 function initCountdowns() {
-    const events = [
-        { id: 'countdown-sbc', date: new Date('2026-06-09'), name: 'SBC Americas' },
-        { id: 'countdown-gat-pr', date: new Date('2026-09-08'), name: 'GAT San Juan' },
-        { id: 'countdown-gat-dr', date: new Date('2026-11-17'), name: 'GAT Santo Domingo' }
-    ];
-    events.forEach(e => {
-        const diff = Math.ceil((e.date - new Date()) / (1000 * 60 * 60 * 24));
-        const el = document.getElementById(e.id);
+    DATA.conferences.events.forEach(e => {
+        const diff = Math.ceil((new Date(e.date) - new Date()) / (1000*60*60*24));
+        const el = document.getElementById('countdown-' + e.id);
+        if (!el) return;
         if (diff > 0) {
             el.textContent = diff + ' dias para ' + e.name;
         } else if (diff >= -3) {
