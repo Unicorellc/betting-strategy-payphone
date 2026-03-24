@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CGO Master Tracker — Payphone 2026</title>
+<style>
+  :root {
+    --pp-orange: #FF6400;
+    --pp-violet: #5A00B4;
+    --pp-yellow: #FFA000;
+    --pp-dark: #222222;
+    --pp-orange-light: #FF640015;
+    --pp-violet-light: #5A00B415;
+    --pp-yellow-light: #FFA00015;
+    --bg: #1a1a1a;
+    --bg-card: #252525;
+    --bg-elevated: #2c2c2c;
+    --bg-input: #1e1e1e;
+    --border: #333;
+    --border-light: #2a2a2a;
+    --text: #e8e8e8;
+    --text-muted: #999;
+    --text-dim: #666;
+    --success: #2ecc71;
+    --warning: #FFA000;
+    --danger: #e74c3c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, var(--pp-orange), var(--pp-yellow));
+    padding: 20px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 200;
+    box-shadow: 0 4px 24px rgba(255,100,0,0.3);
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .header h1 { font-size: 22px; font-weight: 700; color: #fff; }
+  .header h1 span { font-weight: 400; opacity: 0.9; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .date-disp { font-size: 12px; color: rgba(255,255,255,0.8); }
+  .role-badge {
+    padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 600;
+    background: rgba(255,255,255,0.2); color: #fff; backdrop-filter: blur(4px);
+  }
+  /* Whale SVG logo in header */
+  .pp-logo {
+    width: 36px; height: 36px; fill: #fff; flex-shrink: 0;
+  }
+
+  /* ── Countdown strip ── */
+  .countdowns {
+    display: flex; gap: 0; border-bottom: 1px solid var(--border);
+    overflow-x: auto; background: var(--pp-dark);
+  }
+  .cd-item {
+    flex: 1; min-width: 180px; padding: 14px 16px;
+    border-right: 1px solid var(--border); text-align: center;
+  }
+  .cd-item:last-child { border-right: none; }
+  .cd-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-dim); margin-bottom: 4px; font-weight: 600; }
+  .cd-val { font-size: 24px; font-weight: 700; }
+  .cd-sub { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+  .cd-red .cd-val { color: var(--danger); }
+  .cd-orange .cd-val { color: var(--pp-orange); }
+  .cd-yellow .cd-val { color: var(--pp-yellow); }
+  .cd-violet .cd-val { color: var(--pp-violet); }
+  .cd-green .cd-val { color: var(--success); }
+
+  /* ── Progress overview ── */
+  .overview {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 0; border-bottom: 1px solid var(--border); background: var(--pp-dark);
+  }
+  .ov-card {
+    padding: 14px 16px; border-right: 1px solid var(--border);
+    cursor: pointer; transition: background 0.15s; position: relative;
+  }
+  .ov-card:hover { background: var(--bg-card); }
+  .ov-card.active { background: var(--bg-card); }
+  .ov-card.active::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: var(--cat-color, var(--pp-orange));
+  }
+  .ov-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
+  .ov-bar { height: 4px; background: var(--border); border-radius: 4px; margin-bottom: 6px; overflow: hidden; }
+  .ov-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+  .ov-stats { display: flex; justify-content: space-between; }
+  .ov-stat { font-size: 11px; }
+  .ov-done { color: var(--success); font-weight: 600; }
+  .ov-total { color: var(--text-dim); }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    padding: 12px 32px; display: flex; gap: 8px; flex-wrap: wrap;
+    align-items: center; border-bottom: 1px solid var(--border);
+    background: var(--pp-dark); position: sticky; top: 62px; z-index: 150;
+  }
+  .search-box {
+    padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border);
+    background: var(--bg-input); color: var(--text); font-size: 12px;
+    width: 200px; outline: none; transition: border-color 0.15s;
+  }
+  .search-box:focus { border-color: var(--pp-orange); }
+  .search-box::placeholder { color: var(--text-dim); }
+  .tb-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+  .tb-btn {
+    padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); font-size: 11px;
+    cursor: pointer; transition: all 0.15s; font-weight: 500;
+  }
+  .tb-btn:hover { border-color: var(--pp-orange); color: var(--text); }
+  .tb-btn.active {
+    background: var(--pp-orange); border-color: var(--pp-orange); color: #fff;
+  }
+  .tb-btn.owner-active {
+    background: var(--bg-elevated); border-color: var(--pp-yellow); color: var(--pp-yellow);
+  }
+
+  /* ── Main ── */
+  .main { padding: 20px 32px 120px; max-width: 1400px; margin: 0 auto; }
+
+  /* ── Category section ── */
+  .cat-section { margin-bottom: 24px; }
+  .cat-header {
+    display: flex; align-items: center; gap: 12px; padding: 14px 0 10px;
+    border-bottom: 2px solid var(--border); margin-bottom: 2px;
+    cursor: pointer; user-select: none;
+  }
+  .cat-dot { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
+  .cat-name { font-size: 16px; font-weight: 600; flex: 1; }
+  .cat-badge {
+    padding: 3px 12px; border-radius: 20px; font-size: 10px; font-weight: 600;
+  }
+  .cat-arrow { color: var(--text-dim); font-size: 14px; transition: transform 0.2s; }
+  .cat-section.collapsed .cat-arrow { transform: rotate(-90deg); }
+  .cat-section.collapsed .cat-body { display: none; }
+
+  /* ── Phase group ── */
+  .phase-group { margin: 6px 0; }
+  .pg-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px; background: var(--bg-card); border-radius: 10px;
+    cursor: pointer; user-select: none; margin-bottom: 2px;
+  }
+  .pg-header:hover { background: var(--bg-elevated); }
+  .pg-title { font-size: 13px; font-weight: 500; color: var(--text-muted); flex: 1; }
+  .pg-count { font-size: 11px; color: var(--text-dim); }
+  .pg-arrow { color: var(--text-dim); font-size: 12px; transition: transform 0.2s; }
+  .phase-group.collapsed .pg-arrow { transform: rotate(-90deg); }
+  .phase-group.collapsed .pg-body { display: none; }
+
+  /* ── Task rows ── */
+  .task-row {
+    display: grid;
+    grid-template-columns: 36px 1fr 110px 110px 90px 36px;
+    align-items: center; padding: 11px 14px; gap: 6px;
+    border-bottom: 1px solid var(--border-light); transition: background 0.1s;
+    border-radius: 6px; margin: 1px 0;
+  }
+  .task-row:hover { background: var(--bg-card); }
+  .task-row.done { opacity: 0.4; }
+  .task-row.done .t-name { text-decoration: line-through; }
+  .task-row.overdue .t-deadline { color: var(--danger); font-weight: 600; }
+  .task-row.critical .t-name::before { content: '\26A0 '; }
+
+  .t-check {
+    width: 22px; height: 22px; border-radius: 8px; border: 2px solid var(--border);
+    background: transparent; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; font-size: 13px;
+    color: transparent; transition: all 0.15s;
+  }
+  .t-check:hover { border-color: var(--pp-orange); }
+  .t-check.checked {
+    background: var(--success); border-color: var(--success); color: #fff;
+  }
+  .t-check.in-progress {
+    background: var(--pp-orange)30; border-color: var(--pp-orange); color: var(--pp-orange);
+  }
+
+  .t-info { min-width: 0; }
+  .t-name { font-size: 13px; font-weight: 500; line-height: 1.35; }
+  .t-meta {
+    font-size: 10px; color: var(--text-dim); margin-top: 2px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .owner-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+  .t-deadline { font-size: 11px; color: var(--text-muted); }
+  .t-status-sel {
+    padding: 4px 8px; border-radius: 8px; font-size: 10px;
+    border: 1px solid var(--border); background: var(--bg-input); color: var(--text-muted);
+    cursor: pointer; outline: none;
+  }
+  .t-status-sel:focus { border-color: var(--pp-orange); }
+  .t-priority {
+    font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: 600;
+  }
+  .pri-critical { background: #e74c3c20; color: var(--danger); }
+  .pri-high { background: var(--pp-orange-light); color: var(--pp-orange); }
+  .pri-medium { background: var(--pp-yellow-light); color: var(--pp-yellow); }
+  .pri-low { background: #33333350; color: var(--text-dim); }
+
+  .t-expand {
+    width: 26px; height: 26px; border-radius: 8px; border: none;
+    background: transparent; color: var(--text-dim); cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .t-expand:hover { background: var(--bg-elevated); color: var(--text-muted); }
+  .notes-row { grid-column: 1 / -1; display: none; padding: 6px 0 6px 36px; }
+  .notes-row.open { display: block; }
+  .notes-area {
+    width: 100%; background: var(--bg-input); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px; color: var(--text-muted);
+    font-size: 12px; font-family: inherit; resize: vertical;
+    min-height: 50px; outline: none;
+  }
+  .notes-area:focus { border-color: var(--pp-orange); }
+  .notes-area::placeholder { color: var(--text-dim); }
+
+  /* ── Daily Log ── */
+  .log-section {
+    margin-top: 36px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+  }
+  .log-header {
+    padding: 16px 20px; background: var(--bg-card);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .log-header h2 { font-size: 15px; font-weight: 600; }
+  .log-add {
+    padding: 6px 16px; border-radius: 20px; border: 1px solid var(--pp-orange);
+    background: transparent; color: var(--pp-orange); font-size: 11px;
+    cursor: pointer; font-weight: 600; transition: all 0.15s;
+  }
+  .log-add:hover { background: var(--pp-orange); color: #fff; }
+  .log-body { padding: 0 20px 16px; }
+  .log-entry { border-top: 1px solid var(--border-light); padding: 12px 0; }
+  .log-entry-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .log-date { font-size: 12px; font-weight: 600; color: var(--pp-orange); }
+  .log-del {
+    background: none; border: none; color: var(--text-dim); cursor: pointer;
+    font-size: 12px; padding: 2px 8px; border-radius: 6px;
+  }
+  .log-del:hover { color: var(--danger); background: #e74c3c10; }
+  .log-text {
+    width: 100%; background: var(--bg-input); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px; color: var(--text-muted);
+    font-size: 12px; font-family: inherit; resize: vertical;
+    min-height: 60px; outline: none;
+  }
+  .log-text:focus { border-color: var(--pp-orange); }
+
+  /* ── Floating actions ── */
+  /* ── Save indicator ── */
+  .save-toast {
+    position: fixed; top: 70px; right: 20px; z-index: 300;
+    padding: 8px 16px; border-radius: 20px;
+    background: var(--success); color: #fff; font-size: 11px; font-weight: 600;
+    opacity: 0; transform: translateY(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+  }
+  .save-toast.show { opacity: 1; transform: translateY(0); }
+
+  .fab-bar {
+    position: fixed; bottom: 20px; right: 20px; display: flex; gap: 8px; z-index: 100;
+  }
+  .fab {
+    padding: 10px 18px; border-radius: 24px; border: none;
+    font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .fab-export {
+    background: linear-gradient(135deg, var(--pp-orange), var(--pp-yellow));
+    color: #fff; box-shadow: 0 4px 20px rgba(255,100,0,0.35);
+  }
+  .fab-export:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255,100,0,0.5); }
+  .fab-reset { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+  .fab-reset:hover { border-color: var(--danger); color: var(--danger); }
+  .fab-add {
+    background: var(--pp-violet-light); color: var(--pp-violet);
+    border: 1px solid #5A00B440;
+  }
+  .fab-add:hover { background: var(--pp-violet); color: #fff; }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7); z-index: 300; display: none;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px; width: 480px; max-width: 90vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .modal h3 { font-size: 17px; margin-bottom: 18px; }
+  .modal label {
+    font-size: 10px; color: var(--text-dim); display: block;
+    margin-bottom: 4px; margin-top: 14px; text-transform: uppercase;
+    letter-spacing: 0.8px; font-weight: 600;
+  }
+  .modal input, .modal select, .modal textarea {
+    width: 100%; padding: 9px 14px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--bg-input); color: var(--text);
+    font-size: 13px; font-family: inherit; outline: none;
+  }
+  .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--pp-orange); }
+  .modal-actions { display: flex; gap: 10px; margin-top: 22px; justify-content: flex-end; }
+  .modal-btn {
+    padding: 9px 20px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.15s;
+  }
+  .modal-cancel { background: var(--bg-elevated); color: var(--text-muted); }
+  .modal-cancel:hover { color: var(--text); }
+  .modal-save {
+    background: linear-gradient(135deg, var(--pp-orange), var(--pp-yellow));
+    color: #fff;
+  }
+  .modal-save:hover { opacity: 0.9; }
+
+  /* ── Owner colors ── */
+  .ow-val { background: var(--pp-orange); }
+  .ow-jordan { background: var(--pp-yellow); }
+  .ow-carlos { background: var(--success); }
+  .ow-juan { background: #3498db; }
+  .ow-paula { background: var(--pp-violet); }
+  .ow-marketing { background: #e67e22; }
+  .ow-david { background: #1abc9c; }
+  .ow-growth { background: #f39c12; }
+  .ow-awtana { background: #e91e8c; }
+  .ow-edgar { background: #c0a040; }
+  .ow-hernan { background: #9b59b6; }
+  .ow-luisgerman { background: #16a085; }
+  .ow-karen { background: #e74c3c; }
+  .ow-anajulia { background: #d35400; }
+  .ow-nayla { background: #2980b9; }
+  .ow-katherine { background: #8e44ad; }
+
+  /* ── Category colors (Payphone palette) ── */
+  .cc-transition { background: var(--pp-orange); }
+  .cc-crm { background: var(--danger); }
+  .cc-insider { background: var(--success); }
+  .cc-betting { background: var(--pp-violet); }
+  .cc-marketing { background: #e67e22; }
+  .cc-sales { background: #1abc9c; }
+  .cc-product { background: #3498db; }
+  .cc-partnerships { background: var(--pp-yellow); }
+  .cc-emails { background: linear-gradient(135deg, var(--pp-orange), var(--pp-violet)); }
+
+  /* ── Email section accent ── */
+  .email-section-badge {
+    background: linear-gradient(135deg, var(--pp-orange), var(--pp-violet));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+
+  /* ── Received date badge (emails) ── */
+  .t-received {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 9px; font-weight: 500; color: var(--pp-violet);
+    background: var(--pp-violet-light); border: 1px solid #5A00B425;
+    padding: 1px 8px; border-radius: 10px; white-space: nowrap;
+    letter-spacing: 0.2px;
+  }
+  .t-received-icon {
+    font-size: 9px; opacity: 0.7;
+  }
+
+  /* ── Department badges ── */
+  .dept-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 9px; font-weight: 600; color: #fff;
+    padding: 2px 9px; border-radius: 10px; white-space: nowrap;
+    letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .dept-Comercial { background: #FF6400; }
+  .dept-Bettings { background: #E83E00; }
+  .dept-Growth { background: #00B86B; }
+  .dept-Marketing { background: #FFA000; color: #222; }
+  .dept-Creative { background: #FF8C42; }
+  .dept-Producto { background: #2196F3; }
+  .dept-Finanzas { background: #4CAF50; }
+  .dept-Legal { background: #9C27B0; }
+  .dept-Tecnología { background: #607D8B; }
+  .dept-People { background: #E91E63; }
+  .dept-Operaciones { background: #795548; }
+  .dept-Estrategia { background: #5A00B4; }
+
+  /* ── Department filter dropdown ── */
+  .dept-filter-select {
+    padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border);
+    background: var(--bg-input); color: var(--text-muted); font-size: 11px;
+    cursor: pointer; outline: none; transition: all 0.15s; font-weight: 500;
+    -webkit-appearance: none; -moz-appearance: none; appearance: none;
+    padding-right: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+  }
+  .dept-filter-select:focus { border-color: var(--pp-orange); }
+  .dept-filter-select.active {
+    border-color: var(--pp-violet); color: var(--pp-violet);
+    background-color: var(--bg-elevated);
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  @media (max-width: 900px) {
+    .header, .toolbar, .main { padding-left: 14px; padding-right: 14px; }
+    .task-row { grid-template-columns: 32px 1fr 80px 80px 32px; }
+    .t-priority { display: none; }
+    .countdowns { display: grid; grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <svg class="pp-logo" viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 65 C50 65 15 45 5 25 C0 15 5 5 15 5 C25 5 35 12 42 22 L50 35 L58 22 C65 12 75 5 85 5 C95 5 100 15 95 25 C85 45 50 65 50 65Z" fill="white" stroke="none"/>
+    </svg>
+    <h1>CGO <span>Master Tracker</span></h1>
+    <span class="role-badge">Val Infante — Chief Growth Officer — Payphone 2026</span>
+  </div>
+  <div class="header-right">
+    <div class="date-disp" id="todayDate"></div>
+  </div>
+</div>
+
+<div class="countdowns" id="countdowns"></div>
+<div class="overview" id="overview"></div>
+
+<div class="toolbar" id="toolbar">
+  <input class="search-box" id="searchBox" type="text" placeholder="Buscar tareas...">
+  <div class="tb-sep"></div>
+  <button class="tb-btn active" data-sf="all">Todos</button>
+  <button class="tb-btn" data-sf="pending">Pendientes</button>
+  <button class="tb-btn" data-sf="in-progress">En Progreso</button>
+  <button class="tb-btn" data-sf="done">Completados</button>
+  <button class="tb-btn" data-sf="overdue">Vencidos</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" data-of="val">Val</button>
+  <button class="tb-btn" data-of="jordan">Jordan</button>
+  <button class="tb-btn" data-of="carlos">Carlos</button>
+  <button class="tb-btn" data-of="paula">Paula</button>
+  <button class="tb-btn" data-of="marketing">Marketing</button>
+  <button class="tb-btn" data-of="juan">Juan D.</button>
+  <button class="tb-btn" data-of="david">Sales</button>
+  <div class="tb-sep"></div>
+  <select class="dept-filter-select" id="deptFilter">
+    <option value="">Departamento</option>
+    <option value="Comercial">Comercial</option>
+    <option value="Bettings">Bettings</option>
+    <option value="Growth">Growth</option>
+    <option value="Marketing">Marketing</option>
+    <option value="Creative">Creative</option>
+    <option value="Producto">Producto</option>
+    <option value="Finanzas">Finanzas</option>
+    <option value="Legal">Legal</option>
+    <option value="Tecnolog\u00eda">Tecnolog\u00eda</option>
+    <option value="People">People</option>
+    <option value="Operaciones">Operaciones</option>
+    <option value="Estrategia">Estrategia</option>
+  </select>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h3>Agregar Tarea</h3>
+    <label>Nombre de la Tarea</label>
+    <input id="mName" type="text" placeholder="\u00bfQu\u00e9 necesita hacerse?">
+    <label>Categor\u00eda</label>
+    <select id="mCat"></select>
+    <label>Responsable</label>
+    <select id="mOwner">
+      <option value="val">Val Infante</option>
+      <option value="jordan">Jordan Butler</option>
+      <option value="carlos">Carlos Flores</option>
+      <option value="paula">Paula Murillo</option>
+      <option value="marketing">Marketing Team</option>
+      <option value="juan">Juan D.</option>
+      <option value="david">David Mu\u00f1oz</option>
+      <option value="growth">Growth Team</option>
+      <option value="awtana">Awtana</option>
+    </select>
+    <label>Departamento (opcional)</label>
+    <select id="mDept">
+      <option value="">Sin departamento</option>
+      <option value="Comercial">Comercial</option>
+      <option value="Bettings">Bettings</option>
+      <option value="Growth">Growth</option>
+      <option value="Marketing">Marketing</option>
+      <option value="Creative">Creative</option>
+      <option value="Producto">Producto</option>
+      <option value="Finanzas">Finanzas</option>
+      <option value="Legal">Legal</option>
+      <option value="Tecnolog\u00eda">Tecnolog\u00eda</option>
+      <option value="People">People</option>
+      <option value="Operaciones">Operaciones</option>
+      <option value="Estrategia">Estrategia</option>
+    </select>
+    <label>Fecha L\u00edmite</label>
+    <input id="mDeadline" type="date">
+    <label>Prioridad</label>
+    <select id="mPriority">
+      <option value="critical">Critical</option>
+      <option value="high" selected>High</option>
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+    </select>
+    <label>Notas (opcional)</label>
+    <textarea id="mNotes" rows="2" placeholder="Contexto, enlaces, detalles..."></textarea>
+    <div class="modal-actions">
+      <button class="modal-btn modal-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="modal-btn modal-save" onclick="saveNewTask()">Agregar Tarea</button>
+    </div>
+  </div>
+</div>
+
+<div class="save-toast" id="saveToast">Guardado</div>
+
+<div class="fab-bar">
+  <button class="fab fab-reset" onclick="resetAll()">Reiniciar</button>
+  <button class="fab fab-add" onclick="openModal()">+ Agregar Tarea</button>
+  <button class="fab fab-export" onclick="exportMd()">Exportar</button>
+</div>
+
+<script>
+const CATEGORIES = [
+  { id:"transition", name:"CGO Transition", color:"#FF6400", icon:"cc-transition" },
+  { id:"crm", name:"CRM Stack / Pipedrive", color:"#e74c3c", icon:"cc-crm" },
+  { id:"insider", name:"Insider ONE & SDK", color:"#2ecc71", icon:"cc-insider" },
+  { id:"betting", name:"Betting Vertical", color:"#5A00B4", icon:"cc-betting" },
+  { id:"marketing", name:"Marketing & Brand", color:"#e67e22", icon:"cc-marketing" },
+  { id:"sales", name:"Sales Enablement", color:"#1abc9c", icon:"cc-sales" },
+  { id:"product", name:"Product & Tech", color:"#3498db", icon:"cc-product" },
+  { id:"partnerships", name:"Strategic Partnerships", color:"#FFA000", icon:"cc-partnerships" },
+  { id:"emails", name:"Emails \u2014 Action Items (Mar 6\u201320)", color:"#E83E00", icon:"cc-emails" },
+];
+
+const OWNER_MAP = {
+  val: { label:"Val Infante", dot:"ow-val" },
+  jordan: { label:"Jordan Butler", dot:"ow-jordan" },
+  carlos: { label:"Carlos Flores", dot:"ow-carlos" },
+  juan: { label:"Juan D.", dot:"ow-juan" },
+  paula: { label:"Paula Murillo", dot:"ow-paula" },
+  marketing: { label:"Marketing Team", dot:"ow-marketing" },
+  david: { label:"David Mu\u00f1oz", dot:"ow-david" },
+  growth: { label:"Growth Team", dot:"ow-growth" },
+  awtana: { label:"Awtana", dot:"ow-awtana" },
+  edgar: { label:"Edgar Chaves", dot:"ow-edgar" },
+  hernan: { label:"Hern\u00e1n", dot:"ow-hernan" },
+  luisgerman: { label:"Luis Germ\u00e1n", dot:"ow-luisgerman" },
+  karen: { label:"Karen", dot:"ow-karen" },
+  anajulia: { label:"Ana Julia", dot:"ow-anajulia" },
+  nayla: { label:"Nayla Solano", dot:"ow-nayla" },
+  katherine: { label:"Katherine Astudillo", dot:"ow-katherine" },
+};
+
+const COUNTDOWNS = [
+  { label:"ZEN-IT Non-Renewal", date:"2026-03-28", cls:"cd-red" },
+  { label:"Brand Book", date:"2026-03-28", cls:"cd-orange" },
+  { label:"Pipedrive Trial", date:"2026-04-01", cls:"cd-yellow" },
+  { label:"Insider Journeys", date:"2026-04-21", cls:"cd-green" },
+  { label:"Betting Materials", date:"2026-05-15", cls:"cd-violet" },
+  { label:"SBC Americas", date:"2026-06-09", cls:"cd-orange" },
+  { label:"Email Review", date:"2026-03-27", cls:"cd-red" },
+];
+
+const DEFAULT_TASKS = [
+  // CRO TRANSITION
+  {id:"tr01",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"Handoff Session 1 w/ Jordan \u2014 Growth system overview + frictions",owner:"val",deadline:"2026-03-17",pri:"critical"},
+  {id:"tr02",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"Handoff Session 2 w/ Jordan \u2014 Lifecycle, onboarding, journeys",owner:"val",deadline:"2026-03-18",pri:"critical"},
+  {id:"tr03",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"Handoff Session 3 w/ Jordan \u2014 Sales, product, narrative",owner:"val",deadline:"2026-03-19",pri:"critical"},
+  {id:"tr04",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"Handoff Session 4 w/ Jordan \u2014 US GTM hypotheses & risks",owner:"val",deadline:"2026-03-20",pri:"high"},
+  {id:"tr05",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"Handoff Session 5 w/ Jordan \u2014 Project status & next steps",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"tr06",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"1-on-1 with Juan Jos\u00e9 Espinoza (Founder)",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"tr07",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"1-on-1 with Juan Diego V\u00e1zquez (Founder)",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"tr08",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"1-on-1s with Sales team (David, Estefania, Pablo J.)",owner:"val",deadline:"2026-03-21",pri:"medium"},
+  {id:"tr09",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"1-on-1s with Marketing team (Ana Julia, Efrain, Pablo S.)",owner:"val",deadline:"2026-03-21",pri:"medium"},
+  {id:"tr10",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"1-on-1s with Product/UX (Nayla, Flora, Nathaly)",owner:"val",deadline:"2026-03-21",pri:"medium"},
+  {id:"tr11",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"1-on-1 with Paula Murillo (Bettings)",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"tr12",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"Audit Growth scorecard performance vs targets",owner:"val",deadline:"2026-03-21",pri:"medium"},
+  {id:"tr13",cat:"transition",phase:"Phase 1: Absorb & Align (W1-2, by Mar 21)",name:"Audit all budgets, vendor contracts, tools",owner:"val",deadline:"2026-03-21",pri:"medium"},
+  {id:"tr14",cat:"transition",phase:"Phase 2: Stabilize & Define (W3-6, by Apr 4)",name:"Close CRM integration (connect marketing, sales, lifecycle)",owner:"val",deadline:"2026-03-31",pri:"critical"},
+  {id:"tr15",cat:"transition",phase:"Phase 2: Stabilize & Define (W3-6, by Apr 4)",name:"Define US GTM thesis \u2014 pick ONE, not multiple bets",owner:"val",deadline:"2026-04-04",pri:"critical"},
+  {id:"tr16",cat:"transition",phase:"Phase 2: Stabilize & Define (W3-6, by Apr 4)",name:"Validate activation bottleneck with data (signup \u2192 activate \u2192 revenue)",owner:"val",deadline:"2026-03-28",pri:"high"},
+  {id:"tr17",cat:"transition",phase:"Phase 2: Stabilize & Define (W3-6, by Apr 4)",name:"Plan 2-3 activation experiments based on data",owner:"growth",deadline:"2026-04-04",pri:"high"},
+  {id:"tr18",cat:"transition",phase:"Phase 2: Stabilize & Define (W3-6, by Apr 4)",name:"Assess team capabilities (ads, analytics, lifecycle, US GTM gaps)",owner:"val",deadline:"2026-04-04",pri:"medium"},
+  {id:"tr19",cat:"transition",phase:"Phase 2: Stabilize & Define (W3-6, by Apr 4)",name:"Install weekly Growth-Sales sync with sales leads",owner:"val",deadline:"2026-03-24",pri:"medium"},
+  {id:"tr20",cat:"transition",phase:"Phase 3: Accelerate & Execute (W7-12)",name:"Launch first US GTM execution sprint",owner:"val",deadline:"2026-04-18",pri:"high"},
+  {id:"tr21",cat:"transition",phase:"Phase 3: Accelerate & Execute (W7-12)",name:"Run activation experiments",owner:"growth",deadline:"2026-05-02",pri:"high"},
+  {id:"tr22",cat:"transition",phase:"Phase 3: Accelerate & Execute (W7-12)",name:"Formalize Growth operating model for Q3",owner:"val",deadline:"2026-05-16",pri:"medium"},
+  {id:"tr23",cat:"transition",phase:"Phase 3: Accelerate & Execute (W7-12)",name:"90-day results presentation to founders",owner:"val",deadline:"2026-06-06",pri:"critical"},
+
+  // CRM STACK
+  {id:"crm01",cat:"crm",phase:"Urgent \u2014 This Week",name:"Send ZEN-IT non-renewal notice (60-day clause, certified + email)",owner:"val",deadline:"2026-03-28",pri:"critical"},
+  {id:"crm02",cat:"crm",phase:"Urgent \u2014 This Week",name:"Open bridge negotiation \u2014 3 months, 7 licenses, $2,500/mo cap",owner:"val",deadline:"2026-03-28",pri:"critical"},
+  {id:"crm03",cat:"crm",phase:"Urgent \u2014 This Week",name:"Confirm ZEN-IT non-renewal deadline with legal",owner:"val",deadline:"2026-03-17",pri:"critical"},
+  {id:"crm04",cat:"crm",phase:"Urgent \u2014 This Week",name:"Share CGO Memo with Carlos, Jordan, Hernan, JJ for feedback",owner:"val",deadline:"2026-03-17",pri:"high"},
+  {id:"crm05",cat:"crm",phase:"Urgent \u2014 This Week",name:"CRM team alignment meeting",owner:"val",deadline:"2026-03-19",pri:"high"},
+  {id:"crm06",cat:"crm",phase:"Urgent \u2014 This Week",name:"Draft formal non-renewal letter to ZEN-IT (Patricio Toledo)",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"crm07",cat:"crm",phase:"P0 \u2014 Bridge (Now \u2192 May 28)",name:"Start Pipedrive Advanced trial (14 days free)",owner:"val",deadline:"2026-04-01",pri:"high"},
+  {id:"crm08",cat:"crm",phase:"P0 \u2014 Bridge (Now \u2192 May 28)",name:"Configure custom 9-stage pipeline in Pipedrive",owner:"jordan",deadline:"2026-04-07",pri:"high"},
+  {id:"crm09",cat:"crm",phase:"P0 \u2014 Bridge (Now \u2192 May 28)",name:"Onboard 3 pilot reps on Pipedrive",owner:"jordan",deadline:"2026-04-07",pri:"high"},
+  {id:"crm10",cat:"crm",phase:"P0 \u2014 Bridge (Now \u2192 May 28)",name:"Map Freshsales fields \u2192 Pipedrive fields for migration",owner:"jordan",deadline:"2026-04-07",pri:"medium"},
+  {id:"crm11",cat:"crm",phase:"P1 \u2014 Pilot (April)",name:"Test Insider \u2194 Pipedrive native connector (Marketplace)",owner:"carlos",deadline:"2026-04-14",pri:"high"},
+  {id:"crm12",cat:"crm",phase:"P1 \u2014 Pilot (April)",name:"Configure webhook auto-updates for 5 pipeline stages",owner:"carlos",deadline:"2026-04-14",pri:"high"},
+  {id:"crm13",cat:"crm",phase:"P1 \u2014 Pilot (April)",name:"Validate bi-directional sync: Pipedrive \u2192 Insider CDP",owner:"carlos",deadline:"2026-04-21",pri:"medium"},
+  {id:"crm14",cat:"crm",phase:"P1 \u2014 Pilot (April)",name:"Validate reverse sync: Insider event \u2192 Pipedrive deal stage",owner:"carlos",deadline:"2026-04-21",pri:"medium"},
+  {id:"crm15",cat:"crm",phase:"P1 \u2014 Pilot (April)",name:"Run pilot with 3 reps \u2014 track adoption, data quality, deal velocity",owner:"jordan",deadline:"2026-04-30",pri:"high"},
+  {id:"crm16",cat:"crm",phase:"P2 \u2014 Go/No-Go + Migration (May)",name:"Pilot Go/No-Go decision \u2014 metrics vs Freshsales baseline",owner:"val",deadline:"2026-05-15",pri:"critical"},
+  {id:"crm17",cat:"crm",phase:"P2 \u2014 Go/No-Go + Migration (May)",name:"Export all Freshsales contacts/deals (CSV)",owner:"jordan",deadline:"2026-05-16",pri:"high"},
+  {id:"crm18",cat:"crm",phase:"P2 \u2014 Go/No-Go + Migration (May)",name:"Import into Pipedrive + deduplicate against pilot data",owner:"jordan",deadline:"2026-05-20",pri:"high"},
+  {id:"crm19",cat:"crm",phase:"P2 \u2014 Go/No-Go + Migration (May)",name:"Decommission Freshsales user accounts",owner:"val",deadline:"2026-05-28",pri:"medium"},
+  {id:"crm20",cat:"crm",phase:"P3 \u2014 Integration Live (June+)",name:"Full Insider \u2194 Pipedrive integration live (all 22 events)",owner:"carlos",deadline:"2026-06-30",pri:"high"},
+  {id:"crm21",cat:"crm",phase:"P3 \u2014 Integration Live (June+)",name:"Activate 5 MVP journeys with Pipedrive deal-stage triggers",owner:"carlos",deadline:"2026-06-30",pri:"high"},
+  {id:"crm22",cat:"crm",phase:"P3 \u2014 Integration Live (June+)",name:"ZEN-IT / Freshsales closed permanently",owner:"val",deadline:"2026-08-31",pri:"high"},
+
+  // INSIDER ONE & SDK
+  {id:"ins01",cat:"insider",phase:"Immediate (Mar 14-21)",name:"Talk to Jordan about Insider attribution setup details",owner:"val",deadline:"2026-03-17",pri:"critical"},
+  {id:"ins02",cat:"insider",phase:"Immediate (Mar 14-21)",name:"Review Juan D.\u2019s Insider documentation",owner:"val",deadline:"2026-03-19",pri:"high"},
+  {id:"ins03",cat:"insider",phase:"Immediate (Mar 14-21)",name:"Schedule Insider review call with Edgar Chaves (CSM)",owner:"val",deadline:"2026-03-19",pri:"high"},
+  {id:"ins04",cat:"insider",phase:"Immediate (Mar 14-21)",name:"Audit: what\u2019s live vs 0% on the $36K contract",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"ins05",cat:"insider",phase:"SDK & MMP (April-May)",name:"Mobile SDK launch (iOS + Android) with Juan D.",owner:"juan",deadline:"2026-04-30",pri:"critical"},
+  {id:"ins06",cat:"insider",phase:"SDK & MMP (April-May)",name:"AppsFlyer Zero account setup (free, 10K conversions/mo)",owner:"growth",deadline:"2026-03-21",pri:"medium"},
+  {id:"ins07",cat:"insider",phase:"SDK & MMP (April-May)",name:"Singular Growth demo request",owner:"growth",deadline:"2026-03-21",pri:"low"},
+  {id:"ins08",cat:"insider",phase:"SDK & MMP (April-May)",name:"Final MMP decision (AppsFlyer vs Singular)",owner:"val",deadline:"2026-04-21",pri:"medium"},
+  {id:"ins09",cat:"insider",phase:"SDK & MMP (April-May)",name:"First push notification campaign (within 2 weeks of SDK)",owner:"marketing",deadline:"2026-05-14",pri:"high"},
+  {id:"ins10",cat:"insider",phase:"Journey Activation",name:"Build Journey 1: New merchant onboarding (welcome + activation)",owner:"carlos",deadline:"2026-04-21",pri:"high"},
+  {id:"ins11",cat:"insider",phase:"Journey Activation",name:"Build Journey 2: Dormant merchant reactivation (push\u2192WA\u2192email\u2192SMS)",owner:"carlos",deadline:"2026-04-21",pri:"high"},
+  {id:"ins12",cat:"insider",phase:"Journey Activation",name:"Build Journey 3: Payment drop-off recovery",owner:"carlos",deadline:"2026-04-21",pri:"high"},
+  {id:"ins13",cat:"insider",phase:"Journey Activation",name:"Migrate 100% reactivation campaigns from Freshsales \u2192 Insider",owner:"marketing",deadline:"2026-04-28",pri:"critical"},
+  {id:"ins14",cat:"insider",phase:"Journey Activation",name:"WhatsApp channel activation on Insider",owner:"carlos",deadline:"2026-04-30",pri:"medium"},
+
+  // BETTING VERTICAL
+  {id:"bet01",cat:"betting",phase:"Analysis & Strategy (Now)",name:"1-on-1 with Paula \u2014 current state, pipeline, team needs",owner:"val",deadline:"2026-03-18",pri:"critical"},
+  {id:"bet02",cat:"betting",phase:"Analysis & Strategy (Now)",name:"Review Ecuabet concentration risk (76% of $4.1M/mo revenue)",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"bet03",cat:"betting",phase:"Analysis & Strategy (Now)",name:"Review 9 stalled pipeline operators \u2014 recovery plan with Paula",owner:"paula",deadline:"2026-03-28",pri:"high"},
+  {id:"bet04",cat:"betting",phase:"Analysis & Strategy (Now)",name:"Investigate international clients: contracts signed but $0 billing",owner:"paula",deadline:"2026-03-28",pri:"high"},
+  {id:"bet05",cat:"betting",phase:"Analysis & Strategy (Now)",name:"Decision: team sizing \u2014 is 2 people (Paula + Karen) enough?",owner:"val",deadline:"2026-04-04",pri:"medium"},
+  {id:"bet06",cat:"betting",phase:"Conference Materials (by May 15)",name:"Pitch Deck (12-15 slides)",owner:"paula",deadline:"2026-03-30",pri:"critical"},
+  {id:"bet07",cat:"betting",phase:"Conference Materials (by May 15)",name:"One-Pager leave-behind (500 units print)",owner:"paula",deadline:"2026-05-15",pri:"high"},
+  {id:"bet08",cat:"betting",phase:"Conference Materials (by May 15)",name:"Landing Page \u2014 payphone.com/betting",owner:"paula",deadline:"2026-04-30",pri:"high"},
+  {id:"bet09",cat:"betting",phase:"Conference Materials (by May 15)",name:"Live Demo (2-3 min sandbox flow)",owner:"paula",deadline:"2026-05-20",pri:"high"},
+  {id:"bet10",cat:"betting",phase:"Conference Materials (by May 15)",name:"Booth Design (SBC large + GAT medium)",owner:"paula",deadline:"2026-05-20",pri:"medium"},
+  {id:"bet11",cat:"betting",phase:"Conference Materials (by May 15)",name:"Swag (camisetas, stickers, power banks)",owner:"paula",deadline:"2026-05-20",pri:"low"},
+  {id:"bet12",cat:"betting",phase:"Conferences",name:"SBC Summit Americas (Fort Lauderdale) \u2014 Jun 9-11",owner:"paula",deadline:"2026-06-09",pri:"critical"},
+  {id:"bet13",cat:"betting",phase:"Conferences",name:"GAT Expo San Juan (Puerto Rico) \u2014 Sep 8-9",owner:"paula",deadline:"2026-09-08",pri:"high"},
+  {id:"bet14",cat:"betting",phase:"Conferences",name:"GAT Expo Santo Domingo (Rep. Dominicana) \u2014 Nov 17-18",owner:"paula",deadline:"2026-11-17",pri:"high"},
+
+  // BETTING \u2014 Web, Pitch Deck & One Pager Action Items
+  {id:"bet15",cat:"betting",phase:"Betting Web \u2014 payphone.com/betting",name:"Definir estructura y wireframes del sitio betting (secciones, flujo usuario)",owner:"paula",deadline:"2026-04-04",pri:"high",dept:"Bettings"},
+  {id:"bet16",cat:"betting",phase:"Betting Web \u2014 payphone.com/betting",name:"Redactar copy del sitio: propuesta de valor, features, casos de uso, FAQ",owner:"paula",deadline:"2026-04-11",pri:"high",dept:"Bettings"},
+  {id:"bet17",cat:"betting",phase:"Betting Web \u2014 payphone.com/betting",name:"Dise\u00f1o UI/UX del landing (mockups en Figma, alineado al brand book)",owner:"paula",deadline:"2026-04-18",pri:"high",dept:"Creative"},
+  {id:"bet18",cat:"betting",phase:"Betting Web \u2014 payphone.com/betting",name:"Coordinar desarrollo con equipo tech (Juan Diego) \u2014 implementar y publicar",owner:"juan",deadline:"2026-04-30",pri:"high",dept:"Tecnolog\u00eda"},
+  {id:"bet19",cat:"betting",phase:"Betting Web \u2014 payphone.com/betting",name:"Integrar formulario de contacto / demo request en el sitio",owner:"juan",deadline:"2026-04-30",pri:"medium",dept:"Tecnolog\u00eda"},
+  {id:"bet20",cat:"betting",phase:"Betting Web \u2014 payphone.com/betting",name:"QA y revisi\u00f3n final del sitio antes de lanzamiento",owner:"val",deadline:"2026-04-30",pri:"high",dept:"Bettings"},
+
+  {id:"bet21",cat:"betting",phase:"Pitch Deck Betting (12-15 slides)",name:"Definir narrativa y estructura del pitch deck (problema, soluci\u00f3n, diferenciadores, tracci\u00f3n)",owner:"val",deadline:"2026-03-26",pri:"critical",dept:"Bettings"},
+  {id:"bet22",cat:"betting",phase:"Pitch Deck Betting (12-15 slides)",name:"Recopilar datos de tracci\u00f3n: TPV betting, operadores activos, crecimiento, m\u00e9tricas clave",owner:"paula",deadline:"2026-03-27",pri:"high",dept:"Bettings"},
+  {id:"bet23",cat:"betting",phase:"Pitch Deck Betting (12-15 slides)",name:"Crear slides en dise\u00f1o Payphone (Pablo Suarez \u2014 Creative)",owner:"paula",deadline:"2026-03-30",pri:"critical",dept:"Creative"},
+  {id:"bet24",cat:"betting",phase:"Pitch Deck Betting (12-15 slides)",name:"Incluir case study Ecuabet y pipeline de operadores en el deck",owner:"paula",deadline:"2026-03-28",pri:"high",dept:"Bettings"},
+  {id:"bet25",cat:"betting",phase:"Pitch Deck Betting (12-15 slides)",name:"Revisi\u00f3n y feedback del pitch deck con Val + founders",owner:"val",deadline:"2026-03-30",pri:"critical",dept:"Bettings"},
+  {id:"bet26",cat:"betting",phase:"Pitch Deck Betting (12-15 slides)",name:"Versi\u00f3n final del pitch deck lista para SBC Americas",owner:"paula",deadline:"2026-04-15",pri:"high",dept:"Bettings"},
+
+  {id:"bet27",cat:"betting",phase:"One-Pager Betting (leave-behind)",name:"Definir key messages del one-pager: qu\u00e9 es, c\u00f3mo funciona, por qu\u00e9 Payphone",owner:"val",deadline:"2026-04-07",pri:"high",dept:"Bettings"},
+  {id:"bet28",cat:"betting",phase:"One-Pager Betting (leave-behind)",name:"Dise\u00f1o del one-pager (Pablo Suarez \u2014 doble cara, brand Payphone)",owner:"paula",deadline:"2026-04-18",pri:"high",dept:"Creative"},
+  {id:"bet29",cat:"betting",phase:"One-Pager Betting (leave-behind)",name:"Incluir QR al sitio betting + datos de contacto + CTA claro",owner:"paula",deadline:"2026-04-18",pri:"medium",dept:"Bettings"},
+  {id:"bet30",cat:"betting",phase:"One-Pager Betting (leave-behind)",name:"Aprobaci\u00f3n final del one-pager con Val",owner:"val",deadline:"2026-04-25",pri:"high",dept:"Bettings"},
+  {id:"bet31",cat:"betting",phase:"One-Pager Betting (leave-behind)",name:"Enviar a imprenta (500 unidades) \u2014 m\u00ednimo 3 semanas antes de SBC",owner:"paula",deadline:"2026-05-15",pri:"high",dept:"Bettings"},
+
+  // MARKETING & BRAND
+  {id:"mkt01",cat:"marketing",phase:"Immediate Deliverables (by Mar 28)",name:"Brand Book for Payphone (logo, colors, typography, tone)",owner:"marketing",deadline:"2026-03-28",pri:"critical"},
+  {id:"mkt02",cat:"marketing",phase:"Immediate Deliverables (by Mar 28)",name:"\"Human First\" Campaign \u2014 key messages, segments, creative direction",owner:"marketing",deadline:"2026-03-28",pri:"critical"},
+  {id:"mkt03",cat:"marketing",phase:"Immediate Deliverables (by Mar 28)",name:"2-Month Marketing Strategy (Apr-May) \u2014 goals, KPIs, calendar, budget",owner:"marketing",deadline:"2026-03-28",pri:"high"},
+  {id:"mkt04",cat:"marketing",phase:"Insider Mailing Migration",name:"Move 100% reactivation emails from Freshsales \u2192 Insider",owner:"marketing",deadline:"2026-04-28",pri:"critical"},
+  {id:"mkt05",cat:"marketing",phase:"Insider Mailing Migration",name:"Zero CRM emails target \u2014 all mailing through Insider",owner:"marketing",deadline:"2026-04-28",pri:"high"},
+  {id:"mkt06",cat:"marketing",phase:"Ongoing",name:"\"Human First\" campaign launch",owner:"marketing",deadline:"2026-04-14",pri:"high"},
+  {id:"mkt07",cat:"marketing",phase:"Ongoing",name:"Growth targets tied to new CRM pipeline",owner:"val",deadline:"2026-04-14",pri:"medium"},
+  {id:"mkt08",cat:"marketing",phase:"Immediate Deliverables (by Mar 28)",name:"Revisar roadmap de medición de Ana e Isaac",owner:"val",deadline:"2026-03-28",pri:"high"},
+
+  // SALES ENABLEMENT
+  {id:"sal01",cat:"sales",phase:"Discovery (W1-2)",name:"Meet Sales team \u2014 top 3 things Growth can do to close more deals",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"sal02",cat:"sales",phase:"Discovery (W1-2)",name:"Assess Partners Portal adoption \u2014 what\u2019s missing?",owner:"david",deadline:"2026-03-21",pri:"medium"},
+  {id:"sal03",cat:"sales",phase:"Discovery (W1-2)",name:"Document current pipeline size, conversion rate, cycle length",owner:"david",deadline:"2026-03-28",pri:"medium"},
+  {id:"sal04",cat:"sales",phase:"Enablement",name:"Shared pipeline visibility in new CRM (Pipedrive)",owner:"jordan",deadline:"2026-04-14",pri:"medium"},
+  {id:"sal05",cat:"sales",phase:"Enablement",name:"Clear Growth \u2192 Sales handoff points defined",owner:"val",deadline:"2026-04-07",pri:"medium"},
+
+  // PRODUCT & TECH
+  {id:"prd01",cat:"product",phase:"Product Status Check",name:"Get real status of TAP Business from Juan D.",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"prd02",cat:"product",phase:"Product Status Check",name:"Get real status of Recurrent Payments from Juan D.",owner:"val",deadline:"2026-03-21",pri:"high"},
+  {id:"prd03",cat:"product",phase:"Product Status Check",name:"Confirm UX/UI framework adoption in practice",owner:"val",deadline:"2026-03-21",pri:"medium"},
+  {id:"prd04",cat:"product",phase:"US Market Readiness",name:"Identify product changes needed for US market",owner:"juan",deadline:"2026-04-04",pri:"high"},
+  {id:"prd05",cat:"product",phase:"US Market Readiness",name:"Compliance requirements for US payments",owner:"juan",deadline:"2026-04-11",pri:"high"},
+  {id:"prd06",cat:"product",phase:"Tech Infrastructure",name:"Data warehouse setup for analytics (April target)",owner:"carlos",deadline:"2026-04-15",pri:"medium"},
+  {id:"prd07",cat:"product",phase:"Tech Infrastructure",name:"Freshsales data export preparation (14-day export window)",owner:"carlos",deadline:"2026-05-14",pri:"medium"},
+
+  // STRATEGIC PARTNERSHIPS
+  {id:"par01",cat:"partnerships",phase:"Immediate Outreach",name:"Contact Pablo for dLocal introduction",owner:"val",deadline:"2026-03-19",pri:"high"},
+  {id:"par02",cat:"partnerships",phase:"Immediate Outreach",name:"Schedule Rapyd meeting",owner:"val",deadline:"2026-03-19",pri:"medium"},
+  {id:"par03",cat:"partnerships",phase:"Immediate Outreach",name:"Explore Yuno \u2014 set up intro call",owner:"val",deadline:"2026-03-21",pri:"medium"},
+  {id:"par04",cat:"partnerships",phase:"Evaluation",name:"Evaluate Pagadoor relationship (7 Tier 1 brands) \u2014 direct capture?",owner:"paula",deadline:"2026-04-07",pri:"medium"},
+  {id:"par05",cat:"partnerships",phase:"Evaluation",name:"ALPS Per\u00fa/Chile partnership status with Paula",owner:"paula",deadline:"2026-04-07",pri:"low"},
+
+  // EMAILS — ACTION ITEMS (Extraídos Mar 6–20, 2026)
+  // CRITICAL
+  {id:"em01",cat:"emails",phase:"Critical — Acci\u00f3n Inmediata",name:"Resolver errores tx bettings 10-11 marzo (tx canceladas pero cobradas a clientes)",owner:"paula",deadline:"2026-03-22",pri:"critical",source:"Email Paola Murillo",ctx:"Transacciones canceladas pero cobradas a clientes. Requiere resoluci\u00f3n urgente con equipo de operaciones.",received:"2026-03-11",dept:"Bettings"},
+  {id:"em02",cat:"emails",phase:"Critical — Acci\u00f3n Inmediata",name:"Aprobar perfil High Risk BD Hunter con Jordan (entregar a Guti para selecci\u00f3n)",owner:"val",deadline:"2026-03-22",pri:"critical",source:"Thread Propuesta Expansi\u00f3n Vertical High Risk",ctx:"Jordan finalizando perfil del rol. Guti (CPO) esperando para iniciar proceso de selecci\u00f3n.",received:"2026-03-10",dept:"Bettings"},
+  {id:"em03",cat:"emails",phase:"Critical — Acci\u00f3n Inmediata",name:"Capacitar nuevos taxistas Aeropuerto Quito — Mar 24",owner:"david",deadline:"2026-03-24",pri:"critical",source:"Email Luis Germ\u00e1n — cooperativas de taxis",ctx:"Luis Germ\u00e1n coordina capacitaci\u00f3n para nuevos taxistas del Aeropuerto de Quito.",received:"2026-03-18",dept:"Comercial"},
+
+  // HIGH — Strategic Partnerships (Stripe)
+  {id:"em04",cat:"emails",phase:"Alta — Partnerships Estrat\u00e9gicos",name:"Proporcionar forecast y processing statements a Stripe (Alex Kallis)",owner:"val",deadline:"2026-03-24",pri:"high",source:"Email 3/20 Stripe follow-up",ctx:"Stripe requiere forecast y processing statements para pasar risk review.",received:"2026-03-20",dept:"Finanzas"},
+  {id:"em05",cat:"emails",phase:"Alta — Partnerships Estrat\u00e9gicos",name:"Completar DDQ (Due Diligence Questionnaire) para Stripe",owner:"val",deadline:"2026-03-24",pri:"high",source:"Email 3/20 Stripe follow-up",ctx:"DDQ requerido para avanzar en el proceso de due diligence con Stripe.",received:"2026-03-20",dept:"Legal"},
+  {id:"em06",cat:"emails",phase:"Alta — Partnerships Estrat\u00e9gicos",name:"Reuni\u00f3n Stripe Issuing — Mar 26 @ 11:30am EDT",owner:"val",deadline:"2026-03-26",pri:"high",source:"Calendar invite Alex Kallis",ctx:"Post risk review, Stripe conectar\u00e1 con Solutions Architect para plan de implementaci\u00f3n.",received:"2026-03-20",dept:"Estrategia"},
+  {id:"em07",cat:"emails",phase:"Alta — Partnerships Estrat\u00e9gicos",name:"Follow up sponsor bank introductions con Mike Samaniego (Episode Six)",owner:"val",deadline:"2026-03-25",pri:"high",source:"Email Pedro Infante — U.S. Sponsor Bank Introductions",ctx:"Pedro Infante (CCO) solicit\u00f3 a Mike Samaniego introductions a sponsor banks en US para card issuing.",received:"2026-03-13",dept:"Estrategia"},
+
+  // HIGH — HR / People
+  {id:"em08",cat:"emails",phase:"Alta — HR / People",name:"Entrevistar candidato High Risk: Jorge Fiorentino (PayRetailers, iGaming, $8K/mo)",owner:"val",deadline:"2026-03-28",pri:"high",source:"Thread Propuesta Expansi\u00f3n Vertical High Risk",ctx:"Candidato con experiencia en PayRetailers, vende a iGaming.",received:"2026-03-10",dept:"People"},
+  {id:"em09",cat:"emails",phase:"Alta — HR / People",name:"Entrevistar candidato High Risk: Carlos Escorcia (BetPlay founder, 8a\u00f1os betting, $4.7K/mo)",owner:"val",deadline:"2026-03-28",pri:"high",source:"Thread Propuesta Expansi\u00f3n Vertical High Risk",ctx:"Fundador de BetPlay, 8 a\u00f1os de experiencia en betting.",received:"2026-03-10",dept:"People"},
+  {id:"em10",cat:"emails",phase:"Alta — HR / People",name:"Entrevistar candidato High Risk: Gabriel Sotillo (P&L $1B/a\u00f1o sportsbook, $7-8K/mo)",owner:"val",deadline:"2026-03-28",pri:"high",source:"Thread Propuesta Expansi\u00f3n Vertical High Risk",ctx:"Experiencia en P&L de $1B/a\u00f1o en sportsbook.",received:"2026-03-10",dept:"People"},
+  {id:"em11",cat:"emails",phase:"Alta — HR / People",name:"Entrevistar candidato High Risk: Gary Keague (Malta, 8a\u00f1os iGaming, $4.4-4.9K/mo)",owner:"val",deadline:"2026-03-28",pri:"high",source:"Thread Propuesta Expansi\u00f3n Vertical High Risk",ctx:"Basado en Malta, 8 a\u00f1os de experiencia en iGaming.",received:"2026-03-10",dept:"People"},
+
+  // HIGH — Betting Operations
+  {id:"em12",cat:"emails",phase:"Alta — Operaciones Betting",name:"Revisar rolling reserve comercios agregadores con Karen/Diego",owner:"paula",deadline:"2026-03-25",pri:"high",source:"Email ROLLING RESERVE COMERCIOS AGREGADORES",ctx:"Revisi\u00f3n de rolling reserve para comercios agregadores con Karen y Diego.",received:"2026-03-14",dept:"Bettings"},
+  {id:"em13",cat:"emails",phase:"Alta — Operaciones Betting",name:"Revisi\u00f3n caso Abarth Solution — validaci\u00f3n operativa",owner:"paula",deadline:"2026-03-21",pri:"high",source:"Calendar invite Paola Murillo",ctx:"Validaci\u00f3n operativa del caso Abarth Solution.",received:"2026-03-17",dept:"Bettings"},
+
+  // HIGH — Insider ONE
+  {id:"em14",cat:"emails",phase:"Alta — Insider ONE",name:"Asistir Insider Data Workshop — Mar 31 @ 3pm",owner:"val",deadline:"2026-03-31",pri:"high",source:"Calendar invite Leonardo Ceballos (Insider)",ctx:"Workshop de datos con Insider para optimizar integraci\u00f3n.",received:"2026-03-18",dept:"Growth"},
+
+  // HIGH — Sales/Compliance
+  {id:"em15",cat:"emails",phase:"Alta — Sales / Compliance",name:"Seguimiento farmacias VIRP non-compliant (bloquear acceso si no responden)",owner:"david",deadline:"2026-03-25",pri:"high",source:"Email David Mu\u00f1oz — VIRP Non-Compliant Assessment",ctx:"Farmacias que nunca respondieron registro VIRP pueden traer multas. Bloquear acceso.",received:"2026-03-15",dept:"Comercial"},
+
+  // MEDIUM — Strategic Partnerships
+  {id:"em16",cat:"emails",phase:"Media — Partnerships Estrat\u00e9gicos",name:"Coordinar con Solutions Architect de Stripe post risk review",owner:"val",deadline:"2026-03-31",pri:"medium",source:"Email 3/20 Stripe follow-up",ctx:"Siguiente paso despu\u00e9s de completar risk review con Stripe.",received:"2026-03-20",dept:"Estrategia"},
+  {id:"em17",cat:"emails",phase:"Media — Partnerships Estrat\u00e9gicos",name:"Reuni\u00f3n 4on (Elvin Reyes) — Expansi\u00f3n El Salvador — Mar 24 @ 9:30am",owner:"val",deadline:"2026-03-24",pri:"medium",source:"Calendar invite 4on",ctx:"Exploraci\u00f3n de expansi\u00f3n a El Salvador con 4on.",received:"2026-03-17",dept:"Estrategia"},
+  {id:"em18",cat:"emails",phase:"Media — Partnerships Estrat\u00e9gicos",name:"Evaluar partnership 4on para cross-border payments en Centroam\u00e9rica",owner:"val",deadline:"2026-03-28",pri:"medium",source:"Email thread 4on",ctx:"Evaluaci\u00f3n de partnership para pagos transfronterizos en CA.",received:"2026-03-14",dept:"Estrategia"},
+  {id:"em19",cat:"emails",phase:"Media — Partnerships Estrat\u00e9gicos",name:"Revisar intro Bamboo Payments (forwarded por JJ Espinoza)",owner:"val",deadline:"2026-03-25",pri:"medium",source:"Email JJ — Introducci\u00f3n Bamboo Payments",ctx:"JJ Espinoza envi\u00f3 introducci\u00f3n a Bamboo Payments para evaluar.",received:"2026-03-16",dept:"Estrategia"},
+
+  // MEDIUM — HR / People
+  {id:"em20",cat:"emails",phase:"Media — HR / People",name:"Plan de Carrera con Paola Murillo (agendado por HR)",owner:"val",deadline:"2026-03-28",pri:"medium",source:"Calendar invite Alejandra Gutierrez",ctx:"Sesi\u00f3n de plan de carrera agendada por HR.",received:"2026-03-17",dept:"People"},
+  {id:"em21",cat:"emails",phase:"Media — HR / People",name:"Plan de Carrera con David Mu\u00f1oz (agendado por HR)",owner:"val",deadline:"2026-03-28",pri:"medium",source:"Calendar invite Alejandra Gutierrez",ctx:"Sesi\u00f3n de plan de carrera agendada por HR.",received:"2026-03-17",dept:"People"},
+  {id:"em22",cat:"emails",phase:"Media — HR / People",name:"Primer encuentro con Jessica (Product Manager nueva)",owner:"val",deadline:"2026-03-25",pri:"medium",source:"Email Isabella Pe\u00f1a",ctx:"Onboarding meeting con nueva Product Manager.",received:"2026-03-18",dept:"Producto"},
+
+  // MEDIUM — Product
+  {id:"em23",cat:"emails",phase:"Media — Producto",name:"Revisar pricing recurrente payments con Hern\u00e1n (opci\u00f3n cargo adicional)",owner:"val",deadline:"2026-03-25",pri:"medium",source:"Email thread — Definici\u00f3n de pricing planes de suscripci\u00f3n",ctx:"Definici\u00f3n de pricing para planes de suscripci\u00f3n con opci\u00f3n de cargo adicional.",received:"2026-03-12",dept:"Finanzas"},
+  {id:"em24",cat:"emails",phase:"Media — Producto",name:"Revisar Cifras Clave 2026 con Katherine Astudillo",owner:"val",deadline:"2026-03-24",pri:"medium",source:"Email Katherine Astudillo",ctx:"Revisi\u00f3n de cifras clave del a\u00f1o 2026.",received:"2026-03-17",dept:"Finanzas"},
+
+  // MEDIUM — Insider ONE
+  {id:"em25",cat:"emails",phase:"Media — Insider ONE",name:"Revisar evento updates de Nayla (post kick-off Insider/Awtana)",owner:"val",deadline:"2026-03-23",pri:"medium",source:"Email Nayla Solano — Payphone + Insider/Awtana Kick Off Recap",ctx:"Nayla envi\u00f3 versi\u00f3n actualizada de eventos + UI donde ocurren (orientativo, mayor\u00eda S2S).",received:"2026-03-19",dept:"Producto"},
+
+  // MEDIUM — Sales/Operations
+  {id:"em26",cat:"emails",phase:"Media — Sales / Operaciones",name:"Capacitar nuevos taxistas Aeropuerto Quito (coordinaci\u00f3n log\u00edstica)",owner:"david",deadline:"2026-03-24",pri:"medium",source:"Email Luis Germ\u00e1n — cooperativas de taxis",ctx:"Coordinaci\u00f3n log\u00edstica para capacitaci\u00f3n de nuevos taxistas.",received:"2026-03-18",dept:"Comercial"},
+
+  // MEDIUM — CRM / Pipedrive
+  {id:"em27",cat:"emails",phase:"Media — CRM / Pipedrive",name:"Seguimiento memo CRM Pipedrive compartido Mar 18 con equipo",owner:"val",deadline:"2026-03-25",pri:"medium",source:"Memo CRM Mar 18 — feedback estrategia y ventas",ctx:"Versi\u00f3n actualizada responde feedback de estrategia y ventas. Docs: Pipedrive vs Freshworks v2, spreadsheet comparativo, migration plan.",received:"2026-03-18",dept:"Comercial"},
+
+  // MEDIUM — Marketing
+  {id:"em28",cat:"emails",phase:"Media — Marketing",name:"Confirmar licencias para nuevo Community Manager (Agorapulse, Zendesk, CapCut, Adobe, Notion)",owner:"marketing",deadline:"2026-03-28",pri:"medium",source:"Email Ana Julia — licencias CM",ctx:"Ana Julia confirm\u00f3 licencias necesarias: Agorapulse (seat adicional), Zendesk, CapCut, Adobe, Notion.",received:"2026-03-19",dept:"Marketing"},
+
+  // MEDIUM — Contrato
+  {id:"em29",cat:"emails",phase:"Media — HR / People",name:"Contrato Val Infante — seguimiento versi\u00f3n Pedro Infante",owner:"val",deadline:"2026-03-28",pri:"medium",source:"Email JJ Gutierrez — borrador contrato",ctx:"JJ Gutierrez envi\u00f3 borrador inicial. Pedro Infante trabajando en versi\u00f3n con cambios. Pendiente recibir.",received:"2026-03-15",dept:"Legal"},
+
+  // LOW
+  {id:"em30",cat:"emails",phase:"Baja — HR / People",name:"Revisar pol\u00edticas HR y Sistema de Gesti\u00f3n (email Isabella Pe\u00f1a)",owner:"val",deadline:"2026-03-22",pri:"low",source:"Email Isabella Pe\u00f1a — Pol\u00edticas y recursos clave para gesti\u00f3n de equipo",ctx:"Email informativo sobre pol\u00edticas HR y sistema de gesti\u00f3n del equipo.",received:"2026-03-12",dept:"People"},
+
+  // MEDIUM — Insider (additional from kick-off)
+  {id:"em31",cat:"emails",phase:"Media — Insider ONE",name:"Revisar documentaci\u00f3n UI de eventos Insider/Awtana (kick-off recap)",owner:"val",deadline:"2026-03-25",pri:"medium",source:"Email Nayla Solano — Kick Off Recap",ctx:"Documentaci\u00f3n de UI donde ocurren los eventos de Insider. Mayor\u00eda son server-to-server (S2S).",received:"2026-03-19",dept:"Growth"},
+];
+
+const SKEY = "cgo_master_v4";
+function loadState() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch { return {}; } }
+let _saveTimer;
+function saveState(s) {
+  localStorage.setItem(SKEY, JSON.stringify(s));
+  clearTimeout(_saveTimer);
+  const toast = document.getElementById("saveToast");
+  if (toast) { toast.classList.add("show"); _saveTimer = setTimeout(() => toast.classList.remove("show"), 1200); }
+}
+window.addEventListener("beforeunload", () => { const s = getState(); localStorage.setItem(SKEY, JSON.stringify(s)); });
+function getState() {
+  const s = loadState();
+  if (!s.tasks) s.tasks = {};
+  if (!s.notes) s.notes = {};
+  if (!s.log) s.log = [];
+  if (!s.custom) s.custom = [];
+  return s;
+}
+function allTasks() { return [...DEFAULT_TASKS, ...getState().custom]; }
+function daysUntil(d) {
+  const t = new Date(); t.setHours(0,0,0,0);
+  return Math.ceil((new Date(d+"T00:00:00") - t) / 86400000);
+}
+function fmtDate(d) {
+  return new Date(d+"T00:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});
+}
+function fmtDateEs(d) {
+  const dt = new Date(d+"T00:00:00");
+  return dt.toLocaleDateString("es-ES",{day:"numeric",month:"short"}).replace(".","");
+}
+function isOverdue(dl, st) { return st !== "done" && daysUntil(dl) < 0; }
+function taskStatus(id) { return (getState().tasks[id]||{}).status || "pending"; }
+
+const DEPT_COLORS = {
+  "Comercial":"#FF6400","Bettings":"#E83E00","Growth":"#00B86B","Marketing":"#FFA000",
+  "Creative":"#FF8C42","Producto":"#2196F3","Finanzas":"#4CAF50","Legal":"#9C27B0",
+  "Tecnolog\u00eda":"#607D8B","People":"#E91E63","Operaciones":"#795548","Estrategia":"#5A00B4"
+};
+
+let statusFilter = "all", ownerFilter = null, searchTerm = "", activeCat = null, deptFilter = "";
+
+function render() {
+  const state = getState(), tasks = allTasks(), now = new Date();
+  document.getElementById("todayDate").textContent = now.toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+
+  // Countdowns
+  let cdH = "";
+  COUNTDOWNS.forEach(c => {
+    const d = daysUntil(c.date);
+    const v = d > 0 ? d : (d === 0 ? "HOY" : "PAST");
+    cdH += `<div class="cd-item ${c.cls}"><div class="cd-label">${c.label}</div><div class="cd-val">${v}</div><div class="cd-sub">${d > 0 ? "days" : ""} ${fmtDate(c.date)}</div></div>`;
+  });
+  document.getElementById("countdowns").innerHTML = cdH;
+
+  // Overview
+  let ovH = "";
+  CATEGORIES.forEach(cat => {
+    const ct = tasks.filter(t => t.cat === cat.id);
+    const dn = ct.filter(t => taskStatus(t.id) === "done").length;
+    const pct = ct.length > 0 ? Math.round((dn/ct.length)*100) : 0;
+    ovH += `<div class="ov-card ${activeCat===cat.id?'active':''}" style="--cat-color:${cat.color}" onclick="toggleCat('${cat.id}')">
+      <div class="ov-title">${cat.name}</div>
+      <div class="ov-bar"><div class="ov-fill" style="width:${pct}%;background:${cat.color}"></div></div>
+      <div class="ov-stats"><span class="ov-done">${dn}</span><span class="ov-total">/ ${ct.length}</span></div>
+    </div>`;
+  });
+  document.getElementById("overview").innerHTML = ovH;
+
+  // Main
+  let html = "";
+  const visCats = activeCat ? CATEGORIES.filter(c=>c.id===activeCat) : CATEGORIES;
+
+  visCats.forEach(cat => {
+    const ct = tasks.filter(t=>t.cat===cat.id);
+    const filtered = ct.filter(t=>matchF(t,state));
+    if (filtered.length===0 && statusFilter!=="all") return;
+    const catDn = ct.filter(t=>taskStatus(t.id)==="done").length;
+
+    html += `<div class="cat-section" id="cat-${cat.id}">
+      <div class="cat-header" onclick="toggleSection('${cat.id}')">
+        <span class="cat-dot ${cat.icon}"></span>
+        <span class="cat-name">${cat.name}</span>
+        <span class="cat-badge" style="background:${cat.color}18;color:${cat.color};border:1px solid ${cat.color}40">${catDn}/${ct.length}</span>
+        <span class="cat-arrow">\u25BC</span>
+      </div><div class="cat-body">`;
+
+    const phases = [...new Set(ct.map(t=>t.phase))];
+    phases.forEach(ph => {
+      const pt = filtered.filter(t=>t.phase===ph);
+      if (!pt.length) return;
+      const pD = ct.filter(t=>t.phase===ph&&taskStatus(t.id)==="done").length;
+      const pT = ct.filter(t=>t.phase===ph).length;
+
+      html += `<div class="phase-group"><div class="pg-header" onclick="togglePhase(this)">
+        <span class="pg-title">${ph}</span><span class="pg-count">${pD}/${pT}</span>
+        <span class="pg-arrow">\u25BC</span></div><div class="pg-body">`;
+
+      pt.forEach(t => {
+        const st = taskStatus(t.id), od = isOverdue(t.deadline,st);
+        const note = state.notes[t.id]||"";
+        const ow = OWNER_MAP[t.owner]||{label:t.owner,dot:"ow-val"};
+        const cls = ["task-row",st==="done"?"done":"",od?"overdue":"",t.pri==="critical"?"critical":""].filter(Boolean).join(" ");
+        const ckCls = st==="done"?"checked":st==="in-progress"?"in-progress":"";
+        const ckIco = st==="done"?"\u2713":st==="in-progress"?"\u25B6":"";
+        const srcTag = t.source ? `<span style="margin-left:6px;opacity:0.6;font-style:italic">\u2709 ${t.source}</span>` : "";
+        const rcvTag = t.received ? `<span class="t-received"><span class="t-received-icon">\uD83D\uDCE8</span>Recibido: ${fmtDateEs(t.received)}</span>` : "";
+        const deptTag = t.dept ? `<span class="dept-badge dept-${t.dept}">${t.dept}</span>` : "";
+        const ctxBlock = t.ctx ? `<div style="font-size:10px;color:var(--text-dim);margin-top:3px;padding-left:2px;border-left:2px solid var(--pp-orange);padding-left:8px">${t.ctx}</div>` : "";
+
+        html += `<div class="${cls}" data-id="${t.id}">
+          <div class="t-check ${ckCls}" onclick="cycleStatus('${t.id}')">${ckIco}</div>
+          <div class="t-info"><div class="t-name">${t.name}</div>
+            <div class="t-meta"><span class="owner-dot ${ow.dot}"></span>${ow.label}${deptTag}${rcvTag}${srcTag}</div>${ctxBlock}</div>
+          <div class="t-deadline">${fmtDate(t.deadline)}${od?' \u2022 LATE':''}</div>
+          <span class="t-priority pri-${t.pri}">${t.pri.toUpperCase()}</span>
+          <select class="t-status-sel" onchange="setStatus('${t.id}',this.value)">
+            <option value="pending" ${st==='pending'?'selected':''}>Pendiente</option>
+            <option value="in-progress" ${st==='in-progress'?'selected':''}>En Progreso</option>
+            <option value="done" ${st==='done'?'selected':''}>Completado</option>
+          </select>
+          <button class="t-expand" onclick="toggleNotes('${t.id}')">\u270E</button>
+          <div class="notes-row" id="notes-${t.id}">
+            <textarea class="notes-area" placeholder="Agregar notas..." oninput="saveNote('${t.id}',this.value)">${note}</textarea>
+          </div>
+        </div>`;
+      });
+      html += `</div></div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  // Daily log
+  html += `<div class="log-section"><div class="log-header"><h2>Registro Diario</h2>
+    <button class="log-add" onclick="addLog()">+ Agregar Entrada</button></div><div class="log-body">`;
+  (state.log||[]).forEach((e,i) => {
+    html += `<div class="log-entry"><div class="log-entry-head"><span class="log-date">${e.date}</span>
+      <button class="log-del" onclick="delLog(${i})">\u2715</button></div>
+      <textarea class="log-text" oninput="updateLog(${i},this.value)">${e.text}</textarea></div>`;
+  });
+  html += `</div></div>`;
+  document.getElementById("mainContent").innerHTML = html;
+}
+
+function matchF(t, state) {
+  const st = taskStatus(t.id), od = isOverdue(t.deadline,st);
+  if (statusFilter==="pending" && st!=="pending") return false;
+  if (statusFilter==="in-progress" && st!=="in-progress") return false;
+  if (statusFilter==="done" && st!=="done") return false;
+  if (statusFilter==="overdue" && !od) return false;
+  if (ownerFilter && t.owner!==ownerFilter) return false;
+  if (deptFilter && (t.dept||"")!==deptFilter) return false;
+  if (searchTerm) {
+    const s = searchTerm.toLowerCase();
+    if (!t.name.toLowerCase().includes(s) && !(OWNER_MAP[t.owner]||{}).label?.toLowerCase().includes(s) && !(t.source||"").toLowerCase().includes(s) && !(t.ctx||"").toLowerCase().includes(s) && !(t.dept||"").toLowerCase().includes(s)) return false;
+  }
+  return true;
+}
+
+function cycleStatus(id) {
+  const s=getState(); if(!s.tasks[id])s.tasks[id]={};
+  const c=s.tasks[id].status||"pending";
+  s.tasks[id].status=c==="pending"?"in-progress":c==="in-progress"?"done":"pending";
+  saveState(s);render();
+}
+function setStatus(id,v){const s=getState();if(!s.tasks[id])s.tasks[id]={};s.tasks[id].status=v;saveState(s);render();}
+function toggleNotes(id){document.getElementById("notes-"+id)?.classList.toggle("open");}
+function saveNote(id,t){const s=getState();s.notes[id]=t;saveState(s);}
+function toggleSection(id){document.getElementById("cat-"+id)?.classList.toggle("collapsed");}
+function togglePhase(el){el.parentElement.classList.toggle("collapsed");}
+function toggleCat(id){activeCat=activeCat===id?null:id;render();}
+function addLog(){const s=getState();const d=new Date();s.log.unshift({date:d.toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"})+" "+d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"}),text:""});saveState(s);render();}
+function updateLog(i,t){const s=getState();if(s.log[i])s.log[i].text=t;saveState(s);}
+function delLog(i){const s=getState();s.log.splice(i,1);saveState(s);render();}
+function openModal(){document.getElementById("addModal").classList.add("open");}
+function closeModal(){document.getElementById("addModal").classList.remove("open");}
+function saveNewTask(){
+  const n=document.getElementById("mName").value.trim();if(!n)return;
+  const s=getState();
+  const mDeptVal=document.getElementById("mDept").value;
+  const newTask={id:"c_"+Date.now(),cat:document.getElementById("mCat").value,phase:"Custom Tasks",name:n,owner:document.getElementById("mOwner").value,deadline:document.getElementById("mDeadline").value||"2026-12-31",pri:document.getElementById("mPriority").value};
+  if(mDeptVal)newTask.dept=mDeptVal;
+  s.custom.push(newTask);
+  if(document.getElementById("mNotes").value.trim())s.notes[s.custom[s.custom.length-1].id]=document.getElementById("mNotes").value.trim();
+  saveState(s);document.getElementById("mName").value="";document.getElementById("mNotes").value="";closeModal();render();
+}
+function resetAll(){if(confirm("\u00bfReiniciar TODO el progreso? Esta acci\u00f3n no se puede deshacer.")){localStorage.removeItem(SKEY);render();}}
+function exportMd(){
+  const s=getState(),tasks=allTasks();
+  let md="# CGO Master Tracker \u2014 Export\n";
+  md+=`Generated: ${new Date().toLocaleString()}\n\n`;
+  let tD=0,tT=0;
+  CATEGORIES.forEach(cat=>{
+    const ct=tasks.filter(t=>t.cat===cat.id);
+    md+=`## ${cat.name}\n`;
+    [...new Set(ct.map(t=>t.phase))].forEach(ph=>{
+      md+=`### ${ph}\n`;
+      ct.filter(t=>t.phase===ph).forEach(t=>{
+        const st=taskStatus(t.id);tT++;if(st==="done")tD++;
+        const ico=st==="done"?"\u2705":st==="in-progress"?"\uD83D\uDD36":"\u2B1C";
+        const note=s.notes[t.id]?` \u2014 _${s.notes[t.id]}_`:"";
+        const src=t.source?` | Fuente: ${t.source}`:"";
+        const rcv=t.received?` | Recibido: ${fmtDateEs(t.received)}`:"";
+        const dept=t.dept?` | Dept: ${t.dept}`:"";
+        const ctx=t.ctx?`\n  > ${t.ctx}`:"";
+        md+=`${ico} **${t.name}** \u2014 ${(OWNER_MAP[t.owner]||{}).label||t.owner} \u2014 ${fmtDate(t.deadline)}${dept}${src}${rcv}${note}${ctx}\n`;
+      });md+="\n";
+    });
+  });
+  md+=`---\n**Progress: ${tD}/${tT} (${tT>0?Math.round(tD/tT*100):0}%)**\n\n`;
+  if(s.log?.length){md+="## Daily Log\n";s.log.forEach(e=>{md+=`**${e.date}:** ${e.text}\n`;});}
+  const b=new Blob([md],{type:"text/markdown"});const a=document.createElement("a");
+  a.href=URL.createObjectURL(b);a.download="cgo-master-tracker-export.md";a.click();
+}
+
+document.querySelectorAll(".tb-btn[data-sf]").forEach(b=>{b.addEventListener("click",()=>{document.querySelectorAll(".tb-btn[data-sf]").forEach(x=>x.classList.remove("active"));b.classList.add("active");statusFilter=b.dataset.sf;render();});});
+document.querySelectorAll(".tb-btn[data-of]").forEach(b=>{b.addEventListener("click",()=>{if(ownerFilter===b.dataset.of){ownerFilter=null;b.classList.remove("owner-active");}else{document.querySelectorAll(".tb-btn[data-of]").forEach(x=>x.classList.remove("owner-active"));ownerFilter=b.dataset.of;b.classList.add("owner-active");}render();});});
+document.getElementById("searchBox").addEventListener("input",e=>{searchTerm=e.target.value;render();});
+document.getElementById("deptFilter").addEventListener("change",e=>{deptFilter=e.target.value;e.target.classList.toggle("active",!!e.target.value);render();});
+
+const mCat=document.getElementById("mCat");
+CATEGORIES.forEach(c=>{const o=document.createElement("option");o.value=c.id;o.textContent=c.name;mCat.appendChild(o);});
+render();
+</script>
+</body>
+</html>
