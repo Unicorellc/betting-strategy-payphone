@@ -28,7 +28,7 @@
     }
   ],
   "marchTracker": {
-    "target": "$28.75M ($345M/aÃ±o)",
+    "target": "$28.75M ($345M/aÃÂ±o)",
     "weeks": [
       {
         "period": "Semana 1",
@@ -81,28 +81,28 @@
     {
       "label": "Total Feb 2026",
       "value": "$7.85M",
-      "delta": "â¼ -26% vs Enero ($10.6M)",
+      "delta": "Ã¢ÂÂ¼ -26% vs Enero ($10.6M)",
       "deltaDir": "down",
       "color": "green"
     },
     {
       "label": "Nacionales",
       "value": "$4.55M",
-      "delta": "â¼ -8% MoM",
+      "delta": "Ã¢ÂÂ¼ -8% MoM",
       "deltaDir": "down",
       "color": "blue"
     },
     {
       "label": "Internacionales",
       "value": "$3.30M",
-      "delta": "â¼ -39% MoM",
+      "delta": "Ã¢ÂÂ¼ -39% MoM",
       "deltaDir": "down",
       "color": "amber"
     },
     {
       "label": "March MTD",
       "value": "$9.6M",
-      "delta": "â² 33% del target",
+      "delta": "Ã¢ÂÂ² 33% del target",
       "deltaDir": "up",
       "color": "amber"
     }
@@ -110,13 +110,13 @@
   "revenueAlerts": [
     {
       "type": "warning",
-      "icon": "ð",
-      "html": "<strong>Merchants to watch (vs semana anterior):</strong> Esta secciÃ³n mostrarÃ¡ comercios con caÃ­da semanal una vez se disponga de data semanal. Estructura: Cliente | Semana anterior | Esta semana | Cambio | AcciÃ³n. <em>Placeholder â data pendiente.</em>"
+      "icon": "Ã°ÂÂÂ",
+      "html": "<strong>Merchants to watch (vs semana anterior):</strong> Esta secciÃÂ³n mostrarÃÂ¡ comercios con caÃÂ­da semanal una vez se disponga de data semanal. Estructura: Cliente | Semana anterior | Esta semana | Cambio | AcciÃÂ³n. <em>Placeholder Ã¢ÂÂ data pendiente.</em>"
     },
     {
       "type": "warning",
-      "icon": "â ï¸",
-      "html": "<strong>ConcentraciÃ³n:</strong> Ecuabet = 40% del revenue total ($3.17M de $7.85M). Top 3 clientes (Ecuabet + Hondubet + Betano) = 64%. Mejor de lo estimado inicialmente, pero aÃºn requiere diversificaciÃ³n."
+      "icon": "Ã¢ÂÂ Ã¯Â¸Â",
+      "html": "<strong>ConcentraciÃÂ³n:</strong> Ecuabet = 40% del revenue total ($3.17M de $7.85M). Top 3 clientes (Ecuabet + Hondubet + Betano) = 64%. Mejor de lo estimado inicialmente, pero aÃÂºn requiere diversificaciÃÂ³n."
     }
   ],
   "sidebarConcentration": {
@@ -251,12 +251,12 @@
     },
     {
       "nombre": "Betano",
-      "parentesis": "(vÃ­a Pagadoor)",
+      "parentesis": "(vÃÂ­a Pagadoor)",
       "factFeb": "$565,980",
       "varMoM": "+21.3%",
       "varDir": "up",
-      "nda": "vÃ­a int.",
-      "contrato": "vÃ­a int.",
+      "nda": "vÃÂ­a int.",
+      "contrato": "vÃÂ­a int.",
       "licencia": "SI",
       "licenciaStatus": "ok",
       "procesador": "Ecuapayphone",
@@ -285,7 +285,7 @@
       "varDir": "up",
       "nda": "ok",
       "contrato": "ok",
-      "licencia": "â",
+      "licencia": "Ã¢ÂÂ",
       "licenciaStatus": "na",
       "procesador": "Ecuapayphone",
       "status": "Activo",
@@ -299,7 +299,7 @@
       "varDir": "up",
       "nda": "pending",
       "contrato": "ok",
-      "licencia": "CuraÃ§ao",
+      "licencia": "CuraÃÂ§ao",
       "licenciaStatus": "ok",
       "procesador": "Ecuapayphone",
       "status": "NDA pend.",
@@ -351,7 +351,7 @@
   "clientesInternacionales": [
     {
       "nombre": "Hondubet",
-      "pais": "Honduras/PanamÃ¡",
+      "pais": "Honduras/PanamÃÂ¡",
       "nda": "ok",
       "contrato": "ok",
       "licencia": "Comoros",
@@ -365,7 +365,7 @@
       "pais": "El Salvador",
       "nda": "ok",
       "contrato": "ok",
-      "licencia": "LoterÃ­a SV",
+      "licencia": "LoterÃÂ­a SV",
       "licenciaStatus": "ok",
       "procesador": "USA",
       "status": "Activo",
@@ -373,10 +373,10 @@
     },
     {
       "nombre": "Starplay",
-      "pais": "PanamÃ¡",
+      "pais": "PanamÃÂ¡",
       "nda": "ok",
       "contrato": "ok",
-      "licencia": "JCJ PanamÃ¡",
+      "licencia": "JCJ PanamÃÂ¡",
       "licenciaStatus": "ok",
       "procesador": "USA",
       "status": "Activo",
@@ -384,10 +384,10 @@
     },
     {
       "nombre": "Mi Casino",
-      "pais": "CuraÃ§ao",
+      "pais": "CuraÃÂ§ao",
       "nda": "ok",
       "contrato": "ok",
-      "licencia": "CGA CuraÃ§ao",
+      "licencia": "CGA CuraÃÂ§ao",
       "licenciaStatus": "ok",
       "procesador": "USA",
       "status": "Activo",
@@ -398,7 +398,7 @@
       "pais": "Guatemala",
       "nda": "ok",
       "contrato": "ok",
-      "licencia": "Min. GobernaciÃ³n",
+      "licencia": "Min. GobernaciÃÂ³n",
       "licenciaStatus": "ok",
       "procesador": "USA",
       "status": "Activo",
@@ -409,7 +409,7 @@
       "pais": "El Salvador, Guatemala",
       "nda": "ok",
       "contrato": "ok",
-      "licencia": "LoterÃ­a SV",
+      "licencia": "LoterÃÂ­a SV",
       "licenciaStatus": "ok",
       "procesador": "USA",
       "status": "Activo",
@@ -428,10 +428,10 @@
     },
     {
       "nombre": "Latin",
-      "pais": "PanamÃ¡",
+      "pais": "PanamÃÂ¡",
       "nda": "ok",
       "contrato": "ok",
-      "licencia": "JCJ PanamÃ¡",
+      "licencia": "JCJ PanamÃÂ¡",
       "licenciaStatus": "ok",
       "procesador": "USA",
       "status": "Activo",
@@ -464,7 +464,7 @@
       "pais": "Ecuador (INT)",
       "nda": "ok",
       "contrato": "ok",
-      "licencia": "CuraÃ§ao",
+      "licencia": "CuraÃÂ§ao",
       "licenciaStatus": "ok",
       "procesador": "USA",
       "status": "Activo",
@@ -475,7 +475,7 @@
       "pais": "Honduras",
       "nda": "pending",
       "contrato": "ok",
-      "licencia": "â",
+      "licencia": "Ã¢ÂÂ",
       "licenciaStatus": "na",
       "procesador": "USA",
       "status": "NDA pend.",
@@ -486,7 +486,7 @@
       "pais": "Guatemala",
       "nda": "pending",
       "contrato": "ok",
-      "licencia": "â",
+      "licencia": "Ã¢ÂÂ",
       "licenciaStatus": "na",
       "procesador": "USA",
       "status": "NDA pend.",
@@ -498,7 +498,7 @@
       "nombre": "Pagadoor (ProntoPaga)",
       "marcas": "Betano, Coolbet, EstelarBet, MilloBet, Forbet, Jugabet, Monetix",
       "procesador": "ECU",
-      "status": "Activo â crÃ­tico",
+      "status": "Activo Ã¢ÂÂ crÃÂ­tico",
       "statusColor": "green"
     },
     {
@@ -517,13 +517,13 @@
     },
     {
       "nombre": "ALPS Ecuador",
-      "marcas": "â",
+      "marcas": "Ã¢ÂÂ",
       "procesador": "ECU",
       "status": "NDA firmado",
       "statusColor": "yellow"
     },
     {
-      "nombre": "ALPS PerÃº",
+      "nombre": "ALPS PerÃÂº",
       "marcas": "Orobet, Masterbets365",
       "procesador": "USA",
       "status": "Contrato pend.",
@@ -531,28 +531,28 @@
     },
     {
       "nombre": "ALPS SPA (Chile)",
-      "marcas": "â",
-      "procesador": "â",
+      "marcas": "Ã¢ÂÂ",
+      "procesador": "Ã¢ÂÂ",
       "status": "Contrato pend.",
       "statusColor": "yellow"
     },
     {
       "nombre": "SmartfastPay",
-      "marcas": "â",
+      "marcas": "Ã¢ÂÂ",
       "procesador": "ECU",
       "status": "NDA firmado",
       "statusColor": "yellow"
     },
     {
       "nombre": "Ficha Dorada",
-      "marcas": "â",
-      "procesador": "â",
+      "marcas": "Ã¢ÂÂ",
+      "procesador": "Ã¢ÂÂ",
       "status": "Activo",
       "statusColor": "green"
     },
     {
       "nombre": "WorldSec (BetterBro)",
-      "marcas": "â",
+      "marcas": "Ã¢ÂÂ",
       "procesador": "Pendiente",
       "status": "Contrato firmado",
       "statusColor": "yellow"
@@ -573,7 +573,7 @@
         "pais": "Ecuador",
         "proyeccion": "$250-500K",
         "responsable": "Marce",
-        "estado": "FacturaciÃ³n",
+        "estado": "FacturaciÃÂ³n",
         "estadoColor": "green",
         "bgColor": "#f0fdf4"
       },
@@ -581,9 +581,9 @@
         "operador": "Tomerly Assets",
         "marca": "Azar Latino",
         "pais": "GT, HN",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "FacturaciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "FacturaciÃÂ³n",
         "estadoColor": "green",
         "bgColor": "#f0fdf4"
       },
@@ -592,7 +592,7 @@
         "marca": "Betcris DOM",
         "pais": "Rep. Dominicana",
         "proyeccion": "$100K",
-        "responsable": "â",
+        "responsable": "Ã¢ÂÂ",
         "estado": "Nuevo",
         "estadoColor": "blue",
         "bgColor": "#eff6ff"
@@ -600,9 +600,9 @@
       {
         "operador": "Wave Win",
         "marca": "4Luck",
-        "pais": "â",
-        "proyeccion": "â",
-        "responsable": "â",
+        "pais": "Ã¢ÂÂ",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
         "estado": "Nuevo",
         "estadoColor": "blue",
         "bgColor": "#eff6ff"
@@ -612,7 +612,7 @@
         "marca": "Forbet",
         "pais": "Ecuador",
         "proyeccion": "$100K",
-        "responsable": "â",
+        "responsable": "Ã¢ÂÂ",
         "estado": "Nuevo",
         "estadoColor": "blue",
         "bgColor": "#eff6ff"
@@ -622,7 +622,7 @@
         "marca": "Juega en Linea",
         "pais": "Ecuador",
         "proyeccion": "$100K",
-        "responsable": "â",
+        "responsable": "Ã¢ÂÂ",
         "estado": "Nuevo",
         "estadoColor": "blue",
         "bgColor": "#eff6ff"
@@ -631,8 +631,8 @@
         "operador": "VirtualScores",
         "marca": "GranLatino",
         "pais": "Ecuador",
-        "proyeccion": "â",
-        "responsable": "â",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
         "estado": "Nuevo",
         "estadoColor": "blue",
         "bgColor": "#eff6ff"
@@ -641,7 +641,7 @@
         "operador": "VERTEX",
         "marca": "LotBet",
         "pais": "Guatemala",
-        "proyeccion": "â",
+        "proyeccion": "Ã¢ÂÂ",
         "responsable": "Marce",
         "estado": "Nuevo",
         "estadoColor": "blue",
@@ -652,8 +652,8 @@
         "marca": "OroBet",
         "pais": "Ecuador",
         "proyeccion": "$250K",
-        "responsable": "â",
-        "estado": "ActivaciÃ³n",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ActivaciÃÂ³n",
         "estadoColor": "yellow",
         "bgColor": "#fefce8"
       },
@@ -661,9 +661,9 @@
         "operador": "Honduservice",
         "marca": "Honduwin",
         "pais": "Honduras",
-        "proyeccion": "â",
+        "proyeccion": "Ã¢ÂÂ",
         "responsable": "Marce/Pao",
-        "estado": "ActivaciÃ³n",
+        "estado": "ActivaciÃÂ³n",
         "estadoColor": "yellow",
         "bgColor": "#fefce8"
       },
@@ -671,9 +671,9 @@
         "operador": "Advisors Comm.",
         "marca": "ApuestasWin",
         "pais": "Paraguay",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ActivaciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ActivaciÃÂ³n",
         "estadoColor": "yellow",
         "bgColor": "#fefce8"
       },
@@ -681,9 +681,9 @@
         "operador": "Melbet",
         "marca": "Melbet",
         "pais": "EC + CA",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ActivaciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ActivaciÃÂ³n",
         "estadoColor": "yellow",
         "bgColor": "#fefce8"
       },
@@ -691,9 +691,9 @@
         "operador": "Centribet",
         "marca": "Centribet",
         "pais": "HN, GT, PA",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ActivaciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ActivaciÃÂ³n",
         "estadoColor": "yellow",
         "bgColor": "#fefce8"
       },
@@ -701,9 +701,9 @@
         "operador": "Twintech SAS",
         "marca": "Aciertala",
         "pais": "Ecuador",
-        "proyeccion": "â",
+        "proyeccion": "Ã¢ÂÂ",
         "responsable": "Marcela",
-        "estado": "ActivaciÃ³n (bloqueado)",
+        "estado": "ActivaciÃÂ³n (bloqueado)",
         "estadoColor": "red",
         "bgColor": "#fef2f2"
       },
@@ -713,7 +713,7 @@
         "pais": "El Salvador",
         "proyeccion": "$100K",
         "responsable": "Marcela",
-        "estado": "ActivaciÃ³n (KYC negado)",
+        "estado": "ActivaciÃÂ³n (KYC negado)",
         "estadoColor": "red",
         "bgColor": "#fef2f2"
       },
@@ -721,9 +721,9 @@
         "operador": "Red Servi",
         "marca": "Trebalia",
         "pais": "Ecuador",
-        "proyeccion": "â",
+        "proyeccion": "Ã¢ÂÂ",
         "responsable": "Marce/Pao",
-        "estado": "ActivaciÃ³n (bloqueado)",
+        "estado": "ActivaciÃÂ³n (bloqueado)",
         "estadoColor": "red",
         "bgColor": "#fef2f2"
       },
@@ -731,9 +731,9 @@
         "operador": "Stake",
         "marca": "Stake",
         "pais": "CR, PA, RD",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ProspecciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
@@ -741,19 +741,19 @@
         "operador": "Luckia",
         "marca": "Luckia",
         "pais": "CR, PA, RD",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ProspecciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
       {
         "operador": "Codere",
         "marca": "Codere",
-        "pais": "PanamÃ¡",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ProspecciÃ³n",
+        "pais": "PanamÃÂ¡",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
@@ -761,19 +761,19 @@
         "operador": "1xBet",
         "marca": "1xBet",
         "pais": "Guatemala",
-        "proyeccion": "â",
+        "proyeccion": "Ã¢ÂÂ",
         "responsable": "Pao",
-        "estado": "ProspecciÃ³n",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
       {
         "operador": "Betcha",
         "marca": "Betcha",
-        "pais": "PanamÃ¡",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ProspecciÃ³n",
+        "pais": "PanamÃÂ¡",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
@@ -781,9 +781,9 @@
         "operador": "SBET SAS",
         "marca": "Gana777",
         "pais": "El Salvador",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ProspecciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
@@ -791,9 +791,9 @@
         "operador": "GeniusBet",
         "marca": "GeniusBet",
         "pais": "El Salvador",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ProspecciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
@@ -801,9 +801,9 @@
         "operador": "Sorti",
         "marca": "Sorti",
         "pais": "Ecuador",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ProspecciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
@@ -811,9 +811,9 @@
         "operador": "BetGaliano",
         "marca": "BetGaliano",
         "pais": "Ecuador",
-        "proyeccion": "â",
+        "proyeccion": "Ã¢ÂÂ",
         "responsable": "Marce/Pao",
-        "estado": "ProspecciÃ³n",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
@@ -821,9 +821,9 @@
         "operador": "Softcede",
         "marca": "Softcede",
         "pais": "Ecuador",
-        "proyeccion": "â",
+        "proyeccion": "Ã¢ÂÂ",
         "responsable": "Pao",
-        "estado": "ProspecciÃ³n",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
@@ -831,9 +831,9 @@
         "operador": "ATOMO GAMING",
         "marca": "Atomo",
         "pais": "Ecuador",
-        "proyeccion": "â",
-        "responsable": "â",
-        "estado": "ProspecciÃ³n",
+        "proyeccion": "Ã¢ÂÂ",
+        "responsable": "Ã¢ÂÂ",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       },
@@ -841,9 +841,9 @@
         "operador": "RCB Global",
         "marca": "RCB",
         "pais": "USA",
-        "proyeccion": "â",
+        "proyeccion": "Ã¢ÂÂ",
         "responsable": "Marce/Pao",
-        "estado": "ProspecciÃ³n",
+        "estado": "ProspecciÃÂ³n",
         "estadoColor": "purple",
         "bgColor": ""
       }
@@ -851,27 +851,27 @@
   },
   "geography": [
     {
-      "flag": "ðªð¨",
+      "flag": "Ã°ÂÂÂªÃ°ÂÂÂ¨",
       "country": "Ecuador",
       "detail": "15 clientes | ~40 cuentas",
       "revenue": "$4.14M/mes",
       "revenueColor": "green",
-      "priority": "P1 â Activo",
+      "priority": "P1 Ã¢ÂÂ Activo",
       "priorityColor": "green",
       "cardClass": "active-rev"
     },
     {
-      "flag": "ð¨ð´",
+      "flag": "Ã°ÂÂÂ¨Ã°ÂÂÂ´",
       "country": "Colombia",
       "detail": "3 contratos | Bancolombia, BBVA",
       "revenue": "$0",
       "revenueColor": "red",
-      "priority": "P1 â Rails listos",
+      "priority": "P1 Ã¢ÂÂ Rails listos",
       "priorityColor": "yellow",
       "cardClass": "p1"
     },
     {
-      "flag": "ð¬ð¹",
+      "flag": "Ã°ÂÂÂ¬Ã°ÂÂÂ¹",
       "country": "Guatemala",
       "detail": "5 contratos | Banco Industrial, BAC",
       "revenue": "$0 visible",
@@ -881,7 +881,7 @@
       "cardClass": "p3"
     },
     {
-      "flag": "ð­ð³",
+      "flag": "Ã°ÂÂÂ­Ã°ÂÂÂ³",
       "country": "Honduras",
       "detail": "5 contratos | BAC, Banrural",
       "revenue": "$0 visible",
@@ -891,9 +891,9 @@
       "cardClass": "p3"
     },
     {
-      "flag": "ð¸ð»",
+      "flag": "Ã°ÂÂÂ¸Ã°ÂÂÂ»",
       "country": "El Salvador",
-      "detail": "4 contratos | AgrÃ­cola, BAC",
+      "detail": "4 contratos | AgrÃÂ­cola, BAC",
       "revenue": "$0 visible",
       "revenueColor": "red",
       "priority": "Contratos firmados",
@@ -901,8 +901,8 @@
       "cardClass": "p3"
     },
     {
-      "flag": "ðµð¦",
-      "country": "PanamÃ¡",
+      "flag": "Ã°ÂÂÂµÃ°ÂÂÂ¦",
+      "country": "PanamÃÂ¡",
       "detail": "3 contratos | Banco Aliado",
       "revenue": "$0 visible",
       "revenueColor": "red",
@@ -911,7 +911,7 @@
       "cardClass": "p3"
     },
     {
-      "flag": "ð¨ð·",
+      "flag": "Ã°ÂÂÂ¨Ã°ÂÂÂ·",
       "country": "Costa Rica",
       "detail": "2 contratos | BNCR, Lafise",
       "revenue": "$0 visible",
@@ -921,37 +921,37 @@
       "cardClass": "p3"
     },
     {
-      "flag": "ð©ð´",
+      "flag": "Ã°ÂÂÂ©Ã°ÂÂÂ´",
       "country": "Rep. Dominicana",
-      "detail": "1 en integraciÃ³n (Betcris)",
+      "detail": "1 en integraciÃÂ³n (Betcris)",
       "revenue": "$100K proy.",
       "revenueColor": "amber",
-      "priority": "P3 â Integrando",
+      "priority": "P3 Ã¢ÂÂ Integrando",
       "priorityColor": "blue",
       "cardClass": "p3"
     },
     {
-      "flag": "ðµðª",
-      "country": "PerÃº",
+      "flag": "Ã°ÂÂÂµÃ°ÂÂÂª",
+      "country": "PerÃÂº",
       "detail": "1 contrato | Interbank",
       "revenue": "$0",
       "revenueColor": "red",
-      "priority": "P2 â Docs pend.",
+      "priority": "P2 Ã¢ÂÂ Docs pend.",
       "priorityColor": "gray",
       "cardClass": "p2"
     },
     {
-      "flag": "ð¨ð±",
+      "flag": "Ã°ÂÂÂ¨Ã°ÂÂÂ±",
       "country": "Chile",
       "detail": "1 contrato (Zippy) | Banco Bice",
       "revenue": "$0",
       "revenueColor": "red",
-      "priority": "P2 â En proceso",
+      "priority": "P2 Ã¢ÂÂ En proceso",
       "priorityColor": "gray",
       "cardClass": "p2"
     },
     {
-      "flag": "ð³ð®",
+      "flag": "Ã°ÂÂÂ³Ã°ÂÂÂ®",
       "country": "Nicaragua",
       "detail": "1 contrato (DoradoBet)",
       "revenue": "$0 visible",
@@ -961,7 +961,7 @@
       "cardClass": "p3"
     },
     {
-      "flag": "ðºð¸",
+      "flag": "Ã°ÂÂÂºÃ°ÂÂÂ¸",
       "country": "USA",
       "detail": "2 clientes (1Win, 4Luck)",
       "revenue": "Pipeline",
@@ -978,7 +978,7 @@
         "date": "2026-06-09",
         "dateLabel": "9-11 Junio 2026",
         "name": "SBC Summit Americas",
-        "location": "Fort Lauderdale, FL â Paula + Val",
+        "location": "Fort Lauderdale, FL Ã¢ÂÂ Paula + Val",
         "stats": [
           {
             "label": "asistentes",
@@ -1001,14 +1001,14 @@
         "date": "2026-09-08",
         "dateLabel": "8-9 Septiembre 2026",
         "name": "GAT Expo San Juan",
-        "location": "Puerto Rico â Paula",
+        "location": "Puerto Rico Ã¢ÂÂ Paula",
         "stats": [
           {
             "label": "asistentes",
             "value": "200-400"
           },
           {
-            "label": "paÃ­ses",
+            "label": "paÃÂ­ses",
             "value": "14+"
           },
           {
@@ -1024,14 +1024,14 @@
         "date": "2026-11-17",
         "dateLabel": "17-18 Noviembre 2026",
         "name": "GAT Expo Santo Domingo",
-        "location": "Rep. Dominicana â Paula",
+        "location": "Rep. Dominicana Ã¢ÂÂ Paula",
         "stats": [
           {
             "label": "delegados",
             "value": "600+"
           },
           {
-            "label": "paÃ­ses",
+            "label": "paÃÂ­ses",
             "value": "20"
           },
           {
@@ -1049,14 +1049,14 @@
         "status": "No existe",
         "statusColor": "red",
         "deadline": "30 Abril",
-        "responsable": "Paula + DiseÃ±o"
+        "responsable": "Paula + DiseÃÂ±o"
       },
       {
         "material": "One-Pager / Leave-behind",
         "status": "No existe",
         "statusColor": "red",
         "deadline": "15 Mayo",
-        "responsable": "Paula + DiseÃ±o"
+        "responsable": "Paula + DiseÃÂ±o"
       },
       {
         "material": "Landing Page (betting)",
@@ -1092,7 +1092,7 @@
     "ecuapayphone": [
       {
         "cliente": "Betano",
-        "parentesis": "(vÃ­a Pagadoor)",
+        "parentesis": "(vÃÂ­a Pagadoor)",
         "factFeb": "$565,980",
         "tipo": "Intermediario"
       },
@@ -1192,18 +1192,18 @@
   },
   "actions": {
     "critico": [
-      "**Crear materiales de venta:** Pitch deck, one-pager, landing page, demo sandbox. SBC Americas en 82 dÃ­as. Nada existe hoy.",
+      "**Crear materiales de venta:** Pitch deck, one-pager, landing page, demo sandbox. SBC Americas en 82 dÃÂ­as. Nada existe hoy.",
       "**Convertir pipeline near-term:** Betcris DOM ($100K), OroBet ($250K), Masterbets365 ($250-500K), Forbet ($100K) = $700K-$950K/mes potencial.",
-      "**Intermediarios Feb $0:** Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) â todos en blanco en febrero. Investigar de inmediato."
+      "**Intermediarios Feb $0:** Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) Ã¢ÂÂ todos en blanco en febrero. Investigar de inmediato."
     ],
     "alto": [
-      "**Mejorar mÃ¡rgenes internacionales:** 0.5% net margin en $3.3M/mes no es sostenible (costo 5% vs tarifa 5.5%). Renegociar o ajustar pricing.",
-      "**Seguimiento Tier 1:** Stake, Luckia, Codere, 1xBet (propuesta enviada 16 mar), Betcha â todas sin respuesta.",
+      "**Mejorar mÃÂ¡rgenes internacionales:** 0.5% net margin en $3.3M/mes no es sostenible (costo 5% vs tarifa 5.5%). Renegociar o ajustar pricing.",
+      "**Seguimiento Tier 1:** Stake, Luckia, Codere, 1xBet (propuesta enviada 16 mar), Betcha Ã¢ÂÂ todas sin respuesta.",
       "**Resolver docs bloqueados:** Aciertala (KYC pendiente), SportGana (KYC negado), Trebalia (docs pendientes), RCB Global (sin docs).",
-      "**Definir dueÃ±o de cuentas internacionales no-betting:** Actualmente en limbo, tasa del 10% fuera de mercado, sin proceso ni contratos definidos."
+      "**Definir dueÃÂ±o de cuentas internacionales no-betting:** Actualmente en limbo, tasa del 10% fuera de mercado, sin proceso ni contratos definidos."
     ],
     "estrategico": [
-      "**Auditar row 36 sin nombre:** $392K â $23 en febrero. Â¿QuiÃ©n es este cliente y quÃ© pasÃ³?",
+      "**Auditar row 36 sin nombre:** $392K Ã¢ÂÂ $23 en febrero. ÃÂ¿QuiÃÂ©n es este cliente y quÃÂ© pasÃÂ³?",
       "**CRM migration:** Mover tracking de Excel a Freshsales. 2 archivos duplicados + 5 CSVs sueltos = riesgo de datos.",
       "**Estrategia de pricing:** Clientes >$700K pagan solo 0.20%. Hondubet ($1.3M) genera ~$6.5K/mes de profit. Revisar estructura.",
       "**Capacidad del equipo:** Paula + Marcela gestionan 60+ clientes activos + 32 pipeline. Definir plan de capacidad."
@@ -1213,60 +1213,60 @@
     "paula": [
       {
         "num": 1,
-        "pregunta": "Â¿QuiÃ©n es el cliente en row 36 ($392K â $23)?",
-        "porque": "RUC 8019022409207. CaÃ­da de -100%. Sin nombre en el MasterFile."
+        "pregunta": "ÃÂ¿QuiÃÂ©n es el cliente en row 36 ($392K Ã¢ÂÂ $23)?",
+        "porque": "RUC 8019022409207. CaÃÂ­da de -100%. Sin nombre en el MasterFile."
       },
       {
         "num": 2,
-        "pregunta": "Â¿Por quÃ© intermediarios reportan $0 en febrero?",
-        "porque": "Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) â todos en blanco."
+        "pregunta": "ÃÂ¿Por quÃÂ© intermediarios reportan $0 en febrero?",
+        "porque": "Pagadoor ($153K ene), Monnet ($11K), ALPS Peru ($105K), Zippy ($3K) Ã¢ÂÂ todos en blanco."
       },
       {
         "num": 3,
-        "pregunta": "Â¿Estado real de OroBet, Masterbets365, Forbet?",
-        "porque": "$600K-$950K/mes potencial. Todos bloqueados en integraciÃ³n/contrato/licencia."
+        "pregunta": "ÃÂ¿Estado real de OroBet, Masterbets365, Forbet?",
+        "porque": "$600K-$950K/mes potencial. Todos bloqueados en integraciÃÂ³n/contrato/licencia."
       },
       {
         "num": 4,
-        "pregunta": "Â¿Podemos renegociar pricing para clientes >$700K?",
+        "pregunta": "ÃÂ¿Podemos renegociar pricing para clientes >$700K?",
         "porque": "Hondubet $1.3M/mes genera ~$6.5K profit (0.5% net). No es sostenible."
       },
       {
         "num": 5,
-        "pregunta": "Â¿Timeline real para Betcris DOM go-live?",
-        "porque": "En integraciÃ³n desde febrero. ProyecciÃ³n $100K/mes. Clave para GAT DR."
+        "pregunta": "ÃÂ¿Timeline real para Betcris DOM go-live?",
+        "porque": "En integraciÃÂ³n desde febrero. ProyecciÃÂ³n $100K/mes. Clave para GAT DR."
       },
       {
         "num": 6,
-        "pregunta": "Â¿QuÃ© le falta al equipo para ir mÃ¡s rÃ¡pido?",
+        "pregunta": "ÃÂ¿QuÃÂ© le falta al equipo para ir mÃÂ¡s rÃÂ¡pido?",
         "porque": "Paula + Marcela gestionando 60+ clientes + 32 pipeline."
       }
     ],
     "marcela": [
       {
         "num": 1,
-        "pregunta": "Â¿Status de documentos bloqueados: Aciertala, SportGana, Trebalia, RCB Global?",
+        "pregunta": "ÃÂ¿Status de documentos bloqueados: Aciertala, SportGana, Trebalia, RCB Global?",
         "porque": "4 prospectos en pipeline detenidos por docs/KYC. Necesitan seguimiento directo."
       },
       {
         "num": 2,
-        "pregunta": "Â¿CuÃ¡l es el status real de integraciones activas: Forbet, Juega en Linea, GranLatino, LotBet?",
+        "pregunta": "ÃÂ¿CuÃÂ¡l es el status real de integraciones activas: Forbet, Juega en Linea, GranLatino, LotBet?",
         "porque": "Representan ~$300K/mes potencial. Necesitamos timelines concretos."
       },
       {
         "num": 3,
-        "pregunta": "Â¿CRM migration: quÃ© data se necesita migrar primero a Freshsales?",
-        "porque": "Actualmente en 2 Excels + 7 CSVs. Riesgo de pÃ©rdida de datos."
+        "pregunta": "ÃÂ¿CRM migration: quÃÂ© data se necesita migrar primero a Freshsales?",
+        "porque": "Actualmente en 2 Excels + 7 CSVs. Riesgo de pÃÂ©rdida de datos."
       },
       {
         "num": 4,
-        "pregunta": "Â¿Capacidad actual del equipo: cuÃ¡ntos clientes puede gestionar Marcela sola?",
+        "pregunta": "ÃÂ¿Capacidad actual del equipo: cuÃÂ¡ntos clientes puede gestionar Marcela sola?",
         "porque": "60+ clientes activos + 32 pipeline con equipo reducido."
       },
       {
         "num": 5,
-        "pregunta": "Â¿Status de orden de swag para SBC Americas?",
-        "porque": "Deadline 20 de mayo. Necesita coordinaciÃ³n con proveedor."
+        "pregunta": "ÃÂ¿Status de orden de swag para SBC Americas?",
+        "porque": "Deadline 20 de mayo. Necesita coordinaciÃÂ³n con proveedor."
       }
     ]
   }
